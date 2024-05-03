@@ -1,0 +1,15 @@
+body {
+  font-family: "DIN Alternate", sans-serif;
+  font-size: 16px;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button_color {
+  background-color: rgba(79, 70, 229, 1);
+}
+#slider {
+  transition: transform 0.5s ease-in-out;
+}
