@@ -329,7 +329,7 @@ export default function Home() {
                     ref={sliderRef}
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i, key) => {
-                      return <HomeCard />;
+                      return <HomeCard key={key} />;
                     })}
                   </div>
                 </div>
@@ -344,17 +344,6 @@ export default function Home() {
               </button>
             </div>
           </div>
-          {/* <Carousel>
-            {[1, 2, 3].map((item, index) => {
-              return (
-                <div className="flex gap-10 ml-8 flex-shrink-0 ml-2 relative w-auto">
-                  {[1, 2, 3, 4, 5].map((card, cardIndex) => (
-                    <HomeCard />
-                  ))}
-                </div>
-              );
-            })}
-          </Carousel> */}
         </div>
       </div>
     </>

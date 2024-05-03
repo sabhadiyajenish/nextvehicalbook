@@ -48,16 +48,20 @@ const Page = () => {
                   }}
                   navButtonsWrapperProps={{ style: { marginRight: "18px" } }}
                 >
-                  {[1, 2, 3].map((item, index) => {
+                  {[1, 2, 3].map((item, key) => {
                     return (
-                      <div className="flex gap-10 flex-shrink-0 relative w-auto md:p-4">
-                        {[1, 2, 3, 4, 5].map((card, cardIndex) => (
+                      <div
+                        className="flex gap-10 flex-shrink-0 relative w-auto md:p-4"
+                        key={key}
+                      >
+                        {[1, 2, 3, 4, 5].map((card, item) => (
                           <Image
                             className="rounded-lg w-[490px] md:ml-2 h-[337px]"
                             src="/Medium.jpg"
                             alt=""
                             height={100}
                             width={100}
+                            key={item}
                           />
                         ))}
                       </div>

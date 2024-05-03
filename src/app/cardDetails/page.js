@@ -160,12 +160,6 @@ const Page = () => {
                       defaultValue={[today, tomorrow]}
                       minDate={today}
                       disablePast
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          InputProps={{ style: { color: "#2563EB" } }} // Set font color to blue
-                        />
-                      )}
                     />
                   </LocalizationProvider>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -175,12 +169,6 @@ const Page = () => {
                       defaultValue={[today, tomorrow]}
                       minDate={today}
                       disablePast
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          InputProps={{ style: { color: "#2563EB" } }} // Set font color to blue
-                        />
-                      )}
                     />
                   </LocalizationProvider>
                 </div>
