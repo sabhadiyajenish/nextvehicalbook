@@ -83,10 +83,10 @@ export default function Home() {
 
   return (
     <>
-      <div className="h-fit md:mt-0 mt-10 md:h-[700px] flex items-center justify-center">
-        <div className="shadow-lg w-5/6 mt-16 md:w-[1400px] p-8 h-fit relative rounded-md bg-white">
+      <div className="h-fit md:mt-0 mt-10 md:mx-0 mx-10  md:h-[700px] flex items-center justify-center bg-[url('/hero-banner-bg.jpeg')] bg-no-repeat bg-cover">
+        <div className="shadow-lg w-full mt-16  md:w-[940px] p-8 h-fit relative rounded-md bg-white">
           <div className="flex justify-center ">
-            <div className="w-full md:w-1/2 shadow-md absolute rounded -top-6 ">
+            <div className="w-full md:w-[346px] shadow-md absolute rounded -top-6 ">
               <button
                 onClick={() => setButtonVal("Rentails")}
                 className={` w-1/2 h-12  ${
@@ -95,7 +95,7 @@ export default function Home() {
                   buttonVal == "Rentails" ? "bg-lightBlue" : "bg-white"
                 }`}
               >
-                <p className="-mt-1">Rentails</p>
+                <p className="-mt-1 text-[14px] font-bold">Rentails</p>
                 {/* <span className="text-sm font-light">1 month +</span> */}
               </button>
               <button
@@ -106,12 +106,12 @@ export default function Home() {
                   buttonVal == "Subscriptions" ? "bg-lightBlue" : "bg-white"
                 }`}
               >
-                <p className="-mt-1">Subscriptions</p>
+                <p className="-mt-1 text-[14px] font-bold">Subscriptions</p>
                 {/* <span className="text-sm font-light">1 month +</span> */}
               </button>
             </div>
           </div>
-          <div className="mt-[60px] flex justify-center">
+          <div className="mt-[30px] flex justify-center">
             <div>
               <Button
                 component="label"
@@ -121,13 +121,15 @@ export default function Home() {
                 onClick={() => setSelVehical("Car")}
                 startIcon={
                   <FaCarSide
-                    className={`${selVehical == "Car" ? "" : "text-grey"}`}
+                    className={`w-[24px] h-[18px] ${
+                      selVehical == "Car" ? "text-[#4f46e5]" : "text-grey"
+                    }`}
                   />
                 }
-                className={`mx-3 rounded-full mt-3 lg:mt-0  ${
+                className={`ml-[24px] text-[14px] font-medium rounded-full mt-3 lg:mt-0  ${
                   selVehical == "Car"
-                    ? "font-semibold"
-                    : "text-grey border-grey"
+                    ? "font-semibold text-[#4f46e5] border-[#4f46e5]"
+                    : "text-grey border-grey border-opacity-40"
                 }`}
               >
                 Car
@@ -140,13 +142,15 @@ export default function Home() {
                 onClick={() => setSelVehical("Van")}
                 startIcon={
                   <FaShuttleVan
-                    className={`${selVehical == "Van" ? "" : "text-grey"}`}
+                    className={` w-[24px] h-[18px] ${
+                      selVehical == "Van" ? "text-[#4f46e5]" : "text-grey"
+                    }`}
                   />
                 }
-                className={`mx-3 rounded-full mt-3 lg:mt-0 ${
+                className={`ml-[24px] text-[14px] font-medium rounded-full mt-3 lg:mt-0 ${
                   selVehical == "Van"
-                    ? "font-semibold"
-                    : "text-grey border-grey"
+                    ? "font-semibold text-[#4f46e5] border-[#4f46e5]"
+                    : "text-grey border-grey border-opacity-40"
                 }`}
               >
                 Van
@@ -159,13 +163,15 @@ export default function Home() {
                 onClick={() => setSelVehical("Truck")}
                 startIcon={
                   <FaTruck
-                    className={`${selVehical == "Truck" ? "" : "text-grey"}`}
+                    className={` w-[24px] h-[18px] ${
+                      selVehical == "Truck" ? "text-[#4f46e5]" : "text-grey"
+                    }`}
                   />
                 }
-                className={`mx-3 rounded-full mt-3 lg:mt-0  ${
+                className={`ml-[24px] text-[14px] font-medium rounded-full mt-3 lg:mt-0  ${
                   selVehical == "Truck"
-                    ? "font-semibold"
-                    : "text-grey border-grey"
+                    ? "font-semibold text-[#4f46e5] border-[#4f46e5]"
+                    : "text-grey border-grey border-opacity-40"
                 }`}
               >
                 Moving truck
@@ -178,13 +184,15 @@ export default function Home() {
                 onClick={() => setSelVehical("MiniBus")}
                 startIcon={
                   <TbBus
-                    className={`${selVehical == "MiniBus" ? "" : "text-grey"}`}
+                    className={`w-[24px] h-[18px] ${
+                      selVehical == "MiniBus" ? "text-[#4f46e5]" : "text-grey"
+                    }`}
                   />
                 }
-                className={`mx-3 rounded-full mt-3 lg:mt-0  ${
+                className={`ml-[24px] text-[14px] font-medium rounded-full mt-3 lg:mt-0  ${
                   selVehical == "MiniBus"
-                    ? "font-semibold"
-                    : "text-grey border-grey"
+                    ? "font-semibold text-[#4f46e5] border-[#4f46e5]"
+                    : "text-grey border-grey border-opacity-40"
                 }`}
               >
                 Mini bus
@@ -197,41 +205,43 @@ export default function Home() {
                 onClick={() => setSelVehical("Trailer")}
                 startIcon={
                   <FaTrailer
-                    className={`${selVehical == "Trailer" ? "" : "text-grey"}`}
+                    className={` w-[24px] h-[18px] ${
+                      selVehical == "Trailer" ? "text-[#4f46e5]" : "text-grey"
+                    }`}
                   />
                 }
-                className={`mx-3 rounded-full mt-3 lg:mt-0 ${
+                className={`ml-[24px] text-[14px] font-medium rounded-full mt-3 lg:mt-0 ${
                   selVehical == "Trailer"
-                    ? "font-semibold"
-                    : "text-grey border-grey"
+                    ? "font-semibold text-[#4f46e5] border-[#4f46e5]"
+                    : "text-grey border-grey border-opacity-40"
                 }`}
               >
                 Trailer
               </Button>
             </div>
           </div>
-          <div className=" mt-5 mx-3 mb-5">
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2 auto-cols-max md:auto-cols-min">
-              <div className="bg-grey-200  lg:col-span-2 p-4">
-                <p className="font-light  text-sm">Where</p>
+          <div className=" mt-8 ml-3 mb-1">
+            <div className="flex flex-wrap md:flex-nowrap">
+              <div className="w-full md:w-[311px] md:ml-3">
+                <p className=" text-[10px] font-medium">Where</p>
                 <div className="flex justify-between">
                   <Select
                     defaultValue={selectedOption}
                     onChange={setSelectedOption}
                     options={options}
                     styles={customStyles}
-                    className="lg:w-5/6"
+                    className="w-full md:w-[305px]"
                   />
-                  <Divider
+                  {/* <Divider
                     orientation="vertical"
                     flexItem
-                    style={{ margin: "0 3px", height: "50px" }}
-                  />
+                    style={{ margin: "0px 10px 0px 10px", height: "35px" }}
+                  /> */}
                 </div>
               </div>
-              <div className="bg-gray-300 p-4">
-                <p className="font-light  text-sm">Pick-up date</p>
-                <div className="flex justify-between">
+              <div className="md:ml-3 sm:mt-0 mt-3">
+                <p className="text-[10px] font-medium">Pick-up date</p>
+                <div className="flex justify-between md:w-[150px]">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       value={pickUpDate}
@@ -254,9 +264,9 @@ export default function Home() {
                   /> */}
                 </div>
               </div>
-              <div className="bg-gray-300 p-4">
-                <p className="font-light  text-sm">Drop-up date</p>
-                <div className="flex justify-between">
+              <div className="sm:ml-3 sm:mt-0 mt-3">
+                <p className="text-[10px] font-medium">Drop-up date</p>
+                <div className="flex justify-between w-full md:w-[150px]">
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       value={dropUpDate}
@@ -273,8 +283,8 @@ export default function Home() {
                   /> */}
                 </div>
               </div>
-              <div className="bg-gray-300 p-4">
-                <p className="font-light  text-sm">Driver age</p>
+              <div className="md:ml-3  sm:mt-0 mt-3 md:w-[150px]">
+                <p className="text-[10px] font-medium">Driver age</p>
                 <TextField
                   id="outlined-number"
                   type="number"
@@ -284,9 +294,9 @@ export default function Home() {
                   }}
                 />
               </div>
-              <div className="bg-gray-300 mt-5 lg:ml-8  xl:ml-10 ml-5">
-                <button className="w-20 h-20 bg-lightBlue rounded-xl ">
-                  <FaArrowRight className="text-white ml-8 size-7" />
+              <div className="bg-gray-300 mt-6 sm:mt-3 lg:ml-8  xl:ml-10 md:ml-5 sm:ml-3 ml-2">
+                <button className="w-[60px] h-[60px] bg-lightBlue rounded-xl ">
+                  <FaArrowRight className="text-white ml-6 w-[16px] h=[12px]" />
                 </button>
               </div>
             </div>
@@ -294,12 +304,12 @@ export default function Home() {
         </div>
       </div>
       <div className="bg-lightWhite py-4">
-        <div className="mt-10 w-full text-center">
+        <div className="mt-14 w-full text-center">
           <div className="text-center">
-            <h1 className="font-bold text-[35px]">
+            <h1 className="font-bold text-[36px]">
               We have a car for every need
             </h1>
-            <p className="mt-4 mx-auto max-w-[50%] text-center">
+            <p className="mt-4 font-normal mx-auto text-[16px] w-[806px] text-center">
               At Oscar Biludlejning, we offer local car rental throughout
               Denmark at our more than 130 branches. We rent cars, vans,
               minibuses and moving vehicles. You always get 100 km. per rental
@@ -308,7 +318,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="mt-32 w-full px-5 md:px-28 mb-10">
+        <div className="w-full mt-28 px-5 md:px-28 mb-10">
           <div className="flex items-center justify-center w-full h-full">
             <div className="w-full relative flex items-center justify-center">
               <button
@@ -328,7 +338,10 @@ export default function Home() {
                     className="flex gap-10 flex-shrink-0 ml-2 relative w-auto"
                     ref={sliderRef}
                   >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i, key) => {
+                    {[
+                      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 3, 14, 15, 16,
+                      17, 18, 19, 20,
+                    ].map((i, key) => {
                       return <HomeCard key={key} />;
                     })}
                   </div>
