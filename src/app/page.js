@@ -1,17 +1,11 @@
 "use client";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaCarSide,
-  FaShuttleVan,
-} from "react-icons/fa";
+import { FaArrowRight, FaCarSide, FaShuttleVan } from "react-icons/fa";
 import { FaTrailer, FaTruck } from "react-icons/fa6";
 import { TbBus } from "react-icons/tb";
 import Select from "react-select";
@@ -19,6 +13,7 @@ import HomeCard from "./components/Cards/homeCard";
 // import Carousel from "react-material-ui-carousel";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1700 },
@@ -56,10 +51,7 @@ export default function Home() {
   const [selVehical, setSelVehical] = useState("Car");
   const [pickUpDate, setpickUpDate] = useState(dayjs());
   const [dropUpDate, setDropUpDate] = useState(dayjs(pickUpDate));
-  const [mounted, setMounted] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const sliderRef = useRef(null);
-  let defaultTransform = 0;
 
   const options = [
     { value: "Surat", label: "Surat" },
@@ -80,36 +72,6 @@ export default function Home() {
       color: "#2563EB", // Set font color of selected value to blue
       fontWeight: "bold",
     }),
-  };
-  7;
-  useEffect(() => {
-    // Ensure component is mounted before accessing the ref
-    setMounted(true);
-  }, []);
-  const goNext = () => {
-    if (mounted && sliderRef.current) {
-      defaultTransform -= 398;
-      if (defaultTransform < -(398 * (sliderRef.current.children.length - 3))) {
-        defaultTransform = 0;
-      }
-      requestAnimationFrame(() => {
-        sliderRef.current.style.transition = "transform 0.5s ease-in-out";
-        sliderRef.current.style.transform = `translateX(${defaultTransform}px)`;
-      });
-    }
-  };
-
-  const goPrev = () => {
-    if (mounted && sliderRef.current) {
-      defaultTransform += 398;
-      if (defaultTransform > 0) {
-        defaultTransform = -(398 * (sliderRef.current.children.length - 3));
-      }
-      requestAnimationFrame(() => {
-        sliderRef.current.style.transition = "transform 0.5s ease-in-out";
-        sliderRef.current.style.transform = `translateX(${defaultTransform}px)`;
-      });
-    }
   };
 
   const today = dayjs();
@@ -364,7 +326,7 @@ export default function Home() {
               partialVisible={false}
               dotListClass="custom-dot-list-style"
             >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((imageUrl, index) => {
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((items, index) => {
                 return (
                   <div
                     className="slider w-full flex  justify-center"
