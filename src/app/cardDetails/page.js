@@ -27,7 +27,7 @@ const Page = () => {
     <>
       <div className="bg-lightWhite">
         <div className="h-fit  flex items-center justify-center ">
-          <div className="shadow-lg w-5/6 mt-16 md:w-[1400px] p-8 h-fit relative rounded-md bg-white">
+          <div className="shadow-lg w-5/6 mt-16 md:mt-24 md:w-[1400px] p-8 h-fit relative rounded-md bg-white">
             <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
               <div className="bg-gray-200 sm:col-span-2 p-4">
                 <Image

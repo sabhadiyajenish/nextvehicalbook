@@ -14,9 +14,31 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Divider from "@mui/material/Divider";
+import Link from "next/link";
 const drawerWidth = 240;
-const navItems = ["Car rentel", "Location", "Car types", "About", "Contact"];
-
+// const navItems = ["Car rentel", "Location", "Car types", "About", "Contact"];
+const navItems = [
+  {
+    title: "Car rentel",
+    path: "/",
+  },
+  {
+    title: "Location",
+    path: "/cardDetails",
+  },
+  {
+    title: "About",
+    path: "/carBookingSuccess",
+  },
+  {
+    title: "Car types",
+    path: "/cardDetails",
+  },
+  {
+    title: "Contact",
+    path: "/carBookingSuccess",
+  },
+];
 const Navbar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,10 +54,12 @@ const Navbar = (props) => {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+        {navItems.map((item, key) => (
+          <ListItem key={key} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <Link href={item.path}>
+                <ListItemText primary={item.title} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -65,13 +89,15 @@ const Navbar = (props) => {
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                MUI
+                <Link href="/">MUI</Link>
               </Typography>
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                {navItems.map((item) => (
-                  <Button key={item} sx={{ color: "#fff" }} className="mx-3">
-                    {item.toLocaleLowerCase()}
-                  </Button>
+                {navItems.map((item, key) => (
+                  <Link href={item.path}>
+                    <Button key={key} sx={{ color: "#fff" }} className="mx-3">
+                      {item.title}
+                    </Button>
+                  </Link>
                 ))}
               </Box>
             </Toolbar>

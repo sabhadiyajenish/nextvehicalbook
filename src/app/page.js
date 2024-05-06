@@ -16,7 +16,41 @@ import { FaTrailer, FaTruck } from "react-icons/fa6";
 import { TbBus } from "react-icons/tb";
 import Select from "react-select";
 import HomeCard from "./components/Cards/homeCard";
-import Carousel from "react-material-ui-carousel";
+// import Carousel from "react-material-ui-carousel";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1700 },
+    items: 6,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  smdesktop: {
+    breakpoint: { max: 1700, min: 1435 },
+    items: 5,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  xsmdesktop: {
+    breakpoint: { max: 1435, min: 1180 },
+    items: 4,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1180, min: 768 },
+    items: 3,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 767, min: 464 },
+    items: 2,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  smmobile: {
+    breakpoint: { max: 464, min: 150 },
+    items: 1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+};
 export default function Home() {
   const [buttonVal, setButtonVal] = useState("Rentails");
   const [selVehical, setSelVehical] = useState("Car");
@@ -309,7 +343,7 @@ export default function Home() {
             <h1 className="font-bold text-[36px]">
               We have a car for every need
             </h1>
-            <p className="mt-4 font-normal mx-auto text-[16px] w-[806px] text-center">
+            <p className="mt-4 font-normal md:mx-auto text-[16px]  mx-5 md:w-[806px] text-center">
               At Oscar Biludlejning, we offer local car rental throughout
               Denmark at our more than 130 branches. We rent cars, vans,
               minibuses and moving vehicles. You always get 100 km. per rental
@@ -319,43 +353,28 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full mt-28 px-5 md:px-28 mb-10">
-          <div className="flex items-center justify-center w-full h-full">
-            <div className="w-full relative flex items-center justify-center">
-              <button
-                aria-label="slide backward"
-                className="absolute z-30 w-14 h-14 rounded-full bg-white shadow-lg -left-7  focus:outline-none focus:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 cursor-pointer"
-                id="prev"
-                onClick={goPrev}
-              >
-                <FaArrowLeft className="ml-5" />
-              </button>
-              <div className="w-full h-full mx-auto overflow-x-hidden overflow-y-hidden">
-                <div
-                  id="slider"
-                  className="h-full flex lg:gap-8 md:gap-6 gap-3 items-center justify-start transition-all ease-out duration-300"
-                >
+          <div className="parent relative">
+            <Carousel
+              responsive={responsive}
+              autoPlay={true}
+              swipeable={true}
+              draggable={true}
+              showDots={true}
+              infinite={true}
+              partialVisible={false}
+              dotListClass="custom-dot-list-style"
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((imageUrl, index) => {
+                return (
                   <div
-                    className="flex gap-10 flex-shrink-0 ml-2 relative w-auto"
-                    ref={sliderRef}
+                    className="slider w-full flex  justify-center"
+                    key={index}
                   >
-                    {[
-                      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 3, 14, 15, 16,
-                      17, 18, 19, 20,
-                    ].map((i, key) => {
-                      return <HomeCard key={key} />;
-                    })}
+                    <HomeCard />
                   </div>
-                </div>
-              </div>
-              <button
-                aria-label="slide forward"
-                className="absolute z-30  w-14 h-14 rounded-full bg-white shadow-lg -right-5  focus:outline-none focus:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-gray-400"
-                id="next"
-                onClick={goNext}
-              >
-                <FaArrowRight className="ml-5" />
-              </button>
-            </div>
+                );
+              })}
+            </Carousel>
           </div>
         </div>
       </div>

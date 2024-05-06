@@ -16,7 +16,7 @@ const Page = () => {
     <>
       <div className="bg-lightWhite">
         <div className="h-fit  flex items-center justify-center ">
-          <div className="shadow-lg w-5/6 mt-16 md:w-[1400px] p-8 h-fit relative rounded-md bg-white">
+          <div className="shadow-lg w-5/6 mt-16 md:mt-24 md:w-[1400px] p-8 h-fit relative rounded-md bg-white">
             <div className="flex  items-center sm:flex-nowrap p-4">
               <Image
                 className="rounded-lg w-[80px] md:w-[120px] h-[80px] md:h-[120px]"
