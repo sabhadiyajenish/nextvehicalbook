@@ -93,7 +93,7 @@ const Navbar = (props) => {
               </Typography>
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 {navItems.map((item, key) => (
-                  <Link href={item.path}>
+                  <Link href={item.path} key={key}>
                     <Button key={key} sx={{ color: "#fff" }} className="mx-3">
                       {item.title}
                     </Button>
