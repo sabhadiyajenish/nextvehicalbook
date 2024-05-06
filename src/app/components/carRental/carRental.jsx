@@ -96,9 +96,7 @@ const CarRental = () => {
             ))}
           </Stepper>
         </div>
-        <div className="w-full">
-          <FindCar />
-        </div>
+        <div className="w-full">{activeStep == "0" && <FindCar />}</div>
         <div>
           {allStepsCompleted() ? (
             <React.Fragment>
