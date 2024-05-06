@@ -13,6 +13,7 @@ import HomeCard from "./components/Cards/homeCard";
 // import Carousel from "react-material-ui-carousel";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import Link from "next/link";
 
 const responsive = {
   desktop: {
@@ -291,9 +292,11 @@ export default function Home() {
                 />
               </div>
               <div className="bg-gray-300 mt-6 sm:mt-3 lg:ml-8  xl:ml-10 md:ml-5 sm:ml-3 ml-2">
-                <button className="w-[60px] h-[60px] bg-lightBlue rounded-xl ">
-                  <FaArrowRight className="text-white ml-6 w-[16px] h=[12px]" />
-                </button>
+                <Link href="/carrental">
+                  <button className="w-[60px] h-[60px] bg-lightBlue rounded-xl ">
+                    <FaArrowRight className="text-white ml-6 w-[16px] h=[12px]" />
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
