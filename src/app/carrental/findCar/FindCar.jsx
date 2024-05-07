@@ -29,6 +29,8 @@ import {
 import { PiSteeringWheelLight } from "react-icons/pi";
 import { TbFishHook } from "react-icons/tb";
 import FindCarRightPart from "./FindCarRightPart";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -49,14 +51,76 @@ const marks = [
 ];
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-const FindCar = () => {
-  const [value, setValue] = useState([20, 37]);
+const FindCar = (props) => {
+  const [value, setValue] = useState([20, 40]);
   const [value1, setValue1] = useState([700, 7000]);
   const [toggleCard, setToggleCard] = useState(1);
   const [pickUpDate, setpickUpDate] = useState(dayjs());
   const [dropUpDate, setDropUpDate] = useState(dayjs(pickUpDate));
+  const [checkList, setCheckList] = useState({
+    smallCar: false,
+    midSizeCar: true,
+    BigCar: false,
+    Microcar: true,
+    SuvGroupA: false,
+    LuxuryCar: true,
+    Autohuset: false,
+    Rentlog: true,
+    Automatic: false,
+    Manual1: true,
+    Petrol: false,
+    Hybrid: true,
+    Seat4: false,
+    Seat5: true,
+    Towbar: true,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
   const today = dayjs();
   const tomorrow = dayjs().add(1, "day");
+
+  const cardsPerPage = 5;
+  const totalCards = 12;
+  // Calculate index of the first and last card on the current page
+  // Calculate index of the first and last card on the current page
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].slice(
+    indexOfFirstCard,
+    indexOfLastCard
+  );
+
+  // Change page
+  const handleChangePagination = (event, value) => {
+    setCurrentPage(value);
+  };
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    setCheckList({
+      ...checkList,
+      [name]: checked,
+    });
+  };
+  const handleSetClearFilter = () => {
+    setCheckList({
+      smallCar: false,
+      midSizeCar: true,
+      BigCar: false,
+      Microcar: true,
+      SuvGroupA: false,
+      LuxuryCar: true,
+      Autohuset: false,
+      Rentlog: true,
+      Automatic: false,
+      Manual1: true,
+      Petrol: false,
+      Hybrid: true,
+      Seat4: false,
+      Seat5: true,
+      Towbar: true,
+    });
+    setValue([20, 40]);
+    setValue1([700, 7000]);
+  };
   const currencies = [
     {
       value: "Cars",
@@ -114,8 +178,8 @@ const FindCar = () => {
   return (
     <>
       <div className="bg-[#ffffff] shadow-lg flex justify-center p-4 w-full">
-        <div className="mt-5 mb-5 flex flex-wrap lg:justify-center sm:gap-12 ">
-          <div className="lg:w-[150px] md:w-[250px] w-full">
+        <div className="mt-5 mb-5 sm:ml-[80px] sm:mr-[80px] flex flex-wrap lg:flex-nowrap lg:justify-center  w-full gap-10">
+          <div className="w-full">
             <TextField
               id="outlined-select-currency"
               select
@@ -131,7 +195,7 @@ const FindCar = () => {
               ))}
             </TextField>
           </div>
-          <div className="w-full md:w-[322px] sm:mt-0 mt-5 ">
+          <div className="w-full  sm:mt-0 mt-5 ">
             <TextField
               id="outlined-select-currency"
               select
@@ -154,17 +218,23 @@ const FindCar = () => {
               ))}
             </TextField>
           </div>
-          <div className="md:w-[210px] w-full sm:-mt-2  mt-5">
+          <div className=" w-full sm:-mt-2  mt-5">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
-                <DatePicker label="Pickup Date" className="text-[#9791F2]" />
+                <DatePicker
+                  label="Pickup Date"
+                  className="text-[#9791F2] w-full"
+                />
               </DemoContainer>
             </LocalizationProvider>
           </div>
-          <div className="md:w-[210px] w-full sm:-mt-2 mt-5">
+          <div className=" w-full sm:-mt-2  mt-5">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
-                <DatePicker label="Return Date" />
+                <DatePicker
+                  label="Return Date"
+                  className="text-[#9791F2] w-full"
+                />
               </DemoContainer>
             </LocalizationProvider>
           </div>
@@ -176,21 +246,24 @@ const FindCar = () => {
         </div>
       </div>
       <div className="bg-[#F2F2F2]">
-        <div className="py-3 flex justify-center ml-5">
+        <div className="py-3 flex justify-center ml-2">
           <HomeNavLine titleText="Search results" Icon={CiHome} />
         </div>
         <div className="flex justify-center">
-          <div className="mt-1 md:w-[1326px] ">
-            <div className="flex justify-center px-10">
-              <div className="w-[300px] bg-[#FFFFFF] px-6 py-4 mb-4 rounded-lg">
+          <div className="mt-1 w-full sm:ml-[80px] sm:mr-[80px]">
+            <div className="flex justify-center gap-6">
+              <div className="w-[400px] h-fit lg:block hidden bg-[#FFFFFF] px-6 py-4 mb-4 rounded-lg ml-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center">
                     <MdOutlineTune className="w-[12px] h-[10px] text-[#666666]" />
-                    <p className="ml-2 text-[12px] font-medium text-[#666666]">
+                    <p className="ml-2 text-[12px] font-medium text-[#666666] ">
                       Filters
                     </p>
                   </div>
-                  <p className="ml-2 text-[14px] font-medium text-[#4F46E5]">
+                  <p
+                    className="ml-2 text-[14px] font-medium text-[#4F46E5] cursor-pointer"
+                    onClick={handleSetClearFilter}
+                  >
                     Clear all
                   </p>
                 </div>
@@ -250,7 +323,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    // defaultChecked
+                    checked={checkList.smallCar}
+                    onChange={handleCheckboxChange}
                     {...label}
                     sx={{
                       color: "#4F46E5",
@@ -260,6 +335,7 @@ const FindCar = () => {
                         padding: 0,
                       },
                     }}
+                    name="smallCar"
                   />
                   <p className="text-[14px] font-medium text-[#666666] ml-2">
                     Small car
@@ -270,7 +346,8 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.midSizeCar}
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -279,6 +356,7 @@ const FindCar = () => {
                         padding: 0,
                       },
                     }}
+                    name="midSizeCar"
                   />
                   <p className="text-[14px] font-medium text-[#666666] ml-2 ">
                     Midsize car
@@ -297,6 +375,9 @@ const FindCar = () => {
                         padding: 0,
                       },
                     }}
+                    onChange={handleCheckboxChange}
+                    checked={checkList.BigCar}
+                    name="BigCar"
                   />
                   <p className="text-[14px] font-medium text-[#666666] ml-2 ">
                     Big car
@@ -307,7 +388,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2 ">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Microcar}
+                    name="Microcar"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -326,7 +409,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.SuvGroupA}
+                    name="SuvGroupA"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -345,7 +430,6 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2 ">
                   <Checkbox
-                    // defaultChecked={false}
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -354,6 +438,9 @@ const FindCar = () => {
                         padding: 0,
                       },
                     }}
+                    onChange={handleCheckboxChange}
+                    checked={checkList.LuxuryCar}
+                    name="LuxuryCar"
                   />
 
                   <p className="text-[14px] font-medium text-[#666666] ml-2 ">
@@ -379,7 +466,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Autohuset}
+                    name="Autohuset"
                     {...label}
                     sx={{
                       color: "#4F46E5",
@@ -399,7 +488,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Rentlog}
+                    name="Rentlog"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -432,7 +523,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Automatic}
+                    name="Automatic"
                     {...label}
                     sx={{
                       color: "#4F46E5",
@@ -452,7 +545,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Manual1}
+                    name="Manual1"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -464,6 +559,59 @@ const FindCar = () => {
                   />
                   <p className="text-[14px] font-medium text-[#666666] ml-2 ">
                     Manual
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
+                <Divider
+                  orientation="horizontal"
+                  flexItem
+                  className="w-full mt-3"
+                />
+                <div className="flex justify-between items-center mt-5">
+                  <p className="flex items-center font-bold text-[12px]">
+                    Seats
+                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                  </p>
+                </div>
+                <div className="flex mt-2">
+                  <Checkbox
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Seat5}
+                    name="Seat5"
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                    5
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-2">
+                  <Checkbox
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Seat4}
+                    name="Seat4"
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                    4
                     <span className="ml-2 text-[#999999] text-[12px] font-medium">
                       (88)
                     </span>
@@ -502,7 +650,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Petrol}
+                    name="Petrol"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -521,7 +671,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Hybrid}
+                    name="Hybrid"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -546,7 +698,9 @@ const FindCar = () => {
                 </div>
                 <div className="flex mt-2">
                   <Switch
-                    defaultChecked
+                    onChange={handleCheckboxChange}
+                    checked={checkList.Towbar}
+                    name="Towbar"
                     sx={{
                       marginLeft: -1.2,
                       color: "#4F46E5",
@@ -561,10 +715,12 @@ const FindCar = () => {
                   </p>
                 </div>
               </div>
-              <div className="w-[1000px] ml-5">
+              <div className="w-full ml-5">
                 <div className="flex justify-between items-center">
                   <p className="text-[14px] font-medium pl-3 text-[#666666]">
-                    <span className="text-[#262626] font-semibold">23</span>{" "}
+                    <span className="text-[#262626] font-semibold">
+                      {totalCards || 0}
+                    </span>{" "}
                     cars available for
                     <span className="text-[#262626] font-semibold">
                       {" "}
@@ -576,15 +732,33 @@ const FindCar = () => {
                       26 Feb - 29 Feb (3 days)
                     </span>
                   </p>
-                  <p className="text-[14px] font-medium text-[#666666]">
+                  <p className="text-[14px] font-medium text-[#666666] mr-2">
                     Price (low to high)
                   </p>
                 </div>
                 <div className="p-[12px]">
-                  <FindCarRightPart />
-                  <FindCarRightPart />
-                  <FindCarRightPart />
+                  {currentCards.map((item, index) => (
+                    <FindCarRightPart NextGoButton={props.NextGo} key={index} />
+                  ))}
+                  <div className="mt-5">
+                    <Stack spacing={2}>
+                      <Pagination
+                        count={Math.ceil(totalCards / cardsPerPage)}
+                        variant="outlined"
+                        shape="rounded"
+                        page={currentPage}
+                        onChange={handleChangePagination}
+                        sx={{
+                          "& .Mui-selected": {
+                            backgroundColor: "#4F46E5",
+                            color: "white",
+                          },
+                        }}
+                      />
+                    </Stack>
+                  </div>
                 </div>
+                <div></div>
               </div>
             </div>
           </div>

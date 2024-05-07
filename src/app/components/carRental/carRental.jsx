@@ -78,17 +78,21 @@ const CarRental = () => {
           <Stepper
             activeStep={0}
             alternativeLabel
-            className="md:w-[733px] w-full "
+            className="md:w-[1200px] w-full"
           >
             {steps.map((label, index) => (
-              <Step key={label} completed={completed[index]} className="">
+              <Step
+                key={label}
+                completed={completed[index]}
+                className="cursor-pointer"
+              >
                 <StepLabel
-                  className=""
+                  className="cursor-pointer"
                   color="inherit"
                   onClick={handleStep(index)}
                 >
                   {/* {label} */}
-                  <h5 className="-mt-3 text-[14px] font-semibold text-[#101010]">
+                  <h5 className="-mt-3 text-[14px] font-semibold text-[#101010] cursor-pointer">
                     {label}
                   </h5>
                 </StepLabel>
@@ -96,7 +100,9 @@ const CarRental = () => {
             ))}
           </Stepper>
         </div>
-        <div className="w-full">{activeStep == "0" && <FindCar />}</div>
+        <div className="w-full">
+          {activeStep == "0" && <FindCar NextGo={handleNext} />}
+        </div>
         <div>
           {allStepsCompleted() ? (
             <React.Fragment>
