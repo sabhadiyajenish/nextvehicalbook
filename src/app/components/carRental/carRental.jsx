@@ -8,6 +8,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import StepLabel from "@mui/material/StepLabel";
 import FindCar from "@/app/carrental/findCar/FindCar";
+import AddOneCar from "@/app/carrental/addOnes/AddOneCar";
+import PersonalDetail from "@/app/carrental/personalDetails/PersonalDetail";
+import CarPayment from "@/app/carrental/payment/CarPayment";
 const steps = [
   "Find your car",
   "Add-ons",
@@ -76,7 +79,7 @@ const CarRental = () => {
         </Stepper> */}
         <div className="bg-[#f8f7fc] flex flex-wrap justify-center py-4">
           <Stepper
-            activeStep={0}
+            activeStep={activeStep}
             alternativeLabel
             className="md:w-[1200px] w-full"
           >
@@ -102,6 +105,9 @@ const CarRental = () => {
         </div>
         <div className="w-full">
           {activeStep == "0" && <FindCar NextGo={handleNext} />}
+          {activeStep == "1" && <AddOneCar NextGo={handleNext} />}
+          {activeStep == "2" && <PersonalDetail NextGo={handleNext} />}
+          {activeStep == "3" && <CarPayment NextGo={handleNext} />}
         </div>
         <div>
           {allStepsCompleted() ? (

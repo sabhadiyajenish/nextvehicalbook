@@ -20,6 +20,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { toast } from "react-hot-toast";
 import {
   MdOutlineColorLens,
   MdOutlineDirectionsCar,
@@ -57,6 +58,16 @@ const FindCar = (props) => {
   const [toggleCard, setToggleCard] = useState(1);
   const [pickUpDate, setpickUpDate] = useState(dayjs());
   const [dropUpDate, setDropUpDate] = useState(dayjs(pickUpDate));
+  const [currentPage, setCurrentPage] = useState(1);
+  const [findCarValue, setFindCarValue] = useState({
+    carType: "Cars",
+    location: "Ko lind",
+  });
+  const [selectedDates, setSelectedDates] = useState({
+    pickupDate: null,
+    returnDate: null,
+    // Add more date pickers as needed
+  });
   const [checkList, setCheckList] = useState({
     smallCar: false,
     midSizeCar: true,
@@ -74,7 +85,6 @@ const FindCar = (props) => {
     Seat5: true,
     Towbar: true,
   });
-  const [currentPage, setCurrentPage] = useState(1);
   const today = dayjs();
   const tomorrow = dayjs().add(1, "day");
 
@@ -88,7 +98,13 @@ const FindCar = (props) => {
     indexOfFirstCard,
     indexOfLastCard
   );
-
+  const SetTypeDropdown = (event) => {
+    const { name, value } = event.target;
+    setFindCarValue({
+      ...findCarValue,
+      [name]: value,
+    });
+  };
   // Change page
   const handleChangePagination = (event, value) => {
     setCurrentPage(value);
@@ -120,6 +136,12 @@ const FindCar = (props) => {
     });
     setValue([20, 40]);
     setValue1([700, 7000]);
+  };
+  const handleDateChange = (date, dateName) => {
+    setSelectedDates({
+      ...selectedDates,
+      [dateName]: date,
+    });
   };
   const currencies = [
     {
@@ -175,6 +197,26 @@ const FindCar = (props) => {
   const handleChange1 = (event, newValue) => {
     setValue1(newValue);
   };
+  const handleCheckValidity = () => {
+    const { pickupDate, returnDate } = selectedDates;
+    if (pickupDate && returnDate) {
+      if (returnDate > pickupDate) {
+        console.log("Work correctly");
+        toast.success("Working Correctly", {
+          duration: 3000,
+          position: "top-center",
+        });
+      } else {
+        console.log("Return date is smaller than pickup date");
+        toast.error("Return date is smaller than pickup date", {
+          duration: 3000,
+          position: "top-center",
+        });
+      }
+    } else {
+      console.log("Please select both pickup and return dates");
+    }
+  };
   return (
     <>
       <div className="bg-[#ffffff] shadow-lg flex justify-center p-4 w-full">
@@ -184,8 +226,10 @@ const FindCar = (props) => {
               id="outlined-select-currency"
               select
               label="Type"
-              defaultValue="Cars"
               className="w-full"
+              name="carType"
+              value={findCarValue.carType}
+              onChange={SetTypeDropdown}
               // helperText="Please select your currency"
             >
               {currencies.map((option) => (
@@ -200,8 +244,10 @@ const FindCar = (props) => {
               id="outlined-select-currency"
               select
               label="Pickup Location"
-              defaultValue="Ko lind"
               className=" w-full relative"
+              name="location"
+              value={findCarValue.location}
+              onChange={SetTypeDropdown}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -224,6 +270,10 @@ const FindCar = (props) => {
                 <DatePicker
                   label="Pickup Date"
                   className="text-[#9791F2] w-full"
+                  value={selectedDates.pickupDate}
+                  onChange={(date) => handleDateChange(date, "pickupDate")}
+                  minDate={today}
+                  disablePast
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -234,12 +284,19 @@ const FindCar = (props) => {
                 <DatePicker
                   label="Return Date"
                   className="text-[#9791F2] w-full"
+                  value={selectedDates.returnDate}
+                  onChange={(date) => handleDateChange(date, "returnDate")}
+                  minDate={selectedDates.pickupDate}
+                  disablePast
                 />
               </DemoContainer>
             </LocalizationProvider>
           </div>
           <div className="sm:mt-0 mt-7">
-            <button className="w-[154px] font-medium h-[55px] bg-lightBlue rounded-md text-white">
+            <button
+              className="w-[154px] font-medium h-[55px] bg-lightBlue rounded-md text-white"
+              onClick={handleCheckValidity}
+            >
               Update Search
             </button>
           </div>
@@ -247,7 +304,7 @@ const FindCar = (props) => {
       </div>
       <div className="bg-[#F2F2F2]">
         <div className="py-3 flex justify-center ml-2">
-          <HomeNavLine titleText="Search results" Icon={CiHome} />
+          <HomeNavLine titleText1="Search results" Icon={CiHome} />
         </div>
         <div className="flex justify-center">
           <div className="mt-1 w-full sm:ml-[80px] sm:mr-[80px]">
@@ -740,6 +797,36 @@ const FindCar = (props) => {
                   {currentCards.map((item, index) => (
                     <FindCarRightPart NextGoButton={props.NextGo} key={index} />
                   ))}
+                  {currentPage === Math.ceil(totalCards / cardsPerPage) && (
+                    <div className="py-[12px] mt-10">
+                      <div className="flex  flex-wrap justify-between">
+                        {[1, 2, 3, 4, 5].map((items, key) => {
+                          return (
+                            <>
+                              <div
+                                className=" shadow-md p-5 bg-[#FFFFFF] text-center rounded-lg"
+                                key={key}
+                              >
+                                <h1 className="text-[20px] font-bold text-[#262626]">
+                                  24 Feb - 27 Feb
+                                </h1>
+                                <p className="mt-2 text-[#666666] text-[20px] font-medium">
+                                  8 cars available
+                                </p>
+                                <button
+                                  type="button"
+                                  className="text-[#4F46E5] mt-7 w-full text-[14px] md:w-[167px] font-medium  border border-[#4F46E5]  bg-white rounded-sm px-10 py-2"
+                                >
+                                  Show cars
+                                </button>
+                              </div>
+                            </>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="mt-5">
                     <Stack spacing={2}>
                       <Pagination
@@ -758,6 +845,7 @@ const FindCar = (props) => {
                     </Stack>
                   </div>
                 </div>
+
                 <div></div>
               </div>
             </div>

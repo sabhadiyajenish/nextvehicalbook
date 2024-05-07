@@ -188,10 +188,11 @@ const FindCarRightPart = (props) => {
                 >
                   Rent now
                 </button>
-                {/* </Link>/ */}
-                <p className="mt-2 text-[#4F46E5] text-[14px] font-medium">
-                  View car details
-                </p>
+                <Link href="/cardDetails">
+                  <p className="mt-2 text-[#4F46E5] text-[14px] font-medium cursor-pointer">
+                    View car details
+                  </p>
+                </Link>
               </div>
             </div>
           </div>
