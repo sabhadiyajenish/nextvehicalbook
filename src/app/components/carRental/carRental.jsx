@@ -109,7 +109,7 @@ const CarRental = () => {
           {activeStep == "2" && <PersonalDetail NextGo={handleNext} />}
           {activeStep == "3" && <CarPayment NextGo={handleNext} />}
         </div>
-        <div>
+        {/* <div>
           {allStepsCompleted() ? (
             <React.Fragment>
               <Typography sx={{ mt: 2, mb: 1 }}>
@@ -156,7 +156,7 @@ const CarRental = () => {
               </Box>
             </React.Fragment>
           )}
-        </div>
+        </div> */}
       </Box>
     </>
   );

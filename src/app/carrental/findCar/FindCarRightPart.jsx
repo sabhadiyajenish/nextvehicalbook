@@ -86,7 +86,7 @@ const FindCarRightPart = (props) => {
               <h1 className="text-[20px] font-semibold">
                 Renault Clio Sport Tourer
               </h1>
-              <button class="bg-blue-500 bg-lightGrey text-[12px]  mt-2 px-2 border border-none rounded-full">
+              <button className="bg-blue-500 bg-lightGrey text-[12px]  mt-2 px-2 border border-none rounded-full">
                 Mid range car
               </button>
 

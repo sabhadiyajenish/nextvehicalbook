@@ -306,7 +306,7 @@ const FindCar = (props) => {
         <div className="py-3 flex justify-center ml-2">
           <HomeNavLine titleText1="Search results" Icon={CiHome} />
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center pb-5">
           <div className="mt-1 w-full sm:ml-[80px] sm:mr-[80px]">
             <div className="flex justify-center gap-6">
               <div className="w-[400px] h-fit lg:block hidden bg-[#FFFFFF] px-6 py-4 mb-4 rounded-lg ml-2">
@@ -838,7 +838,7 @@ const FindCar = (props) => {
                         sx={{
                           "& .Mui-selected": {
                             backgroundColor: "#4F46E5",
-                            color: "white",
+                            color: "#4F46E5",
                           },
                         }}
                       />
