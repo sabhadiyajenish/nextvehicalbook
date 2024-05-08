@@ -10,6 +10,7 @@ import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
+import Checkbox from "@mui/material/Checkbox";
 import Select from "react-select";
 import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
@@ -371,7 +372,104 @@ const Page = () => {
                       </TextField>
                     </div>
                   </div>
-                  <div></div>
+                  <div className="mt-4">
+                    <label> Equipment</label>
+                    <div className="flex gap-4 mt-4">
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                          defaultChecked={true}
+                          // onChange={handleCheckboxChange}
+                          // checked={checkList.LuxuryCar}
+                          name="Airconditioning"
+                        />
+                        <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                          Air conditioning
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                          // onChange={handleCheckboxChange}
+                          // checked={checkList.LuxuryCar}
+                          name="SeatHeating"
+                        />
+                        <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                          Seat heating
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                          // onChange={handleCheckboxChange}
+                          // checked={checkList.LuxuryCar}
+                          name="Isofix"
+                        />
+                        <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                          Isofix
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                          // onChange={handleCheckboxChange}
+                          // checked={checkList.LuxuryCar}
+                          name="Bluetooth"
+                          defaultChecked={true}
+                        />
+                        <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                          Bluetooth
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Checkbox
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                          defaultChecked={true}
+                          // onChange={handleCheckboxChange}
+                          // checked={checkList.LuxuryCar}
+                          name="USB"
+                        />
+                        <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                          USB
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </DialogContent>
