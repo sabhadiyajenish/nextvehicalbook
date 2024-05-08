@@ -52,26 +52,8 @@ const carSchema = new mongoose.Schema({
   ],
   equipment: [
     {
-      airConditioning: {
-        type: Boolean,
-        default: false,
-      },
-      seatHeating: {
-        tyte: Boolean,
-        default: false,
-      },
-      isoFix: {
-        type: Boolean,
-        default: false,
-      },
-      bluetooth: {
-        type: Boolean,
-        default: true,
-      },
-      usb: {
-        type: Boolean,
-        default: true,
-      },
+      type: String,
+      enum: ["AirConditioning", "Seat Heating", "Isofix", "Bluetooth", "USB"],
     },
   ],
   pickup_time: {
@@ -84,24 +66,11 @@ const carSchema = new mongoose.Schema({
     type: Number,
     required: [true, "perday cost is required"],
   },
-  address: [
-    {
-      state: {
-        type: String,
-      },
-      district: {
-        type: String,
-      },
-      pinCode: {
-        type: String,
-      },
-      details: {
-        type: String,
-      },
-    },
-  ],
+  address: {
+    type: String,
+  },
 });
 
-const Cars = mongoose.models.Cars || mongoose.model("cars", carSchema);
+const Cars = mongoose.models.cars || mongoose.model("cars", carSchema);
 
 export default Cars;

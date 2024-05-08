@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export const getUserData = createAsyncThunk("auth/setDatas", async () => {
   try {
