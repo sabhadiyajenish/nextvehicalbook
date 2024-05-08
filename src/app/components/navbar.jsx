@@ -38,6 +38,10 @@ const navItems = [
     title: "Contact",
     path: "/carBookingSuccess",
   },
+  {
+    title: "DashBoard",
+    path: "/dashboard",
+  },
 ];
 const Navbar = (props) => {
   const { window } = props;
