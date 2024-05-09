@@ -90,11 +90,10 @@ const FindCar = (props) => {
   const today = dayjs();
   const tomorrow = dayjs().add(1, "day");
   const { carList, loading } = useSelector((state) => state.carlistData);
-  console.log("carloist datssdfghg", carList);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCarList());
-  }, []);
+  }, [dispatch]);
 
   const cardsPerPage = 5;
   const totalCards = carList.length || 5;

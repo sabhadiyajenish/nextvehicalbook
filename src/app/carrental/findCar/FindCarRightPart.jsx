@@ -88,7 +88,10 @@ const FindCarRightPart = (props) => {
               </button>
               {carVal?.carInformation?.map((datas, index) => {
                 return (
-                  <div className="grid grid-cols-3  mt-3 auto-cols-max md:auto-cols-min">
+                  <div
+                    className="grid grid-cols-3  mt-3 auto-cols-max md:auto-cols-min"
+                    key={index}
+                  >
                     <div className="flex items-center">
                       <AirlineSeatReclineExtraIcon className="text-grey w-[16px] h-[16px]" />
                       <h6 className="ml-2 font-normal text-[14px]">
