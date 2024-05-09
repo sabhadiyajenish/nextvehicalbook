@@ -52,77 +52,77 @@ export async function POST(req) {
       }
     });
 
-    // await CarValidationSchema.validate({
-    //   title,
-    //   file,
-    //   description,
-    //   pickup_time,
-    //   return_time,
-    //   perDayCost,
-    //   address,
-    //   seat,
-    //   manual,
-    //   perLiter,
-    //   oilType,
-    //   doors,
-    //   hook,
-    //   carColor,
-    //   model,
-    // });
+    await CarValidationSchema.validate({
+      title,
+      file,
+      description,
+      pickup_time,
+      return_time,
+      perDayCost,
+      address,
+      seat,
+      manual,
+      perLiter,
+      oilType,
+      doors,
+      hook,
+      carColor,
+      model,
+    });
 
-    // if (!files || files.length === 0) {
-    //   return NextResponse.json(
-    //     { error: "No files received from subImages." },
-    //     { status: 400 }
-    //   );
-    // }
-    // const buffer = Buffer.from(await file.arrayBuffer());
+    if (!files || files.length === 0) {
+      return NextResponse.json(
+        { error: "No files received from subImages." },
+        { status: 400 }
+      );
+    }
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-    // const filename = file.name.replaceAll(" ", "_");
-    // const namepath = path.join(process.cwd(), "public/uploads/" + filename);
-    // await writeFile(namepath, buffer);
-    // const avatarSerPath = await fileUploadCloud(namepath);
+    const filename = file.name.replaceAll(" ", "_");
+    const namepath = path.join(process.cwd(), "public/uploads/" + filename);
+    await writeFile(namepath, buffer);
+    const avatarSerPath = await fileUploadCloud(namepath);
 
-    // const uploadPromises = files.map(async (file) => {
-    //   const buffer = Buffer.from(await file.arrayBuffer());
-    //   const filename = file.name.replaceAll(" ", "_");
-    //   const namepath = path.join(process.cwd(), "public/uploads/" + filename);
-    //   await writeFile(namepath, buffer);
-    //   return fileUploadCloud(namepath);
-    // });
+    const uploadPromises = files.map(async (file) => {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const filename = file.name.replaceAll(" ", "_");
+      const namepath = path.join(process.cwd(), "public/uploads/" + filename);
+      await writeFile(namepath, buffer);
+      return fileUploadCloud(namepath);
+    });
 
-    // // Wait for all uploads to finish
-    // const uploadedPaths = await Promise.all(uploadPromises);
-    // let filesImagesPath = [];
-    // uploadedPaths.map((items, key) => {
-    //   filesImagesPath.push(items?.url);
-    // });
-    // const carData = await Cars.create({
-    //   title,
-    //   description,
-    //   subDescription,
-    //   pickup_time,
-    //   return_time,
-    //   perDayCost,
-    //   address,
-    //   carInformation: [
-    //     {
-    //       seat,
-    //       manual,
-    //       perLiter,
-    //       oilType,
-    //       doors,
-    //       hook,
-    //       carColor,
-    //       model,
-    //     },
-    //   ],
-    //   equipment: equipment || [],
-    //   coverImage: avatarSerPath?.url || " ",
-    //   subImagees: filesImagesPath || [],
+    // Wait for all uploads to finish
+    const uploadedPaths = await Promise.all(uploadPromises);
+    let filesImagesPath = [];
+    uploadedPaths.map((items, key) => {
+      filesImagesPath.push(items?.url);
+    });
+    const carData = await Cars.create({
+      title,
+      description,
+      subDescription,
+      pickup_time,
+      return_time,
+      perDayCost,
+      address,
+      carInformation: [
+        {
+          seat,
+          manual,
+          perLiter,
+          oilType,
+          doors,
+          hook,
+          carColor,
+          model,
+        },
+      ],
+      equipment: equipment || [],
+      coverImage: avatarSerPath?.url || " ",
+      subImagees: filesImagesPath || [],
 
-    //   // loginType: "email",
-    // });
+      // loginType: "email",
+    });
 
     // const equipment = formData.get("equipment");
 
