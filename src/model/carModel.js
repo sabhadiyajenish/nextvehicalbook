@@ -35,8 +35,7 @@ const carSchema = new mongoose.Schema({
       },
       oilType: {
         type: String,
-        enum: ["petrol", "deisel", "gas"],
-        default: "petrol",
+        default: "Petrol",
       },
       doors: { type: Number },
       hook: {
@@ -53,7 +52,6 @@ const carSchema = new mongoose.Schema({
   equipment: [
     {
       type: String,
-      enum: ["AirConditioning", "Seat Heating", "Isofix", "Bluetooth", "USB"],
     },
   ],
   pickup_time: {

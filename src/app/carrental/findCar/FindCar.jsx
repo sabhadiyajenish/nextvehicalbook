@@ -13,7 +13,7 @@ import TextField from "@mui/material/TextField";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiHome } from "react-icons/ci";
 import { GrLocation } from "react-icons/gr";
 import { IoSearchOutline } from "react-icons/io5";
@@ -32,6 +32,8 @@ import { TbFishHook } from "react-icons/tb";
 import FindCarRightPart from "./FindCarRightPart";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { getCarList } from "@/app/store/Car/car.Api";
+import { useDispatch, useSelector } from "react-redux";
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -87,9 +89,15 @@ const FindCar = (props) => {
   });
   const today = dayjs();
   const tomorrow = dayjs().add(1, "day");
+  const { carList, loading } = useSelector((state) => state.carlistData);
+  console.log("carloist datssdfghg", carList);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCarList());
+  }, []);
 
   const cardsPerPage = 5;
-  const totalCards = 12;
+  const totalCards = carList.length || 5;
   // Calculate index of the first and last card on the current page
   // Calculate index of the first and last card on the current page
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -772,9 +780,9 @@ const FindCar = (props) => {
                   </p>
                 </div>
               </div>
-              <div className="w-full ml-5">
+              <div className="w-full md:ml-5 ml-2">
                 <div className="flex justify-between items-center">
-                  <p className="text-[14px] font-medium pl-3 text-[#666666]">
+                  <p className="text-[14px] font-medium md:pl-3  text-[#666666]">
                     <span className="text-[#262626] font-semibold">
                       {totalCards || 0}
                     </span>{" "}
@@ -793,18 +801,32 @@ const FindCar = (props) => {
                     Price (low to high)
                   </p>
                 </div>
-                <div className="p-[12px]">
-                  {currentCards.map((item, index) => (
-                    <FindCarRightPart NextGoButton={props.NextGo} key={index} />
-                  ))}
+                <div className="md:p-[12px] p-1">
+                  {loading ? (
+                    <div className="flex items-center justify-center w-full h-[300px] text-center">
+                      <h1 className=" font-extrabold text-[50px]">
+                        Loading Cars....
+                      </h1>
+                    </div>
+                  ) : (
+                    carList
+                      ?.slice(indexOfFirstCard, indexOfLastCard)
+                      .map((item, index) => (
+                        <FindCarRightPart
+                          carData={item}
+                          NextGoButton={props.NextGo}
+                          key={index}
+                        />
+                      ))
+                  )}
                   {currentPage === Math.ceil(totalCards / cardsPerPage) && (
                     <div className="py-[12px] mt-10">
-                      <div className="flex  flex-wrap justify-between">
+                      <div className="flex flex-wrap lg:justify-between gap-6">
                         {[1, 2, 3, 4, 5].map((items, key) => {
                           return (
                             <>
                               <div
-                                className=" shadow-md p-5 bg-[#FFFFFF] text-center rounded-lg"
+                                className="md:mt-0 shadow-md p-5 bg-[#FFFFFF] text-center rounded-lg"
                                 key={key}
                               >
                                 <h1 className="text-[20px] font-bold text-[#262626]">

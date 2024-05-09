@@ -16,104 +16,119 @@ connect();
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    const file = formData.get("coverImage");
-    const files = formData.getAll("subImages"); // Get all files
+    const file = formData.get("coverImage[]");
+    const files = formData.getAll("SubImages[]"); // Get all files
     const title = formData.get("title");
-    const description = formData.get("description");
-    const subDescription = formData.get("subDescription");
-    const pickup_time = formData.get("pickup_time");
-    const return_time = formData.get("return_time");
+    const description = formData.get("Description");
+    const subDescription = formData.get("SubDescription");
+    const pickup_time = formData.get("PickupTime");
+    const return_time = formData.get("ReturnTime");
 
-    const perDayCost = formData.get("perDayCost");
-    const address = formData.get("address");
+    const perDayCost = formData.get("PerDayCost");
+    const address = formData.get("location");
 
-    const seat = formData.get("seat");
-    const manual = formData.get("manual");
-    const perLiter = formData.get("perLiter");
-    const oilType = formData.get("oilType");
-    const doors = formData.get("doors");
-    const hook = formData.get("hook");
+    const seat = formData.get("Seat");
+    const manual = formData.get("Manual");
+    const perLiter = formData.get("PerLiter");
+    const oilType = formData.get("FuelType");
+    const doors = "4";
+    const hook = formData.get("Hook");
     const carColor = formData.get("carColor");
-    const model = formData.get("model");
+    const model = formData.get("CarModal");
 
-    const equipment = formData.get("equipment");
-    await CarValidationSchema.validate({
-      title,
-      file,
-      description,
-      pickup_time,
-      return_time,
-      perDayCost,
-      address,
-      seat,
-      manual,
-      perLiter,
-      oilType,
-      doors,
-      hook,
-      carColor,
-      model,
+    // const equipment = ["USB"];
+    const arrayEqui = [
+      "Airconditioning",
+      "Bluetooth",
+      "Isofix",
+      "SeatHeating",
+      "USB",
+    ];
+    const equipment = [];
+    arrayEqui.forEach((equipmentItem) => {
+      if (Boolean(formData.get(equipmentItem))) {
+        console.log(">>>>>>>>>>>>>>>>", equipmentItem);
+        equipment.push(equipmentItem);
+      }
     });
 
-    if (!files || files.length === 0) {
-      return NextResponse.json(
-        { error: "No files received from subImages." },
-        { status: 400 }
-      );
-    }
-    const buffer = Buffer.from(await file.arrayBuffer());
+    // await CarValidationSchema.validate({
+    //   title,
+    //   file,
+    //   description,
+    //   pickup_time,
+    //   return_time,
+    //   perDayCost,
+    //   address,
+    //   seat,
+    //   manual,
+    //   perLiter,
+    //   oilType,
+    //   doors,
+    //   hook,
+    //   carColor,
+    //   model,
+    // });
 
-    const filename = file.name.replaceAll(" ", "_");
-    const namepath = path.join(process.cwd(), "public/uploads/" + filename);
-    await writeFile(namepath, buffer);
-    const avatarSerPath = await fileUploadCloud(namepath);
+    // if (!files || files.length === 0) {
+    //   return NextResponse.json(
+    //     { error: "No files received from subImages." },
+    //     { status: 400 }
+    //   );
+    // }
+    // const buffer = Buffer.from(await file.arrayBuffer());
 
-    const uploadPromises = files.map(async (file) => {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const filename = file.name.replaceAll(" ", "_");
-      const namepath = path.join(process.cwd(), "public/uploads/" + filename);
-      await writeFile(namepath, buffer);
-      return fileUploadCloud(namepath);
-    });
+    // const filename = file.name.replaceAll(" ", "_");
+    // const namepath = path.join(process.cwd(), "public/uploads/" + filename);
+    // await writeFile(namepath, buffer);
+    // const avatarSerPath = await fileUploadCloud(namepath);
 
-    // Wait for all uploads to finish
-    const uploadedPaths = await Promise.all(uploadPromises);
-    let filesImagesPath = [];
-    uploadedPaths.map((items, key) => {
-      filesImagesPath.push(items?.url);
-    });
-    const carData = await Cars.create({
-      title,
-      description,
-      subDescription,
-      pickup_time,
-      return_time,
-      perDayCost,
-      address,
-      carInformation: [
-        {
-          seat,
-          manual,
-          perLiter,
-          oilType,
-          doors,
-          hook,
-          carColor,
-          model,
-        },
-      ],
-      equipment: [equipment],
-      coverImage: avatarSerPath?.url || " ",
-      subImagees: filesImagesPath || [],
+    // const uploadPromises = files.map(async (file) => {
+    //   const buffer = Buffer.from(await file.arrayBuffer());
+    //   const filename = file.name.replaceAll(" ", "_");
+    //   const namepath = path.join(process.cwd(), "public/uploads/" + filename);
+    //   await writeFile(namepath, buffer);
+    //   return fileUploadCloud(namepath);
+    // });
 
-      // loginType: "email",
-    });
+    // // Wait for all uploads to finish
+    // const uploadedPaths = await Promise.all(uploadPromises);
+    // let filesImagesPath = [];
+    // uploadedPaths.map((items, key) => {
+    //   filesImagesPath.push(items?.url);
+    // });
+    // const carData = await Cars.create({
+    //   title,
+    //   description,
+    //   subDescription,
+    //   pickup_time,
+    //   return_time,
+    //   perDayCost,
+    //   address,
+    //   carInformation: [
+    //     {
+    //       seat,
+    //       manual,
+    //       perLiter,
+    //       oilType,
+    //       doors,
+    //       hook,
+    //       carColor,
+    //       model,
+    //     },
+    //   ],
+    //   equipment: equipment || [],
+    //   coverImage: avatarSerPath?.url || " ",
+    //   subImagees: filesImagesPath || [],
+
+    //   // loginType: "email",
+    // });
 
     // const equipment = formData.get("equipment");
 
     return NextResponse.json({
-      carData,
-
+      // carData,
+      equipment,
       message: "Car Add Successfully..!!",
       status: 200,
     });

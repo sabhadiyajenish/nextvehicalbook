@@ -3,15 +3,12 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import Checkbox from "@mui/material/Checkbox";
-import Select from "react-select";
 import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -35,12 +32,11 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const Page = () => {
+export const Page = () => {
   const [open, setOpen] = useState(true);
   const [scroll, setScroll] = useState("paper");
   const [imagePreview, setImagePreview] = useState(null);
   const [imagePreviews, setImagePreviews] = useState([]);
-  const [loadingData, setLoadingData] = useState(false);
 
   const [checkList, setCheckList] = useState({
     Airconditioning: true,
@@ -58,8 +54,29 @@ const Page = () => {
   } = useForm();
 
   const AddCarsData = async (item) => {
-    setLoadingData(true);
-    axios
+    const data = {
+      coverImage: item.coverImage[0],
+      subImages: item.SubImages,
+      title: item.title,
+
+      perDayCost: Number(item.PerDayCost),
+      address: item.location,
+      description: item.Description,
+      subDescription: item.SubDescription,
+      pickup_time: item.PickupTime,
+      return_time: item.ReturnTime,
+
+      seat: item.Seat,
+      manual: "Manual",
+      perLiter: item.PerLiter,
+      oilType: item.FuelType,
+      doors: "4",
+      hook: item.Hook,
+      carColor: item.carColor,
+      model: item.CarModal,
+      equipment: "USB",
+    };
+    await axios
       .post("/api/cars/addcars", item, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -68,6 +85,7 @@ const Page = () => {
       .then((datas) => {
         if (datas?.data?.status === 200) {
           console.log("datas");
+          // router.push("/login", { scroll: false });
           toast.success(datas?.data?.message);
         } else {
           toast.error(datas?.data?.message);
@@ -80,9 +98,8 @@ const Page = () => {
       })
       .finally(() => {
         // setLoading(false);
-        setLoadingData(false);
-        // setOpen(false);
       });
+    // console.log(">>>>>>>>>>>", data);
   };
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
@@ -311,11 +328,11 @@ const Page = () => {
                           {...register("SubImages", ProfileValidate)}
                           onChange={handleFileInputChangeMultiple}
                         />
-                        {errors.SubImages && (
-                          <p className="errorMsg mt-2">
-                            {errors.SubImages.message}
-                          </p>
-                        )}
+                        {/* {errors.SubImages && (
+              <p className="errorMsg mt-2">
+                {errors.SubImages.message}
+              </p>
+            )} */}
                       </div>
                       <div className="">
                         <div className="flex flex-wrap md:grid md:grid-cols-3 gap-3 lg:mt-0 mt-5">
@@ -470,7 +487,8 @@ const Page = () => {
                                 padding: 0,
                               },
                             }}
-                            {...register("Airconditioning")}
+                            onChange={handleCheckboxChange}
+                            checked={checkList.Airconditioning}
                             name="Airconditioning"
                           />
                           <p className="text-[14px] font-medium text-[#666666] ml-2 ">
@@ -487,8 +505,8 @@ const Page = () => {
                                 padding: 0,
                               },
                             }}
-                            {...register("SeatHeating")}
-                            defaultChecked
+                            onChange={handleCheckboxChange}
+                            checked={checkList.SeatHeating}
                             name="SeatHeating"
                           />
                           <p className="text-[14px] font-medium text-[#666666] ml-2 ">
@@ -505,7 +523,8 @@ const Page = () => {
                                 padding: 0,
                               },
                             }}
-                            {...register("Isofix")}
+                            onChange={handleCheckboxChange}
+                            checked={checkList.Isofix}
                             name="Isofix"
                           />
                           <p className="text-[14px] font-medium text-[#666666] ml-2 ">
@@ -522,8 +541,8 @@ const Page = () => {
                                 padding: 0,
                               },
                             }}
-                            {...register("Bluetooth")}
-                            defaultChecked
+                            onChange={handleCheckboxChange}
+                            checked={checkList.Bluetooth}
                             name="Bluetooth"
                           />
                           <p className="text-[14px] font-medium text-[#666666] ml-2 ">
@@ -540,8 +559,8 @@ const Page = () => {
                                 padding: 0,
                               },
                             }}
-                            {...register("USB")}
-                            defaultChecked
+                            onChange={handleCheckboxChange}
+                            checked={checkList.USB}
                             name="USB"
                           />
                           <p className="text-[14px] font-medium text-[#666666] ml-2 ">
@@ -559,30 +578,15 @@ const Page = () => {
                     >
                       Cancel
                     </Button>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className="ml-5"
-                      disabled={loadingData}
-                    >
-                      {loadingData ? "Loading..." : "Add Car"}
+                    <Button variant="contained" type="submit" className="ml-5">
+                      Add Car
                     </Button>
-                    {/* <LoadingButton
-                      type="submit"
-                      color="secondary"
-                      loading={loadingData}
-                      loadingPosition="start"
-                      variant="contained"
-                      className="mt-5"
-                    >
-                      <span>Add Car</span>
-                    </LoadingButton> */}
                   </div>
                 </form>
               </div>
             </DialogContent>
             <DialogActions>
-              {/* <Button
+              <Button
                 variant="contained"
                 className="bg-[#FF9393]"
                 onClick={handleClose}
@@ -591,7 +595,7 @@ const Page = () => {
               </Button>
               <Button variant="contained" onClick={handleClose}>
                 Add Car
-              </Button> */}
+              </Button>
             </DialogActions>
           </Dialog>
         </div>
@@ -599,5 +603,3 @@ const Page = () => {
     </>
   );
 };
-
-export default Page;
