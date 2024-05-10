@@ -16,7 +16,7 @@ connect();
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    const file = formData.get("coverImage[]");
+    const file = formData.get("coverImage");
     const files = formData.getAll("SubImages[]"); // Get all files
     const title = formData.get("title");
     const description = formData.get("Description");
@@ -76,27 +76,7 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const filename = file.name.replaceAll(" ", "_");
-    const namepath = path.join(process.cwd(), "public/uploads/" + filename);
-    await writeFile(namepath, buffer);
-    const avatarSerPath = await fileUploadCloud(namepath);
-
-    const uploadPromises = files.map(async (file) => {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const filename = file.name.replaceAll(" ", "_");
-      const namepath = path.join(process.cwd(), "public/uploads/" + filename);
-      await writeFile(namepath, buffer);
-      return fileUploadCloud(namepath);
-    });
-
-    // Wait for all uploads to finish
-    const uploadedPaths = await Promise.all(uploadPromises);
-    let filesImagesPath = [];
-    uploadedPaths.map((items, key) => {
-      filesImagesPath.push(items?.url);
-    });
     const carData = await Cars.create({
       title,
       description,
@@ -118,16 +98,12 @@ export async function POST(req) {
         },
       ],
       equipment: equipment || [],
-      coverImage: avatarSerPath?.url || " ",
-      subImagees: filesImagesPath || [],
-
-      // loginType: "email",
+      coverImage: file || " ",
+      subImagees: files || [],
     });
 
-    // const equipment = formData.get("equipment");
-
     return NextResponse.json({
-      // carData,
+      carData,
       equipment,
       message: "Car Add Successfully..!!",
       status: 200,

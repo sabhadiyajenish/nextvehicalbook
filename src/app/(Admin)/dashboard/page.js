@@ -34,6 +34,7 @@ import {
 } from "@/utils/validation/formCarValidation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { fileUploadCloud } from "@/utils/cloudinary";
 
 const Page = () => {
   const [open, setOpen] = useState(true);
@@ -41,7 +42,6 @@ const Page = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
-
   const [checkList, setCheckList] = useState({
     Airconditioning: true,
     SeatHeating: false,
@@ -59,8 +59,25 @@ const Page = () => {
 
   const AddCarsData = async (item) => {
     setLoadingData(true);
+    const fileImage = await fileUploadCloud(imagePreview);
+
+    const valData = imagePreviews?.map(async (items) => {
+      return fileUploadCloud(imagePreview);
+    });
+    const uploadedPaths = await Promise.all(valData);
+    let filesImagesPath = [];
+    uploadedPaths.map((items, key) => {
+      filesImagesPath.push(items?.url);
+    });
+
+    const data1 = {
+      ...item,
+      SubImages: filesImagesPath,
+      coverImage: fileImage?.url,
+    };
+    console.log("<<<<<<<<<<", data1);
     axios
-      .post("/api/cars/addcars", item, {
+      .post("/api/cars/addcars", data1, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

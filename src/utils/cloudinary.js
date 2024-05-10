@@ -1,9 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+// import fs from "fs";
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
+  cloud_name: "do0bsfskk",
+  api_key: "673335253975921",
+  api_secret: "u_Ir7mJExKsFN2uw6CfIOI9LSUM",
 });
 
 export const fileUploadCloud = async (filePathName) => {
@@ -15,10 +15,10 @@ export const fileUploadCloud = async (filePathName) => {
     });
 
     console.log("File uploaded successfully", fileResponse);
-    fs.unlinkSync(filePathName);
+    // fs.unlinkSync(filePathName);
     return fileResponse;
   } catch (error) {
-    fs.unlinkSync(filePathName);
+    // fs.unlinkSync(filePathName);
     console.log("Clouinary file Error", error);
   }
 };

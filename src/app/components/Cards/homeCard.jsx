@@ -12,7 +12,7 @@ const HomeCard = () => {
       <div className="w-[226.8px] bg-white  rounded-lg shadow-lg dark:bg-grey-800 dark:border-grey-700">
         <Image
           className="rounded-t-lg w-full h-[131px]"
-          src="https://img.freepik.com/free-photo/black-friday-discount-composition_23-2147696417.jpg?size=626&ext=jpg"
+          src="/Medium.jpg"
           alt=""
           height={100}
           width={100}
