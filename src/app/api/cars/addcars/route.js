@@ -36,22 +36,7 @@ export async function POST(req) {
     const carColor = formData.get("carColor");
     const model = formData.get("CarModal");
 
-    // const equipment = ["USB"];
-    const arrayEqui = [
-      "Airconditioning",
-      "Bluetooth",
-      "Isofix",
-      "SeatHeating",
-      "USB",
-    ];
-    const equipment = [];
-    arrayEqui.forEach((equipmentItem) => {
-      if (Boolean(formData.get(equipmentItem))) {
-        console.log(">>>>>>>>>>>>>>>>", equipmentItem);
-        equipment.push(equipmentItem);
-      }
-    });
-
+    const equipment = formData.getAll("equipment[]");
     await CarValidationSchema.validate({
       title,
       file,

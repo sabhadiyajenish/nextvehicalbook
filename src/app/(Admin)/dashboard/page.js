@@ -60,6 +60,22 @@ const Page = () => {
 
   const AddCarsData = async (item) => {
     setLoadingData(true);
+    let arr = [];
+    if (item.Airconditioning) {
+      arr.push("Air conditioning");
+    }
+    if (item.Bluetooth) {
+      arr.push("Bluetooth");
+    }
+    if (item.Isofix) {
+      arr.push("Isofix");
+    }
+    if (item.SeatHeating) {
+      arr.push("SeatHeating");
+    }
+    if (item.USB) {
+      arr.push("USB");
+    }
     const fileImage = await fileUploadCloud(imagePreview);
 
     const valData = imagePreviews?.map(async (items) => {
@@ -75,6 +91,7 @@ const Page = () => {
       ...item,
       SubImages: filesImagesPath,
       coverImage: fileImage?.url,
+      equipment: arr,
     };
     axios
       .post("/api/cars/addcars", data1, {
