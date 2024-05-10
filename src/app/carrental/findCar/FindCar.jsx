@@ -94,7 +94,6 @@ const FindCar = (props) => {
   useEffect(() => {
     dispatch(getCarList());
   }, [dispatch]);
-
   const cardsPerPage = 5;
   const totalCards = carList.length || 5;
   // Calculate index of the first and last card on the current page
@@ -803,9 +802,13 @@ const FindCar = (props) => {
                 <div className="md:p-[12px] p-1">
                   {loading ? (
                     <div className="flex items-center justify-center w-full h-[300px] text-center">
-                      <h1 className=" font-extrabold text-[50px]">
+                      <h1 className=" font-medium text-[50px]">
                         Loading Cars....
                       </h1>
+                    </div>
+                  ) : carList.length === 0 ? (
+                    <div className="flex items-center justify-center w-full h-[300px] text-center">
+                      <h1 className="font-medium text-[50px]">No car found!</h1>
                     </div>
                   ) : (
                     carList
