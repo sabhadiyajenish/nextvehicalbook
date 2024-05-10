@@ -54,6 +54,7 @@ const Page = () => {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -62,7 +63,7 @@ const Page = () => {
     const fileImage = await fileUploadCloud(imagePreview);
 
     const valData = imagePreviews?.map(async (items) => {
-      return fileUploadCloud(imagePreview);
+      return fileUploadCloud(items);
     });
     const uploadedPaths = await Promise.all(valData);
     let filesImagesPath = [];
@@ -75,7 +76,6 @@ const Page = () => {
       SubImages: filesImagesPath,
       coverImage: fileImage?.url,
     };
-    console.log("<<<<<<<<<<", data1);
     axios
       .post("/api/cars/addcars", data1, {
         headers: {
@@ -109,7 +109,6 @@ const Page = () => {
     });
   };
   const handleFileInputChange = (event) => {
-    console.log("come in handle input chasnge");
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -147,7 +146,10 @@ const Page = () => {
   };
 
   const handleClose = () => {
+    reset();
     setOpen(false);
+    setImagePreview(null);
+    setImagePreviews([]);
   };
 
   const descriptionElementRef = useRef(null);
