@@ -8,7 +8,7 @@ connect();
 
 export async function POST(req) {
   try {
-    const carData = await Cars.find({});
+    const carData = await Cars.find({}).sort({ _id: -1 });
     // const requestedStartDate = new Date("2024-05-09T12:00:00.000Z"); // Start of the requested day
     // const requestedEndDate = new Date("2024-05-10T18:00:00.000Z");
     // const bookedCars = await Cars.find({

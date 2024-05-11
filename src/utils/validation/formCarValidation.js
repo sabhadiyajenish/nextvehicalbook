@@ -31,15 +31,15 @@ const DescriptionValidate = {
 const LocationValidate = {
   required: {
     value: true,
-    message: "LocationValidate is Required.",
+    message: "Location is Required.",
   },
   minLength: {
     value: 10,
-    message: "LocationValidate should be at-least 5 characters.",
+    message: "Location should be at-least 10 characters.",
   },
   maxLength: {
     value: 600,
-    message: "LocationValidate maximum 600 characters.",
+    message: "Location maximum 600 characters.",
   },
 };
 

@@ -19,8 +19,11 @@ import { RiEditFill } from "react-icons/ri";
 import { VscPreview } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import CarDialog from "./carDialog";
+import CarDeleteDialog from "./carDeleteDialog";
 const Page = () => {
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
   const [carDataOne, setCarDataOne] = useState(null);
   const [scroll, setScroll] = useState("paper");
   const [page, setPage] = useState(0);
@@ -48,8 +51,19 @@ const Page = () => {
     setOpen(false);
     setCarDataOne(null);
   };
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
   const handleView = (datas) => {
     setCarDataOne({ ...datas, view: true });
+    setOpen(true);
+  };
+  const handleDelete = (datas) => {
+    setCarDataOne({ ...datas });
+    setOpenDelete(true);
+  };
+  const handleUpdate = (datas) => {
+    setCarDataOne({ ...datas });
     setOpen(true);
   };
   const columns = [
@@ -91,12 +105,18 @@ const Page = () => {
       // format: (value) => value,
       renderCell: (value, raw) => (
         <div className="flex gap-6 justify-center">
-          <RiEditFill className=" size-8 font-medium cursor-pointer" />
+          <RiEditFill
+            className=" size-8 font-medium cursor-pointer"
+            onClick={() => handleUpdate(raw)}
+          />
           <VscPreview
             className="text-[#81d8d0]   size-8 font-medium cursor-pointer"
             onClick={() => handleView(raw)}
           />
-          <MdDeleteForever className="text-[#e97070f1]  size-8 font-medium cursor-pointer" />
+          <MdDeleteForever
+            className="text-[#e97070f1]  size-8 font-medium cursor-pointer"
+            onClick={() => handleDelete(raw)}
+          />
         </div>
       ),
     },
@@ -179,6 +199,13 @@ const Page = () => {
           onClose={handleClose}
           onUpdate={""}
           open={open}
+          car={carDataOne}
+        />
+      )}
+      {openDelete && (
+        <CarDeleteDialog
+          onClose={handleCloseDelete}
+          open={openDelete}
           car={carDataOne}
         />
       )}
