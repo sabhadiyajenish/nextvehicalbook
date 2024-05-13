@@ -385,8 +385,8 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                       ),
                     }}
                   >
-                    {stateData?.states[10]?.districts?.map((option) => (
-                      <MenuItem key={option} value={option}>
+                    {stateData?.states[10]?.districts?.map((option, index) => (
+                      <MenuItem key={index} value={option}>
                         {option}
                       </MenuItem>
                     ))}
