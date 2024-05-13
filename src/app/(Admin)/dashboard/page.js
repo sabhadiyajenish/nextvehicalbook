@@ -194,13 +194,13 @@ const Page = () => {
                 <TableBody>
                   {carList
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
+                    .map((row, index) => (
                       <>
                         <TableRow
                           hover
                           role="checkbox"
                           tabIndex={-1}
-                          key={row.code}
+                          key={index}
                           onClick={() => handleRowClick(row)}
                         >
                           {columns.map((column) => {
