@@ -16,7 +16,6 @@ import { useState } from "react";
 const FindCarRightPart = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const carVal = props.carData;
-  console.log("value cars", carVal);
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };

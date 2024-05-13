@@ -1,6 +1,7 @@
 "use client";
 import { fileUploadCloud } from "@/utils/cloudinary";
 import {
+  optionsCarTypes,
   optionsCars,
   optionsFual,
   optionsHook,
@@ -20,6 +21,7 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
+import InputAdornment from "@mui/material/InputAdornment";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import MenuItem from "@mui/material/MenuItem";
@@ -36,9 +38,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import toast from "react-hot-toast";
+import stateData from "@/data/stateDistrict.json";
 import { useDispatch } from "react-redux";
+import { GrLocation } from "react-icons/gr";
+import { getCarList } from "@/app/store/Car/car.Api";
 const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
-  console.log("cars>>>>>>>", car);
   let view = car?.view;
   const editMode = Boolean(car);
   const [scroll, setScroll] = useState("paper");
@@ -48,7 +52,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
   const [imagePreviewsUpdates, setImagePreviewsUpdates] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
   const dispatch = useDispatch();
-
+  console.log("car<<<<<<<<<<<<<<", car);
   const {
     register,
     control,
@@ -64,7 +68,6 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
     setValue("title", car?.title);
     setValue("PickupTime", dayjs(car?.pickup_time));
     setValue("ReturnTime", dayjs(car?.return_time));
-    setValue("location", car?.address);
     setValue("PerDayCost", car?.perDayCost);
     setValue("Description", car?.description);
     setValue("SubDescription", car?.subDescription);
@@ -138,6 +141,8 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
       });
   };
   const UpdateCarData = async (item) => {
+    setLoadingData(true);
+
     let fileImage = null;
     let filesImagesPath = [];
 
@@ -153,12 +158,49 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
         filesImagesPath.push(items?.url);
       });
     }
-
-    console.log(
-      "Helo............>enter in updates.....",
-      fileImage?.url,
-      filesImagesPath
-    );
+    let arr = [];
+    if (item.Airconditioning) {
+      arr.push("Air conditioning");
+    }
+    if (item.Bluetooth) {
+      arr.push("Bluetooth");
+    }
+    if (item.Isofix) {
+      arr.push("Isofix");
+    }
+    if (item.SeatHeating) {
+      arr.push("SeatHeating");
+    }
+    if (item.USB) {
+      arr.push("USB");
+    }
+    const data1 = {
+      ...item,
+      SubImages: filesImagesPath,
+      coverImage: fileImage?.url || null,
+      equipment: arr,
+    };
+    axios
+      .post(`/api/cars/updatecar/${car?._id}`, data1, {})
+      .then((datas) => {
+        if (datas?.data?.status === 200) {
+          reset();
+          onClose();
+          dispatch(getCarList());
+          toast.success(datas?.data?.message);
+        } else {
+          toast.error(datas?.data?.message);
+        }
+      })
+      .catch((e) => {
+        toast.error(e.message);
+        console.log("datas", e);
+      })
+      .finally(() => {
+        // setLoading(false);
+        setLoadingData(false);
+        // setOpen(false);
+      });
   };
   const handleFileInputChange = (event) => {
     const file = event.target.files[0];
@@ -325,20 +367,32 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                 </div>
               </div>
               <div className="flex mt-4 w-full gap-4">
-                <div className="md:w-1/2">
+                <div className="w-full">
                   <TextField
-                    id="outlined-basic"
+                    id="outlined-select-currency"
+                    select
                     label="Location"
-                    variant="outlined"
                     className="w-full"
-                    {...register("location", LocationValidate)}
+                    name="location"
+                    defaultValue={car?.address || "Surat"}
+                    {...register("location")}
                     disabled={view}
-                  />
-                  {errors.location && (
-                    <p className="errorMsg mt-2">{errors.location.message}</p>
-                  )}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <GrLocation className="text-[#9791F2] w=[16.5px] h-[21px]" />
+                        </InputAdornment>
+                      ),
+                    }}
+                  >
+                    {stateData?.states[10]?.districts?.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </div>
-                <div className="md:w-1/2">
+                <div className="w-full">
                   <TextField
                     id="outlined-basic"
                     label="PerDay Cost"
@@ -351,6 +405,24 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                   {errors.PerDayCost && (
                     <p className="errorMsg mt-2">{errors.PerDayCost.message}</p>
                   )}
+                </div>
+                <div className="w-full">
+                  <TextField
+                    id="outlined-select-currency"
+                    select
+                    label="Car Types"
+                    className="w-full"
+                    name="carTypes"
+                    defaultValue={car?.carSizeType || "Small car"}
+                    {...register("carSizeType")}
+                    disabled={view}
+                  >
+                    {optionsCarTypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-4 mt-5">
@@ -513,7 +585,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                       label="Seat"
                       className="w-full"
                       name="Seat"
-                      defaultValue={car?.carInformation[0]?.Seat || "4"}
+                      defaultValue={car?.carInformation[0]?.seat || "4"}
                       {...register("Seat")}
                       disabled={view}
                     >
@@ -528,7 +600,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                     <TextField
                       id="outlined-select-currency"
                       select
-                      label="Manual"
+                      label="Transmission"
                       className="w-full"
                       name="carType"
                       defaultValue={car?.carInformation[0]?.manual || "Manual"}
@@ -603,9 +675,8 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                       label="Hook"
                       className="w-full"
                       name="Hook"
-                      // defaultValue="No"
                       {...register("Hook")}
-                      value={car?.carInformation[0]?.hook}
+                      defaultValue={car?.carInformation[0]?.hook || "Yes"}
                       disabled={view}
                     >
                       {optionsHook.map((option) => (
@@ -630,7 +701,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                           },
                         }}
                         defaultChecked={
-                          car?.equipment?.includes("Air conditioning") || false
+                          car?.equipment?.includes("Air conditioning") ?? true
                         }
                         disabled={view}
                         {...register("Airconditioning")}
@@ -652,7 +723,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                         }}
                         {...register("SeatHeating")}
                         defaultChecked={
-                          car?.equipment?.includes("SeatHeating") || true
+                          car?.equipment?.includes("SeatHeating") ?? false
                         }
                         name="SeatHeating"
                         // value={view?.carInformation[0]?.hook}
@@ -673,7 +744,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                           },
                         }}
                         defaultChecked={
-                          car?.equipment?.includes("Isofix") || false
+                          car?.equipment?.includes("Isofix") ?? false
                         }
                         {...register("Isofix")}
                         name="Isofix"
@@ -694,7 +765,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                           },
                         }}
                         defaultChecked={
-                          car?.equipment?.includes("Bluetooth") || true
+                          car?.equipment?.includes("Bluetooth") ?? true
                         }
                         {...register("Bluetooth")}
                         name="Bluetooth"
@@ -715,7 +786,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                           },
                         }}
                         {...register("USB")}
-                        defaultChecked={car?.equipment?.includes("USB") || true}
+                        defaultChecked={car?.equipment?.includes("USB") ?? true}
                         name="USB"
                         disabled={view}
                       />

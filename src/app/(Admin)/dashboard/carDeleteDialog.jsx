@@ -7,12 +7,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { getCarList } from "@/app/store/Car/car.Api";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import axios from "axios";
 const CarDeleteDialog = ({ onClose, open, car }) => {
+  const [loadingData, setLoadingData] = useState(false);
+
   const handleClose = () => {
     onClose();
   };
-
+  const dispatch = useDispatch();
   const descriptionElementRef = useRef(null);
   useEffect(() => {
     if (open) {
@@ -22,6 +28,30 @@ const CarDeleteDialog = ({ onClose, open, car }) => {
       }
     }
   }, [open]);
+  const handleDeleteCar = () => {
+    setLoadingData(true);
+
+    axios
+      .post(`/api/cars/deletecar/${car?._id}`)
+      .then((datas) => {
+        if (datas?.data?.status === 200) {
+          onClose();
+          dispatch(getCarList());
+          toast.success(datas?.data?.message);
+        } else {
+          toast.error(datas?.data?.message);
+        }
+      })
+      .catch((e) => {
+        toast.error(e.message);
+        console.log("datas", e);
+      })
+      .finally(() => {
+        // setLoading(false);
+        setLoadingData(false);
+        // setOpen(false);
+      });
+  };
   return (
     <>
       <Dialog
@@ -58,9 +88,10 @@ const CarDeleteDialog = ({ onClose, open, car }) => {
               <Button
                 variant="contained"
                 className="bg-[#FF9393] ml-4"
-                onClick={handleClose}
+                onClick={handleDeleteCar}
+                disabled={loadingData}
               >
-                Delete
+                {loadingData ? "Saving........" : "Delete car"}
               </Button>
             </div>
           </div>

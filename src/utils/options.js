@@ -12,12 +12,12 @@ export const optionsCars = [
 ];
 export const optionsManual = [
   { value: "Manual", label: "Manual" },
-  { value: "Driver", label: "Driver" },
+  { value: "Automatic", label: "Automatic" },
 ];
 export const optionsFual = [
   { value: "Petrol", label: "Petrol" },
   { value: "Diesel", label: "Diesel" },
-  { value: "Gas", label: "Gas" },
+  { value: "Hybrid", label: "Hybrid" },
 ];
 export const optionsHook = [
   { value: "No", label: "No" },
@@ -32,6 +32,14 @@ export const optionsPerLiter = [
   { value: "20", label: "20" },
   { value: "22", label: "22" },
   { value: "15", label: "15" },
+];
+export const optionsCarTypes = [
+  { value: "Small car", label: "Small car" },
+  { value: "Midsize car", label: "Midsize car" },
+  { value: "Big car", label: "Big car" },
+  { value: "Micro car", label: "Micro car" },
+  { value: "SUV Group A", label: "SUV Group A" },
+  { value: "Luxury car", label: "Luxury car" },
 ];
 export const optionsModal = [
   { value: "2012", label: "2012" },

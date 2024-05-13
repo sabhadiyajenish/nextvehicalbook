@@ -21,6 +21,9 @@ const carSchema = new mongoose.Schema({
   subDescription: {
     type: String,
   },
+  carSizeType: {
+    type: String,
+  },
   carInformation: [
     {
       seat: {

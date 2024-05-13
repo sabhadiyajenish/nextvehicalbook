@@ -34,6 +34,7 @@ const CarValidationSchema = Yup.object().shape({
   hook: Yup.string().required().max(20),
   carColor: Yup.string().required().min(2).max(40),
   model: Yup.string().required().min(2),
+  carSizeType: Yup.string().required(),
 });
 
 export { CarValidationSchema };

@@ -22,3 +22,14 @@ export const fileUploadCloud = async (filePathName) => {
     console.log("Clouinary file Error", error);
   }
 };
+
+export const deleteImage = async (publicId) => {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

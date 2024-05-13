@@ -34,6 +34,8 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { getCarList } from "@/app/store/Car/car.Api";
 import { useDispatch, useSelector } from "react-redux";
+import stateData from "@/data/stateDistrict.json";
+import { Controller, useForm } from "react-hook-form";
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -55,8 +57,9 @@ const marks = [
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const FindCar = (props) => {
+  const [carListData, setCarListData] = useState([]);
   const [value, setValue] = useState([20, 40]);
-  const [value1, setValue1] = useState([700, 7000]);
+  const [value1, setValue1] = useState([100, 7000]);
   const [toggleCard, setToggleCard] = useState(1);
   const [pickUpDate, setpickUpDate] = useState(dayjs());
   const [dropUpDate, setDropUpDate] = useState(dayjs(pickUpDate));
@@ -90,12 +93,55 @@ const FindCar = (props) => {
   const today = dayjs();
   const tomorrow = dayjs().add(1, "day");
   const { carList, loading } = useSelector((state) => state.carlistData);
+  useEffect(() => {
+    setCarListData(carList);
+  }, [carList]);
   const dispatch = useDispatch();
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
   useEffect(() => {
     dispatch(getCarList());
   }, [dispatch]);
+  const selectedCarSizeTypes = watch("carSizeTypes", []);
+
+  useEffect(() => {
+    const filteredCars = carList?.filter(
+      (car) =>
+        car?.perDayCost >= Number(value1[0]) &&
+        car?.perDayCost <= Number(value1[1])
+    );
+    setCarListData(filteredCars);
+  }, [value1]);
+
+  // const filteredCars1 = carList.filter((car) =>
+  //   selectedCarSizeTypes?.includes(car?.carSizeType)
+  // );
+  const pickupDate = watch("pickupDate");
+  // useEffect(() => {
+  //   // Filter car information based on selected car size types
+  //   const filteredData = carList?.filter((car) =>
+  //     selectedCarSizeTypes.includes(car?.carSizeType)
+  //   );
+  //   console.log("data is<<<<<<<<<<", selectedCarSizeTypes, filteredData);
+
+  //   // setFilteredCars(filteredData);
+  // }, [watch("carSizeTypes", [])]);
+  // Custom validation function to ensure return date is after pickup date
+  const validateReturnDate = (selectedDate) => {
+    if (dayjs(selectedDate).isBefore(pickupDate)) {
+      return "Return date must be after pickup date";
+    }
+    return true;
+  };
+
   const cardsPerPage = 5;
-  const totalCards = carList?.length || 0;
+  const totalCards = carListData?.length || 0;
   // Calculate index of the first and last card on the current page
   // Calculate index of the first and last card on the current page
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -141,13 +187,17 @@ const FindCar = (props) => {
       Towbar: true,
     });
     setValue([20, 40]);
-    setValue1([700, 7000]);
+    setValue1([100, 7000]);
+    setCarListData(carList);
   };
   const handleDateChange = (date, dateName) => {
     setSelectedDates({
       ...selectedDates,
       [dateName]: date,
     });
+  };
+  const SearchCarData = (items) => {
+    console.log("data coming form update search", items);
   };
   const currencies = [
     {
@@ -169,32 +219,6 @@ const FindCar = (props) => {
     {
       value: "Trailer",
       label: "Trailer",
-    },
-  ];
-  const pickupLocationItem = [
-    {
-      value: "Ko lind",
-      label: "Ko lind",
-    },
-    {
-      value: "Corsair",
-      label: "Corsair",
-    },
-    {
-      value: "Ko kkedal",
-      label: "Ko kkedal",
-    },
-    {
-      value: "Ko ngerslev",
-      label: "Mini bus",
-    },
-    {
-      value: "Ko lding North",
-      label: "Ko lding North",
-    },
-    {
-      value: "King’s Lyngby",
-      label: "King’s Lyngby",
     },
   ];
   const handleChange = (event, newValue) => {
@@ -226,87 +250,103 @@ const FindCar = (props) => {
   return (
     <>
       <div className="bg-[#ffffff] shadow-lg flex justify-center p-4 w-full">
-        <div className="mt-5 mb-5 sm:ml-[80px] sm:mr-[80px] flex flex-wrap lg:flex-nowrap lg:justify-center  w-full gap-10">
-          <div className="w-full">
-            <TextField
-              id="outlined-select-currency"
-              select
-              label="Type"
-              className="w-full"
-              name="carType"
-              value={findCarValue.carType}
-              onChange={SetTypeDropdown}
-              // helperText="Please select your currency"
-            >
-              {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
+        <form autoComplete="off" onSubmit={handleSubmit(SearchCarData)}>
+          <div className="mt-5 mb-5  flex flex-wrap lg:flex-nowrap lg:justify-center  w-full gap-10">
+            <div className="w-full">
+              <TextField
+                id="outlined-select-currency"
+                select
+                label="Type"
+                className="w-full md:w-[250px]"
+                name="carType"
+                {...register("location")}
+                defaultValue={"Cars"}
+              >
+                {currencies.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className="w-full  sm:mt-0 mt-5 ">
+              <TextField
+                id="outlined-select-currency"
+                select
+                label="Pickup Location"
+                className=" w-full relative md:w-[250px]"
+                name="location"
+                defaultValue={"Surat"}
+                {...register("pickupLocation")}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <GrLocation className="text-[#9791F2] w=[16.5px] h-[21px]" />
+                    </InputAdornment>
+                  ),
+                }}
+              >
+                {stateData?.states[10]?.districts?.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className=" w-full sm:-mt-2  mt-5">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <Controller
+                    name="pickupDate" // Name of your form field
+                    control={control}
+                    defaultValue={null} // Initial value
+                    render={({ field }) => (
+                      <DatePicker
+                        {...field}
+                        label="Pickup Date"
+                        className="text-[#9791F2] w-full"
+                        minDate={today} // Minimum selectable date
+                        disablePast // Disable past dates
+                      />
+                    )}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </div>
+            <div className=" w-full sm:-mt-2  mt-5">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <Controller
+                    name="returnDate" // Name of your form field
+                    control={control}
+                    defaultValue={null} // Initial value
+                    rules={{ validate: validateReturnDate }}
+                    render={({ field }) => (
+                      <DatePicker
+                        {...field}
+                        label="Return Date"
+                        className="text-[#9791F2] w-full"
+                        minDate={pickupDate || today} // Minimum selectable date
+                        disablePast // Disable past dates
+                      />
+                    )}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+              {errors.returnDate && (
+                <p className="errorMsg mt-2">{errors.returnDate.message}</p>
+              )}
+            </div>
+            <div className="sm:mt-0 mt-7">
+              <button
+                type="submit"
+                className="w-[154px] font-medium h-[55px] bg-lightBlue rounded-md text-white"
+              >
+                Update Search
+              </button>
+            </div>
           </div>
-          <div className="w-full  sm:mt-0 mt-5 ">
-            <TextField
-              id="outlined-select-currency"
-              select
-              label="Pickup Location"
-              className=" w-full relative"
-              name="location"
-              value={findCarValue.location}
-              onChange={SetTypeDropdown}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <GrLocation className="text-[#9791F2] w=[16.5px] h-[21px]" />
-                  </InputAdornment>
-                ),
-              }}
-              // helperText="Please select your currency"
-            >
-              {pickupLocationItem.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
-          <div className=" w-full sm:-mt-2  mt-5">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  label="Pickup Date"
-                  className="text-[#9791F2] w-full"
-                  value={selectedDates.pickupDate}
-                  onChange={(date) => handleDateChange(date, "pickupDate")}
-                  minDate={today}
-                  disablePast
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-          </div>
-          <div className=" w-full sm:-mt-2  mt-5">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker
-                  label="Return Date"
-                  className="text-[#9791F2] w-full"
-                  value={selectedDates.returnDate}
-                  onChange={(date) => handleDateChange(date, "returnDate")}
-                  minDate={selectedDates.pickupDate}
-                  disablePast
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-          </div>
-          <div className="sm:mt-0 mt-7">
-            <button
-              className="w-[154px] font-medium h-[55px] bg-lightBlue rounded-md text-white"
-              onClick={handleCheckValidity}
-            >
-              Update Search
-            </button>
-          </div>
-        </div>
+        </form>
       </div>
       <div className="bg-[#F2F2F2]">
         <div className="py-3 flex justify-center ml-2">
@@ -384,135 +424,45 @@ const FindCar = (props) => {
                     <IoSearchOutline className="w-[9px] h-[9px] " />
                   </div>
                 </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    // defaultChecked
-                    checked={checkList.smallCar}
-                    onChange={handleCheckboxChange}
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                    name="smallCar"
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Small car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.midSizeCar}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                    name="midSizeCar"
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Midsize car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                    onChange={handleCheckboxChange}
-                    checked={checkList.BigCar}
-                    name="BigCar"
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Big car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2 ">
-                  <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Microcar}
-                    name="Microcar"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Microcar
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.SuvGroupA}
-                    name="SuvGroupA"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    SUV Group A
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2 ">
-                  <Checkbox
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                    onChange={handleCheckboxChange}
-                    checked={checkList.LuxuryCar}
-                    name="LuxuryCar"
-                  />
+                {[
+                  "Small car",
+                  "Midsize car",
+                  "Big car",
+                  "Microcar",
+                  "SUV Group A",
+                  "Luxury car",
+                ].map((item, key) => {
+                  return (
+                    <>
+                      <div className="flex mt-2" key={key}>
+                        <Checkbox
+                          // defaultChecked
+                          // checked={checkList.smallCar}
+                          {...register(`carSizeTypes[${key}]`)}
+                          // onChange={handleCheckboxChange}
+                          value={item}
+                          {...label}
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                          name={`carSizeTypes[${key}]`}
+                        />
+                        <p className="text-[14px] font-medium text-[#666666] ml-2">
+                          {item}
+                          <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                            (88)
+                          </span>
+                        </p>
+                      </div>
+                    </>
+                  );
+                })}
 
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Luxury car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
                 <Divider
                   orientation="horizontal"
                   flexItem
@@ -806,12 +756,12 @@ const FindCar = (props) => {
                         Loading Cars....
                       </h1>
                     </div>
-                  ) : carList?.length === 0 ? (
+                  ) : carListData?.length === 0 ? (
                     <div className="flex items-center justify-center w-full h-[300px] text-center">
                       <h1 className="font-medium text-[50px]">No car found!</h1>
                     </div>
                   ) : (
-                    carList
+                    carListData
                       ?.slice(indexOfFirstCard, indexOfLastCard)
                       .map((item, index) => (
                         <FindCarRightPart

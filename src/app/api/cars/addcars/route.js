@@ -35,6 +35,7 @@ export async function POST(req) {
     const hook = formData.get("Hook");
     const carColor = formData.get("carColor");
     const model = formData.get("CarModal");
+    const carSizeType = formData.get("carSizeType");
 
     const equipment = formData.getAll("equipment[]");
     await CarValidationSchema.validate({
@@ -53,6 +54,7 @@ export async function POST(req) {
       hook,
       carColor,
       model,
+      carSizeType,
     });
 
     if (!files || files.length === 0) {
@@ -70,6 +72,7 @@ export async function POST(req) {
       return_time,
       perDayCost,
       address,
+      carSizeType,
       carInformation: [
         {
           seat,

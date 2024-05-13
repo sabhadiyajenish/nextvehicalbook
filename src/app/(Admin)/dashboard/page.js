@@ -1,12 +1,13 @@
 "use client";
 import { getCarList } from "@/app/store/Car/car.Api";
-import { fileUploadCloud } from "@/utils/cloudinary";
+import { deleteImage, fileUploadCloud } from "@/utils/cloudinary";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
+import { TiDeleteOutline } from "react-icons/ti";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
@@ -20,10 +21,11 @@ import { VscPreview } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import CarDialog from "./carDialog";
 import CarDeleteDialog from "./carDeleteDialog";
+import Image from "next/image";
 const Page = () => {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
+  const [selectedRow, setSelectedRow] = useState(null);
   const [carDataOne, setCarDataOne] = useState(null);
   const [scroll, setScroll] = useState("paper");
   const [page, setPage] = useState(0);
@@ -65,6 +67,43 @@ const Page = () => {
   const handleUpdate = (datas) => {
     setCarDataOne({ ...datas });
     setOpen(true);
+  };
+  const handleRowClick = (row) => {
+    // Toggle the selected row
+    setSelectedRow(row === selectedRow ? null : row);
+  };
+  function extractPublicIdFromUrl(url) {
+    const startIndex = url.lastIndexOf("/") + 1;
+    const endIndex =
+      url.lastIndexOf(".") !== -1 ? url.lastIndexOf(".") : url.length;
+    return url.substring(startIndex, endIndex);
+  }
+
+  const handleDeleteImage = async (index, row, imageUrl) => {
+    // setLoadingData(true);
+    const publicId = extractPublicIdFromUrl(imageUrl);
+    const updatedPreviews = [...row?.subImagees];
+    updatedPreviews.splice(index, 1);
+    const pub = await deleteImage(publicId);
+    axios
+      .post(`/api/cars/deleteimages/${row?._id}`, updatedPreviews)
+      .then((datas) => {
+        if (datas?.data?.status === 200) {
+          dispatch(getCarList());
+          toast.success(datas?.data?.message);
+        } else {
+          toast.error(datas?.data?.message);
+        }
+      })
+      .catch((e) => {
+        toast.error(e.message);
+        console.log("datas", e);
+      })
+      .finally(() => {
+        // setLoading(false);
+        // setLoadingData(false);
+        // setOpen(false);
+      });
   };
   const columns = [
     {
@@ -156,26 +195,64 @@ const Page = () => {
                   {carList
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row.code}
-                      >
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.id === "coverImage" ||
-                              column.id === "operation"
-                                ? column.renderCell(value, row)
-                                : column.format && typeof value === "number"
-                                ? column.format(value)
-                                : value}
+                      <>
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          tabIndex={-1}
+                          key={row.code}
+                          onClick={() => handleRowClick(row)}
+                        >
+                          {columns.map((column) => {
+                            const value = row[column.id];
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                {column.id === "coverImage" ||
+                                column.id === "operation"
+                                  ? column.renderCell(value, row)
+                                  : column.format && typeof value === "number"
+                                  ? column.format(value)
+                                  : value}
+                              </TableCell>
+                            );
+                          })}
+                        </TableRow>
+                        {selectedRow === row && (
+                          <TableRow key={`${row.code}-details`}>
+                            <TableCell colSpan={columns.length}>
+                              <div>
+                                <div className="flex flex-wrap md:grid md:grid-cols-10 gap-3 lg:mt-0 mt-5 w-full">
+                                  {row?.subImagees?.map((preview, index) => (
+                                    <div className=" relative">
+                                      <Image
+                                        className="rounded-lg w-[150px] h-[80px] "
+                                        src={preview}
+                                        alt="wfw"
+                                        height={100}
+                                        width={100}
+                                        key={index}
+                                        // onClick={() => handleDeleteImage(index)}
+                                      />
+                                      <p className=" absolute top-0 right-2">
+                                        <TiDeleteOutline
+                                          className="text-[#f7f8f6] size-7 cursor-pointer"
+                                          onClick={() =>
+                                            handleDeleteImage(
+                                              index,
+                                              row,
+                                              preview
+                                            )
+                                          }
+                                        />
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
                             </TableCell>
-                          );
-                        })}
-                      </TableRow>
+                          </TableRow>
+                        )}
+                      </>
                     ))}
                 </TableBody>
               </Table>
