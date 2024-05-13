@@ -223,7 +223,7 @@ const Page = () => {
                               <div>
                                 <div className="flex flex-wrap md:grid md:grid-cols-10 gap-3 lg:mt-0 mt-5 w-full">
                                   {row?.subImagees?.map((preview, index) => (
-                                    <div className=" relative">
+                                    <div className=" relative" key={index}>
                                       <Image
                                         className="rounded-lg w-[150px] h-[80px] "
                                         src={preview}
