@@ -61,6 +61,12 @@ const FindCar = (props) => {
   const [value, setValue] = useState([20, 40]);
   const [value1, setValue1] = useState([100, 7000]);
   const [toggleCard, setToggleCard] = useState(1);
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [transmissionTypes, setTransmissionTypes] = useState([]);
+  const [seatTypes, setSeatTypes] = useState([]);
+  const [fuelTypes, setFuelTypes] = useState([]);
+  const [towBarTypes, setTowbarTypes] = useState(false);
+
   const [pickUpDate, setpickUpDate] = useState(dayjs());
   const [dropUpDate, setDropUpDate] = useState(dayjs(pickUpDate));
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,31 +114,59 @@ const FindCar = (props) => {
   useEffect(() => {
     dispatch(getCarList());
   }, [dispatch]);
-  const selectedCarSizeTypes = watch("carSizeTypes", []);
-
+  console.log("set type seat<<<<<<", seatTypes);
   useEffect(() => {
-    const filteredCars = carList?.filter(
+    const filteredByCarType =
+      selectedTypes?.length !== 0
+        ? carList.filter((car) => selectedTypes.includes(car?.carSizeType))
+        : carList;
+    const filteredByCostRange = filteredByCarType.filter(
       (car) =>
         car?.perDayCost >= Number(value1[0]) &&
         car?.perDayCost <= Number(value1[1])
     );
-    setCarListData(filteredCars);
-  }, [value1]);
 
-  // const filteredCars1 = carList.filter((car) =>
-  //   selectedCarSizeTypes?.includes(car?.carSizeType)
-  // );
+    const filteredByTransmission =
+      transmissionTypes.length !== 0
+        ? filteredByCostRange?.filter((car) =>
+            transmissionTypes.includes(car?.carInformation[0]?.manual)
+          )
+        : filteredByCostRange;
+
+    const filteredBySeats =
+      seatTypes.length !== 0
+        ? filteredByTransmission.filter((car) =>
+            seatTypes.includes(String(car?.carInformation[0]?.seat))
+          )
+        : filteredByTransmission;
+
+    const filteredByFuels =
+      fuelTypes.length !== 0
+        ? filteredBySeats.filter((car) =>
+            fuelTypes.includes(car?.carInformation[0]?.oilType)
+          )
+        : filteredBySeats;
+
+    const filteredByTows =
+      towBarTypes !== false
+        ? filteredByFuels.filter(
+            (car) => car?.carInformation[0]?.hook === "Yes"
+          )
+        : filteredByFuels;
+
+    setCarListData(filteredByTows);
+  }, [
+    selectedTypes,
+    value1,
+    transmissionTypes,
+    seatTypes,
+    fuelTypes,
+    towBarTypes,
+    carList,
+  ]);
+
   const pickupDate = watch("pickupDate");
-  // useEffect(() => {
-  //   // Filter car information based on selected car size types
-  //   const filteredData = carList?.filter((car) =>
-  //     selectedCarSizeTypes.includes(car?.carSizeType)
-  //   );
-  //   console.log("data is<<<<<<<<<<", selectedCarSizeTypes, filteredData);
 
-  //   // setFilteredCars(filteredData);
-  // }, [watch("carSizeTypes", [])]);
-  // Custom validation function to ensure return date is after pickup date
   const validateReturnDate = (selectedDate) => {
     if (dayjs(selectedDate).isBefore(pickupDate)) {
       return "Return date must be after pickup date";
@@ -168,6 +202,43 @@ const FindCar = (props) => {
       [name]: checked,
     });
   };
+  const handleCheckboxChangeData = (event) => {
+    const typeName = event.target.name;
+    if (event.target.checked) {
+      setSelectedTypes([...selectedTypes, typeName]);
+    } else {
+      setSelectedTypes(selectedTypes.filter((type) => type !== typeName));
+    }
+  };
+  const handleTransmissionChange = (event) => {
+    const transmission = event.target.name;
+    if (event.target.checked) {
+      setTransmissionTypes([...transmissionTypes, transmission]);
+    } else {
+      setTransmissionTypes(
+        transmissionTypes.filter((type) => type !== transmission)
+      );
+    }
+  };
+  const handleSeatSetChange = (event) => {
+    const seatSet = event.target.name;
+    if (event.target.checked) {
+      setSeatTypes([...seatTypes, seatSet]);
+    } else {
+      setSeatTypes(seatTypes.filter((type) => type !== seatSet));
+    }
+  };
+  const handleFuelChange = (event) => {
+    const fuelSet = event.target.name;
+    if (event.target.checked) {
+      setFuelTypes([...fuelTypes, fuelSet]);
+    } else {
+      setFuelTypes(fuelTypes.filter((type) => type !== fuelSet));
+    }
+  };
+  const handleTowBarChange = (event) => {
+    setTowbarTypes((prev) => !prev);
+  };
   const handleSetClearFilter = () => {
     setCheckList({
       smallCar: false,
@@ -189,6 +260,11 @@ const FindCar = (props) => {
     setValue([20, 40]);
     setValue1([100, 7000]);
     setCarListData(carList);
+    setSelectedTypes([]);
+    setTransmissionTypes([]);
+    setSeatTypes([]);
+    setFuelTypes([]);
+    setTowbarTypes(false);
   };
   const handleDateChange = (date, dateName) => {
     setSelectedDates({
@@ -424,45 +500,139 @@ const FindCar = (props) => {
                     <IoSearchOutline className="w-[9px] h-[9px] " />
                   </div>
                 </div>
-                {[
-                  "Small car",
-                  "Midsize car",
-                  "Big car",
-                  "Microcar",
-                  "SUV Group A",
-                  "Luxury car",
-                ].map((item, key) => {
-                  return (
-                    <>
-                      <div className="flex mt-2" key={key}>
-                        <Checkbox
-                          // defaultChecked
-                          // checked={checkList.smallCar}
-                          {...register(`carSizeTypes[${key}]`)}
-                          // onChange={handleCheckboxChange}
-                          value={item}
-                          {...label}
-                          sx={{
-                            color: "#4F46E5",
-                            padding: 0,
-                            "&.Mui-checked": {
-                              color: "#4F46E5",
-                              padding: 0,
-                            },
-                          }}
-                          name={`carSizeTypes[${key}]`}
-                        />
-                        <p className="text-[14px] font-medium text-[#666666] ml-2">
-                          {item}
-                          <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                            (88)
-                          </span>
-                        </p>
-                      </div>
-                    </>
-                  );
-                })}
+                <div className="flex mt-2">
+                  <Checkbox
+                    checked={selectedTypes.includes("Small car")}
+                    onChange={handleCheckboxChangeData}
+                    name="Small car"
+                    {...label}
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2">
+                    Small car
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
 
+                <div className="flex mt-2">
+                  <Checkbox
+                    checked={selectedTypes.includes("Midsize car")}
+                    onChange={handleCheckboxChangeData}
+                    name="Midsize car"
+                    {...label}
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2">
+                    Midsize car
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-2">
+                  <Checkbox
+                    checked={selectedTypes.includes("Big car")}
+                    onChange={handleCheckboxChangeData}
+                    name="Big car"
+                    {...label}
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2">
+                    Big car
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-2">
+                  <Checkbox
+                    checked={selectedTypes.includes("Micro car")}
+                    onChange={handleCheckboxChangeData}
+                    name="Micro car"
+                    {...label}
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2">
+                    Micro car
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-2">
+                  <Checkbox
+                    checked={selectedTypes.includes("SUV Group A")}
+                    onChange={handleCheckboxChangeData}
+                    name="SUV Group A"
+                    {...label}
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2">
+                    SUV Group A
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
+                <div className="flex mt-2">
+                  <Checkbox
+                    checked={selectedTypes.includes("Luxury car")}
+                    onChange={handleCheckboxChangeData}
+                    name="Luxury car"
+                    {...label}
+                    sx={{
+                      color: "#4F46E5",
+                      padding: 0,
+                      "&.Mui-checked": {
+                        color: "#4F46E5",
+                        padding: 0,
+                      },
+                    }}
+                  />
+                  <p className="text-[14px] font-medium text-[#666666] ml-2">
+                    Luxury car
+                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                      (88)
+                    </span>
+                  </p>
+                </div>
                 <Divider
                   orientation="horizontal"
                   flexItem
@@ -536,8 +706,8 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Automatic}
+                    checked={transmissionTypes.includes("Automatic")}
+                    onChange={handleTransmissionChange}
                     name="Automatic"
                     {...label}
                     sx={{
@@ -558,9 +728,9 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Manual1}
-                    name="Manual1"
+                    checked={transmissionTypes.includes("Manual")}
+                    onChange={handleTransmissionChange}
+                    name="Manual"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -590,9 +760,9 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Seat5}
-                    name="Seat5"
+                    checked={seatTypes.includes("5")}
+                    onChange={handleSeatSetChange}
+                    name="5"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -611,9 +781,9 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Seat4}
-                    name="Seat4"
+                    checked={seatTypes.includes("4")}
+                    onChange={handleSeatSetChange}
+                    name="4"
                     sx={{
                       color: "#4F46E5",
                       padding: 0,
@@ -643,7 +813,9 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    defaultChecked
+                    checked={fuelTypes.includes("Diesel")}
+                    onChange={handleFuelChange}
+                    name="Diesel"
                     {...label}
                     sx={{
                       color: "#4F46E5",
@@ -663,8 +835,8 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Petrol}
+                    checked={fuelTypes.includes("Petrol")}
+                    onChange={handleFuelChange}
                     name="Petrol"
                     sx={{
                       color: "#4F46E5",
@@ -684,8 +856,8 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Hybrid}
+                    checked={fuelTypes.includes("Hybrid")}
+                    onChange={handleFuelChange}
                     name="Hybrid"
                     sx={{
                       color: "#4F46E5",
@@ -711,8 +883,8 @@ const FindCar = (props) => {
                 </div>
                 <div className="flex mt-2">
                   <Switch
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Towbar}
+                    checked={towBarTypes}
+                    onChange={handleTowBarChange}
                     name="Towbar"
                     sx={{
                       marginLeft: -1.2,
