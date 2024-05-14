@@ -374,7 +374,7 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                     label="Location"
                     className="w-full"
                     name="location"
-                    defaultValue={car?.address || "Surat"}
+                    defaultValue={car?.address || "Gujarat"}
                     {...register("location")}
                     disabled={view}
                     InputProps={{
@@ -385,9 +385,9 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
                       ),
                     }}
                   >
-                    {stateData?.states[10]?.districts?.map((option, index) => (
-                      <MenuItem key={index} value={option}>
-                        {option}
+                    {stateData?.states?.map((option, index) => (
+                      <MenuItem key={index} value={option?.state}>
+                        {option?.state}
                       </MenuItem>
                     ))}
                   </TextField>

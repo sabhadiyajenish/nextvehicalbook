@@ -1,41 +1,29 @@
 import HomeNavLine from "@/app/components/homeNavLine";
-import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
-import DoorFrontOutlinedIcon from "@mui/icons-material/DoorFrontOutlined";
-import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
-import SpeedIcon from "@mui/icons-material/Speed";
+import { getCarList } from "@/app/store/Car/car.Api";
+import stateData from "@/data/stateDistrict.json";
 import Checkbox from "@mui/material/Checkbox";
 import Divider from "@mui/material/Divider";
 import InputAdornment from "@mui/material/InputAdornment";
 import MenuItem from "@mui/material/MenuItem";
+import Pagination from "@mui/material/Pagination";
 import Slider from "@mui/material/Slider";
+import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import Image from "next/image";
-import Link from "next/link";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { CiHome } from "react-icons/ci";
 import { GrLocation } from "react-icons/gr";
 import { IoSearchOutline } from "react-icons/io5";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import { toast } from "react-hot-toast";
-import {
-  MdOutlineColorLens,
-  MdOutlineDirectionsCar,
-  MdOutlineErrorOutline,
-  MdOutlineTune,
-} from "react-icons/md";
-import { PiSteeringWheelLight } from "react-icons/pi";
-import { TbFishHook } from "react-icons/tb";
-import FindCarRightPart from "./FindCarRightPart";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { getCarList } from "@/app/store/Car/car.Api";
+import { MdOutlineErrorOutline, MdOutlineTune } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import stateData from "@/data/stateDistrict.json";
-import { Controller, useForm } from "react-hook-form";
+import FindCarRightPart from "./FindCarRightPart";
+import Skeleton from "@mui/material/Skeleton";
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -60,42 +48,30 @@ const FindCar = (props) => {
   const [carListData, setCarListData] = useState([]);
   const [value, setValue] = useState([20, 40]);
   const [value1, setValue1] = useState([100, 7000]);
-  const [toggleCard, setToggleCard] = useState(1);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [transmissionTypes, setTransmissionTypes] = useState([]);
   const [seatTypes, setSeatTypes] = useState([]);
   const [fuelTypes, setFuelTypes] = useState([]);
   const [towBarTypes, setTowbarTypes] = useState(false);
+  const [carTypeList, setCarTypeList] = useState([]);
+  const [locationTypeList, setLocationTypeList] = useState([]);
+  const [locationTypes, setLocationTypes] = useState([]);
 
-  const [pickUpDate, setpickUpDate] = useState(dayjs());
-  const [dropUpDate, setDropUpDate] = useState(dayjs(pickUpDate));
+  const [carTypeSearch, setCarTypeSearch] = useState("");
+  const [locationTypeSearch, setLocationTypeSearch] = useState("");
+
+  const [showAll, setShowAll] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpandedLocation, setIsExpandedLocation] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const [findCarValue, setFindCarValue] = useState({
-    carType: "Cars",
-    location: "Ko lind",
-  });
+
   const [selectedDates, setSelectedDates] = useState({
     pickupDate: null,
     returnDate: null,
     // Add more date pickers as needed
   });
-  const [checkList, setCheckList] = useState({
-    smallCar: false,
-    midSizeCar: true,
-    BigCar: false,
-    Microcar: true,
-    SuvGroupA: false,
-    LuxuryCar: true,
-    Autohuset: false,
-    Rentlog: true,
-    Automatic: false,
-    Manual1: true,
-    Petrol: false,
-    Hybrid: true,
-    Seat4: false,
-    Seat5: true,
-    Towbar: true,
-  });
+
   const today = dayjs();
   const tomorrow = dayjs().add(1, "day");
   const { carList, loading } = useSelector((state) => state.carlistData);
@@ -115,6 +91,40 @@ const FindCar = (props) => {
     dispatch(getCarList());
   }, [dispatch]);
   console.log("set type seat<<<<<<", seatTypes);
+
+  useEffect(() => {
+    if (carTypeSearch === "") {
+      setCarTypeList([
+        "Small car",
+        "Midsize car",
+        "Big car",
+        "Micro car",
+        "SUV Group A",
+        "Luxury car",
+      ]);
+    } else {
+      const lowercaseChar = carTypeSearch.toLowerCase();
+      const filteredCars = carTypeList?.filter((car) =>
+        car.toLowerCase().includes(lowercaseChar)
+      );
+      setCarTypeList(filteredCars);
+    }
+  }, [carTypeSearch]);
+
+  useEffect(() => {
+    if (locationTypeSearch === "") {
+      const arr = [];
+      stateData?.states?.map((option) => arr.push(option?.state));
+      setLocationTypeList(arr);
+    } else {
+      const lowercaseChar = locationTypeSearch.toLowerCase();
+      const filteredCars = locationTypeList?.filter((car) =>
+        car.toLowerCase().includes(lowercaseChar)
+      );
+      setLocationTypeList(filteredCars);
+    }
+  }, [locationTypeSearch]);
+
   useEffect(() => {
     const filteredByCarType =
       selectedTypes?.length !== 0
@@ -154,7 +164,12 @@ const FindCar = (props) => {
           )
         : filteredByFuels;
 
-    setCarListData(filteredByTows);
+    const filteredByLocation =
+      locationTypes.length !== 0
+        ? filteredByTows.filter((car) => locationTypes.includes(car?.address))
+        : filteredByTows;
+
+    setCarListData(filteredByLocation);
   }, [
     selectedTypes,
     value1,
@@ -162,9 +177,9 @@ const FindCar = (props) => {
     seatTypes,
     fuelTypes,
     towBarTypes,
+    locationTypes,
     carList,
   ]);
-
   const pickupDate = watch("pickupDate");
 
   const validateReturnDate = (selectedDate) => {
@@ -176,87 +191,47 @@ const FindCar = (props) => {
 
   const cardsPerPage = 5;
   const totalCards = carListData?.length || 0;
-  // Calculate index of the first and last card on the current page
-  // Calculate index of the first and last card on the current page
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].slice(
     indexOfFirstCard,
     indexOfLastCard
   );
-  const SetTypeDropdown = (event) => {
-    const { name, value } = event.target;
-    setFindCarValue({
-      ...findCarValue,
-      [name]: value,
-    });
-  };
+
   // Change page
   const handleChangePagination = (event, value) => {
     setCurrentPage(value);
   };
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    setCheckList({
-      ...checkList,
-      [name]: checked,
-    });
+  const handleShowAll = () => {
+    setShowAll((prev) => !prev);
+  };
+  const handleCheckboxChangeDataAll = (event, setter, state) => {
+    const name = event.target.name;
+    if (event.target.checked) {
+      setter([...state, name]);
+    } else {
+      setter(state.filter((type) => type !== name));
+    }
   };
   const handleCheckboxChangeData = (event) => {
-    const typeName = event.target.name;
-    if (event.target.checked) {
-      setSelectedTypes([...selectedTypes, typeName]);
-    } else {
-      setSelectedTypes(selectedTypes.filter((type) => type !== typeName));
-    }
+    handleCheckboxChangeDataAll(event, setSelectedTypes, selectedTypes);
   };
   const handleTransmissionChange = (event) => {
-    const transmission = event.target.name;
-    if (event.target.checked) {
-      setTransmissionTypes([...transmissionTypes, transmission]);
-    } else {
-      setTransmissionTypes(
-        transmissionTypes.filter((type) => type !== transmission)
-      );
-    }
+    handleCheckboxChangeDataAll(event, setTransmissionTypes, transmissionTypes);
+  };
+  const handleLocationChange = (event) => {
+    handleCheckboxChangeDataAll(event, setLocationTypes, locationTypes);
   };
   const handleSeatSetChange = (event) => {
-    const seatSet = event.target.name;
-    if (event.target.checked) {
-      setSeatTypes([...seatTypes, seatSet]);
-    } else {
-      setSeatTypes(seatTypes.filter((type) => type !== seatSet));
-    }
+    handleCheckboxChangeDataAll(event, setSeatTypes, seatTypes);
   };
   const handleFuelChange = (event) => {
-    const fuelSet = event.target.name;
-    if (event.target.checked) {
-      setFuelTypes([...fuelTypes, fuelSet]);
-    } else {
-      setFuelTypes(fuelTypes.filter((type) => type !== fuelSet));
-    }
+    handleCheckboxChangeDataAll(event, setFuelTypes, fuelTypes);
   };
   const handleTowBarChange = (event) => {
     setTowbarTypes((prev) => !prev);
   };
   const handleSetClearFilter = () => {
-    setCheckList({
-      smallCar: false,
-      midSizeCar: true,
-      BigCar: false,
-      Microcar: true,
-      SuvGroupA: false,
-      LuxuryCar: true,
-      Autohuset: false,
-      Rentlog: true,
-      Automatic: false,
-      Manual1: true,
-      Petrol: false,
-      Hybrid: true,
-      Seat4: false,
-      Seat5: true,
-      Towbar: true,
-    });
     setValue([20, 40]);
     setValue1([100, 7000]);
     setCarListData(carList);
@@ -265,6 +240,7 @@ const FindCar = (props) => {
     setSeatTypes([]);
     setFuelTypes([]);
     setTowbarTypes(false);
+    setLocationTypes([]);
   };
   const handleDateChange = (date, dateName) => {
     setSelectedDates({
@@ -325,7 +301,7 @@ const FindCar = (props) => {
   };
   return (
     <>
-      <div className="bg-[#ffffff] shadow-lg flex justify-center p-4 w-full">
+      <div className=" bg-[#ffffff] shadow-lg flex justify-center p-4 w-full ">
         <form autoComplete="off" onSubmit={handleSubmit(SearchCarData)}>
           <div className="mt-5 mb-5  flex flex-wrap lg:flex-nowrap lg:justify-center  w-full gap-10">
             <div className="w-full">
@@ -352,7 +328,7 @@ const FindCar = (props) => {
                 label="Pickup Location"
                 className=" w-full relative md:w-[250px]"
                 name="location"
-                defaultValue={"Surat"}
+                defaultValue={"Gujarat"}
                 {...register("pickupLocation")}
                 InputProps={{
                   startAdornment: (
@@ -362,9 +338,9 @@ const FindCar = (props) => {
                   ),
                 }}
               >
-                {stateData?.states[10]?.districts?.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
+                {stateData?.states?.map((option) => (
+                  <MenuItem key={option?.state} value={option?.state}>
+                    {option?.state}
                   </MenuItem>
                 ))}
               </TextField>
@@ -492,147 +468,58 @@ const FindCar = (props) => {
                   className="w-full mt-3"
                 />
                 <div className="flex justify-between items-center mt-5">
-                  <p className="flex items-center font-bold text-[12px]">
+                  <p className="flex items-center font-bold text-[12px] ">
                     Car Class
                     <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
                   </p>
-                  <div className="bg-[#F2F2F2] p-2 rounded-full">
-                    <IoSearchOutline className="w-[9px] h-[9px] " />
+                  <div className="flex justify-between gap-1">
+                    {isExpanded && (
+                      <div>
+                        <input
+                          value={carTypeSearch}
+                          onChange={(e) => setCarTypeSearch(e.target.value)}
+                          placeholder="Search..."
+                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-[120px] px-4 transition duration-800"
+                        />
+                      </div>
+                    )}
+                    <div
+                      className="bg-[#F2F2F2] p-2 rounded-full cursor-pointer"
+                      onClick={() => setIsExpanded(!isExpanded)}
+                    >
+                      <IoSearchOutline className="w-[9px] h-[9px] transition duration-300 " />
+                    </div>
                   </div>
                 </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={selectedTypes.includes("Small car")}
-                    onChange={handleCheckboxChangeData}
-                    name="Small car"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Small car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
+                {carTypeList?.map((item, key) => {
+                  return (
+                    <>
+                      <div className="flex mt-2" key={key}>
+                        <Checkbox
+                          checked={selectedTypes.includes(item)}
+                          onChange={handleCheckboxChangeData}
+                          name={item}
+                          {...label}
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                        />
+                        <p className="text-[14px] font-medium text-[#666666] ml-2">
+                          {item}
+                          <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                            (88)
+                          </span>
+                        </p>
+                      </div>
+                    </>
+                  );
+                })}
 
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={selectedTypes.includes("Midsize car")}
-                    onChange={handleCheckboxChangeData}
-                    name="Midsize car"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Midsize car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={selectedTypes.includes("Big car")}
-                    onChange={handleCheckboxChangeData}
-                    name="Big car"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Big car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={selectedTypes.includes("Micro car")}
-                    onChange={handleCheckboxChangeData}
-                    name="Micro car"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Micro car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={selectedTypes.includes("SUV Group A")}
-                    onChange={handleCheckboxChangeData}
-                    name="SUV Group A"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    SUV Group A
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={selectedTypes.includes("Luxury car")}
-                    onChange={handleCheckboxChangeData}
-                    name="Luxury car"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Luxury car
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
                 <Divider
                   orientation="horizontal"
                   flexItem
@@ -643,55 +530,62 @@ const FindCar = (props) => {
                     Pickup Location
                     <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
                   </p>
-                  <div className="bg-[#F2F2F2] p-2 rounded-full">
-                    <IoSearchOutline className="w-[9px] h-[9px] " />
+                  <div className="flex justify-between gap-1">
+                    {isExpandedLocation && (
+                      <div>
+                        <input
+                          value={locationTypeSearch}
+                          onChange={(e) =>
+                            setLocationTypeSearch(e.target.value)
+                          }
+                          placeholder="Search..."
+                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-[120px] px-4 transition duration-800"
+                        />
+                      </div>
+                    )}
+                    <div
+                      className="bg-[#F2F2F2] p-2 rounded-full cursor-pointer"
+                      onClick={() => setIsExpandedLocation(!isExpandedLocation)}
+                    >
+                      <IoSearchOutline className="w-[9px] h-[9px] transition duration-300 cursor-pointer" />
+                    </div>
                   </div>
                 </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Autohuset}
-                    name="Autohuset"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Autohuset
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (6)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    onChange={handleCheckboxChange}
-                    checked={checkList.Rentlog}
-                    name="Rentlog"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
-                        padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Rentlog
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (8)
-                    </span>
-                  </p>
-                </div>
-                <p className="mt-3 text-[14px] font-medium text-[#4F46E5]">
-                  Show all
+                {locationTypeList
+                  ?.slice(0, showAll ? locationTypeList.length : 5)
+                  .map((item, key) => {
+                    return (
+                      <>
+                        <div className="flex mt-2" key={key}>
+                          <Checkbox
+                            checked={locationTypes.includes(item)}
+                            onChange={handleLocationChange}
+                            name={item}
+                            {...label}
+                            sx={{
+                              color: "#4F46E5",
+                              padding: 0,
+                              "&.Mui-checked": {
+                                color: "#4F46E5",
+                                padding: 0,
+                              },
+                            }}
+                          />
+                          <p className="text-[14px] font-medium text-[#666666] ml-2">
+                            {item}
+                            <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                              (6)
+                            </span>
+                          </p>
+                        </div>
+                      </>
+                    );
+                  })}
+                <p
+                  className="mt-3 text-[14px] font-medium text-[#4F46E5] cursor-pointer"
+                  onClick={handleShowAll}
+                >
+                  {showAll ? "Show less" : "Show all"}
                 </p>
                 <Divider
                   orientation="horizontal"
@@ -923,11 +817,80 @@ const FindCar = (props) => {
                 </div>
                 <div className="md:p-[12px] p-1">
                   {loading ? (
-                    <div className="flex items-center justify-center w-full h-[300px] text-center">
-                      <h1 className=" font-medium text-[50px]">
+                    <>
+                      <div className=" w-full  text-center">
+                        <Stack spacing={5} className="mt-5 w-full">
+                          {/* For variant="text", adjust the height via font-size */}
+                          <Skeleton
+                            variant="text"
+                            className="w-full"
+                            sx={{ fontSize: "1rem" }}
+                            height={60}
+                          />
+                          {/* For other variants, adjust the size with `width` and `height` */}
+                          <Skeleton
+                            variant="rectangular"
+                            width={120}
+                            height={100}
+                          />
+
+                          <Skeleton variant="rounded" width="40%" height={40} />
+
+                          <Skeleton variant="rounded" width="20%" height={25} />
+                        </Stack>
+                        {/* <h1 className=" font-medium text-[50px]">
                         Loading Cars....
-                      </h1>
-                    </div>
+                      </h1> */}
+                      </div>
+                      <div className=" w-full mt-10">
+                        <Stack spacing={5} className="mt-5 w-full">
+                          {/* For variant="text", adjust the height via font-size */}
+                          <Skeleton
+                            variant="text"
+                            className="w-full"
+                            sx={{ fontSize: "1rem" }}
+                            height={60}
+                          />
+                          {/* For other variants, adjust the size with `width` and `height` */}
+                          <Skeleton
+                            variant="rectangular"
+                            width={120}
+                            height={100}
+                          />
+
+                          <Skeleton variant="rounded" width="40%" height={40} />
+
+                          <Skeleton variant="rounded" width="20%" height={25} />
+                        </Stack>
+                        {/* <h1 className=" font-medium text-[50px]">
+                        Loading Cars....
+                      </h1> */}
+                      </div>
+                      <div className=" w-full mt-10">
+                        <Stack spacing={5} className="mt-5 w-full">
+                          {/* For variant="text", adjust the height via font-size */}
+                          <Skeleton
+                            variant="text"
+                            className="w-full"
+                            sx={{ fontSize: "1rem" }}
+                            height={60}
+                          />
+                          {/* For other variants, adjust the size with `width` and `height` */}
+                          <Skeleton
+                            variant="rectangular"
+                            width={120}
+                            height={100}
+                          />
+
+                          <Skeleton variant="rounded" width="40%" height={40} />
+
+                          <Skeleton variant="rounded" width="20%" height={25} />
+                        </Stack>
+                        {/* <h1 className=" font-medium text-[50px]">
+                        Loading Cars....
+                      </h1> */}
+                      </div>
+                    </>
                   ) : carListData?.length === 0 ? (
                     <div className="flex items-center justify-center w-full h-[300px] text-center">
                       <h1 className="font-medium text-[50px]">No car found!</h1>
