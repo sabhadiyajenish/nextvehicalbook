@@ -87,15 +87,15 @@ const CarRental = () => {
               <Step
                 key={label}
                 completed={completed[index]}
-                className="cursor-pointer"
+                // className="cursor-pointer"
               >
                 <StepLabel
-                  className="cursor-pointer"
+                  // className="cursor-pointer"
                   color="inherit"
-                  onClick={handleStep(index)}
+                  // onClick={handleStep(index)}
                 >
                   {/* {label} */}
-                  <h5 className="-mt-3 text-[14px] font-semibold text-[#101010] cursor-pointer">
+                  <h5 className="-mt-3 text-[14px] font-semibold text-[#101010]">
                     {label}
                   </h5>
                 </StepLabel>
@@ -105,9 +105,15 @@ const CarRental = () => {
         </div>
         <div className="w-full">
           {activeStep == "0" && <FindCar NextGo={handleNext} />}
-          {activeStep == "1" && <AddOneCar NextGo={handleNext} />}
-          {activeStep == "2" && <PersonalDetail NextGo={handleNext} />}
-          {activeStep == "3" && <CarPayment NextGo={handleNext} />}
+          {activeStep == "1" && (
+            <AddOneCar NextGo={handleNext} NextBack={handleBack} />
+          )}
+          {activeStep == "2" && (
+            <PersonalDetail NextGo={handleNext} NextBack={handleBack} />
+          )}
+          {activeStep == "3" && (
+            <CarPayment NextGo={handleNext} NextBack={handleBack} />
+          )}
         </div>
         {/* <div>
           {allStepsCompleted() ? (

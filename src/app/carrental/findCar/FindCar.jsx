@@ -468,10 +468,12 @@ const FindCar = (props) => {
                   className="w-full mt-3"
                 />
                 <div className="flex justify-between items-center mt-5">
-                  <p className="flex items-center font-bold text-[12px] ">
-                    Car Class
-                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                  </p>
+                  {!isExpanded && (
+                    <p className="flex items-center font-bold text-[12px] ">
+                      Car Class
+                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                    </p>
+                  )}
                   <div className="flex justify-between gap-1">
                     {isExpanded && (
                       <div>
@@ -479,7 +481,8 @@ const FindCar = (props) => {
                           value={carTypeSearch}
                           onChange={(e) => setCarTypeSearch(e.target.value)}
                           placeholder="Search..."
-                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-[120px] px-4 transition duration-800"
+                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-full px-4 transition duration-800"
+                          autoFocus
                         />
                       </div>
                     )}
@@ -526,10 +529,12 @@ const FindCar = (props) => {
                   className="w-full mt-3"
                 />
                 <div className="flex justify-between items-center mt-5">
-                  <p className="flex items-center font-bold text-[12px]">
-                    Pickup Location
-                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                  </p>
+                  {!isExpandedLocation && (
+                    <p className="flex items-center font-bold text-[12px]">
+                      Pickup Location
+                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                    </p>
+                  )}
                   <div className="flex justify-between gap-1">
                     {isExpandedLocation && (
                       <div>
@@ -538,8 +543,9 @@ const FindCar = (props) => {
                           onChange={(e) =>
                             setLocationTypeSearch(e.target.value)
                           }
+                          autoFocus
                           placeholder="Search..."
-                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-[120px] px-4 transition duration-800"
+                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-full px-4 transition duration-800"
                         />
                       </div>
                     )}

@@ -1,13 +1,13 @@
 "use client";
 import HomeNavLine from "@/app/components/homeNavLine";
-import React, { useState } from "react";
-import { CiHome } from "react-icons/ci";
 import Divider from "@mui/material/Divider";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { IoRemoveCircleOutline } from "react-icons/io5";
-import { RiErrorWarningLine } from "react-icons/ri";
 import Image from "next/image";
-const AddOneCar = () => {
+import { useState } from "react";
+import { CiHome } from "react-icons/ci";
+import { IoAddCircleOutline, IoRemoveCircleOutline } from "react-icons/io5";
+import { RiErrorWarningLine } from "react-icons/ri";
+import CardImageAddons from "./CardImageAddons";
+const AddOneCar = (props) => {
   const [toggleCard, setToggleCard] = useState(1);
 
   return (
@@ -21,9 +21,9 @@ const AddOneCar = () => {
               Icon={CiHome}
             />
           </div>
-          <div className="flex md:flex-nowrap flex-wrap">
+          <div className="flex lg:flex-nowrap  gap-6 flex-wrap lg:mx-[80px]">
             <div className="w-full">
-              <div className="md:w-[822px] w-full py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
+              <div className="lg:w-[822px] w-full py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
                 <h1 className=" font-semibold text-[#262626] text-[24px]">
                   Kilometers
                 </h1>
@@ -53,7 +53,7 @@ const AddOneCar = () => {
                   </p>
                 </div>
               </div>
-              <div className="md:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
+              <div className="lg:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
                 <h1 className=" font-semibold text-[#262626] text-[24px]">
                   Extras
                 </h1>
@@ -157,7 +157,7 @@ const AddOneCar = () => {
                   </div>
                 </div>
               </div>
-              <div className="md:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
+              <div className="lg:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
                 <h1 className=" font-semibold text-[#262626] text-[24px]">
                   Additional drivers
                 </h1>
@@ -198,7 +198,7 @@ const AddOneCar = () => {
                   </div>
                 </div>
               </div>
-              <div className="md:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
+              <div className="lg:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
                 <h1 className=" font-semibold text-[#262626] text-[24px]">
                   Protection options
                 </h1>
@@ -221,7 +221,7 @@ const AddOneCar = () => {
                     Choose your insurance package
                   </h3>
                   <div className="mt-[40px]">
-                    <div className="flex justify-between md:flex-nowrap flex-wrap">
+                    <div className="flex justify-between gap-3 md:flex-nowrap flex-wrap">
                       <div
                         className={`border  ${
                           toggleCard == "1"
@@ -383,13 +383,14 @@ const AddOneCar = () => {
                   </div>
                 </div>
               </div>
-              <div className="md:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
+              <div className="lg:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
                 <div className="flex md:flex-nowrap flex-wrap justify-between items-center">
                   <button
                     className={`
                     
                               text-[#4F46E5] bg-[#FFFFFF]
                             font-medium text-[14px] border border-[#4F46E5] rounded-md w-fit px-6 py-2`}
+                    onClick={() => props.NextBack()}
                   >
                     Go back to find cars
                   </button>
@@ -398,11 +399,15 @@ const AddOneCar = () => {
                               bg-[#4F46E5] text-[#FFFFFF]
                                
                            font-medium text-[14px] border border-[#4F46E5] rounded-md w-fit px-6 py-2`}
+                    onClick={() => props.NextGo()}
                   >
                     Continue to add personal details
                   </button>
                 </div>
               </div>
+            </div>
+            <div className="md:w-[520px] w-full">
+              <CardImageAddons />
             </div>
           </div>
         </div>
