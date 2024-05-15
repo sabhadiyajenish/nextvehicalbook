@@ -1,9 +1,15 @@
+"use client";
 import HomeNavLine from "@/app/components/homeNavLine";
-import React from "react";
+import React, { useState } from "react";
 import { CiHome } from "react-icons/ci";
 import Divider from "@mui/material/Divider";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { IoRemoveCircleOutline } from "react-icons/io5";
+import { RiErrorWarningLine } from "react-icons/ri";
+import Image from "next/image";
 const AddOneCar = () => {
+  const [toggleCard, setToggleCard] = useState(1);
+
   return (
     <>
       <div className="bg-[#F2F2F2] pb-5">
@@ -31,18 +37,18 @@ const AddOneCar = () => {
                   flexItem
                   className="w-full mt-3"
                 />
-                <div className="mt-[53px] flex gap-5 items-center">
+                <div className="mt-[53px] flex md:flex-nowrap flex-wrap gap-5 items-center">
                   <h1 className="text-[16px] font-semibold text-[#666666]">
                     Add extra kilometers
                   </h1>
-                  <div className="w-[174px] h-[48px] flex justify-between p-2 items-center border border-[#E6E6E6] rounded-lg ml-3">
-                    <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] ml-3 cursor-pointer" />
+                  <div className="w-[174px] h-[48px] flex justify-between p-2 items-center border border-[#E6E6E6] rounded-lg md:ml-3">
+                    <IoRemoveCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] md:ml-3 ml-1 cursor-pointer" />
                     <p className="text-[14px] text-[#999999] font-semibold">
                       0 km
                     </p>
-                    <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer" />
+                    <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] md:mr-3 mr-1 cursor-pointer" />
                   </div>
-                  <p className="text-[14px] text-[#999999] font-medium ml-5">
+                  <p className="text-[14px] text-[#999999] font-medium md:ml-5">
                     DKK 1.60/km
                   </p>
                 </div>
@@ -138,7 +144,7 @@ const AddOneCar = () => {
                           </p>
                           <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer" />
                         </div>
-                        <div className="mr-5">
+                        <div className="mr-9">
                           <h1 className="mr-2 text-[#666666] font-semibold text-[16px]">
                             50 kr.
                           </h1>
@@ -214,6 +220,187 @@ const AddOneCar = () => {
                   <h3 className="text-[16px] text-[#262626] font-medium">
                     Choose your insurance package
                   </h3>
+                  <div className="mt-[40px]">
+                    <div className="flex justify-between md:flex-nowrap flex-wrap">
+                      <div
+                        className={`border  ${
+                          toggleCard == "1"
+                            ? "border-lightBlue"
+                            : "border-lightGrey"
+                        } w-[371px] px-7 pt-4 rounded-md relative `}
+                        onClick={() => setToggleCard(1)}
+                      >
+                        <h3 className="text-[#262626] font-medium text-[20px]">
+                          Basic
+                        </h3>
+                        <h1 className="text-[#262626] font-semibold text-[24px] mt-3">
+                          Included
+                        </h1>
+                        <div className="flex gap-1 bg-[#E2E1FA] items-center rounded-lg w-fit px-2 py-1 mt-[38px]">
+                          <p className="text-[#262626] font-medium text-[14px]">
+                            Deductible:
+                          </p>
+                          <h3 className="text-[#262626] font-bold text-[14px] ">
+                            5.000 kr.
+                          </h3>
+                          <RiErrorWarningLine className=" h-4 w-4" />
+                        </div>
+                        <div className=" mt-6">
+                          <div className="flex items-center ">
+                            <Image
+                              className="rounded-lg w-7 h-7"
+                              src="/Check.png"
+                              alt=""
+                              height={100}
+                              width={100}
+                            />
+                            <h6 className="ml-5 font-medium text-[14px] text-[#666666]">
+                              Liability insurance
+                            </h6>
+                          </div>
+                          <div className="flex items-center mt-3 ">
+                            <Image
+                              className="rounded-lg w-7 h-7"
+                              src="/Check.png"
+                              alt=""
+                              height={100}
+                              width={100}
+                            />
+                            <h6 className="ml-5 font-medium text-[14px] text-[#666666]">
+                              Comprehensive insurance
+                            </h6>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center mt-6 pb-4">
+                          <p className="text-lightBlue font-semibold cursor-pointer">
+                            More details
+                          </p>
+                          <button
+                            className={`${
+                              toggleCard == "1"
+                                ? "bg-[#4F46E5] text-[#FFFFFF]"
+                                : "text-[#4F46E5] bg-[#FFFFFF]"
+                            }  font-medium text-[14px] border border-[#4F46E5] rounded-md w-[156px] px-6 py-2`}
+                          >
+                            {toggleCard == "1" ? "Selected" : "Select"}
+                          </button>
+                        </div>
+                        {toggleCard == "1" && (
+                          <Image
+                            className="rounded-lg  absolute -top-2 -right-2 z-50 w-5 h-5 bg-white"
+                            src="/CheckCircle.png"
+                            alt=""
+                            height={100}
+                            width={100}
+                          />
+                        )}
+                      </div>
+                      <div
+                        className={`border  ${
+                          toggleCard == "2"
+                            ? "border-lightBlue"
+                            : "border-lightGrey"
+                        } w-[371px] px-7 pt-4 rounded-md relative `}
+                        onClick={() => setToggleCard(2)}
+                      >
+                        <div className="flex gap-2 items-center">
+                          <h3 className="text-[#262626] font-medium text-[20px]">
+                            Premium
+                          </h3>
+                          <p className="text-[#F8F7FC] bg-[#262626] px-2 font-medium text-[10px] rounded-xl ">
+                            RECOMMENDED
+                          </p>
+                        </div>
+                        <h1 className="text-[#262626] font-semibold text-[24px] mt-3">
+                          75 kr.{" "}
+                          <span className="text-[#666666] font-medium text-[20px]">
+                            /day
+                          </span>
+                        </h1>
+                        <p className="text-[#666666] font-normal text-[14px]">
+                          Total 225 kr.
+                        </p>
+                        <div className="flex gap-1 bg-[#E2E1FA] items-center rounded-lg w-fit px-2 py-1 mt-[12px]">
+                          <p className="text-[#262626] font-medium text-[14px]">
+                            Deductible:
+                          </p>
+                          <h3 className="text-[#262626] font-bold text-[14px] ">
+                            5.000 kr.
+                          </h3>
+                          <RiErrorWarningLine className=" h-4 w-4" />
+                        </div>
+                        <div className=" mt-6">
+                          <div className="flex items-center ">
+                            <Image
+                              className="rounded-lg w-7 h-7"
+                              src="/Check.png"
+                              alt=""
+                              height={100}
+                              width={100}
+                            />
+                            <h6 className="ml-5 font-medium text-[14px] text-[#666666]">
+                              Liability insurance
+                            </h6>
+                          </div>
+                          <div className="flex items-center mt-3 ">
+                            <Image
+                              className="rounded-lg w-7 h-7"
+                              src="/Check.png"
+                              alt=""
+                              height={100}
+                              width={100}
+                            />
+                            <h6 className="ml-5 font-medium text-[14px] text-[#666666]">
+                              Comprehensive insurance
+                            </h6>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center mt-6 pb-4">
+                          <p className="text-lightBlue font-semibold cursor-pointer">
+                            More details
+                          </p>
+                          <button
+                            className={`${
+                              toggleCard == "2"
+                                ? "bg-[#4F46E5] text-[#FFFFFF]"
+                                : "text-[#4F46E5] bg-[#FFFFFF]"
+                            }  font-medium text-[14px] border border-[#4F46E5] rounded-md w-[156px] px-6 py-2`}
+                          >
+                            {toggleCard == "2" ? "Selected" : "Select"}
+                          </button>
+                        </div>
+                        {toggleCard == "2" && (
+                          <Image
+                            className="rounded-lg  absolute -top-2 -right-2 z-50 w-5 h-5 bg-white"
+                            src="/CheckCircle.png"
+                            alt=""
+                            height={100}
+                            width={100}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="md:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
+                <div className="flex md:flex-nowrap flex-wrap justify-between items-center">
+                  <button
+                    className={`
+                    
+                              text-[#4F46E5] bg-[#FFFFFF]
+                            font-medium text-[14px] border border-[#4F46E5] rounded-md w-fit px-6 py-2`}
+                  >
+                    Go back to find cars
+                  </button>
+                  <button
+                    className={`
+                              bg-[#4F46E5] text-[#FFFFFF]
+                               
+                           font-medium text-[14px] border border-[#4F46E5] rounded-md w-fit px-6 py-2`}
+                  >
+                    Continue to add personal details
+                  </button>
                 </div>
               </div>
             </div>
