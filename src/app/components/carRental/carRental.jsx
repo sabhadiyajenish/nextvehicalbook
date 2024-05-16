@@ -81,7 +81,7 @@ const CarRental = () => {
           <Stepper
             activeStep={activeStep}
             alternativeLabel
-            className="md:w-[1200px] w-full"
+            className="max-w-[1200px] md:w-[733px] w-full mx-[80px]"
           >
             {steps.map((label, index) => (
               <Step

@@ -303,13 +303,13 @@ const FindCar = (props) => {
     <>
       <div className=" bg-[#ffffff] shadow-lg flex justify-center p-4 w-full ">
         <form autoComplete="off" onSubmit={handleSubmit(SearchCarData)}>
-          <div className="mt-5 mb-5  flex flex-wrap lg:flex-nowrap lg:justify-center  w-full gap-10">
+          <div className="mt-5 mb-5  container mx-auto max-w-[1206px] flex flex-wrap lg:flex-nowrap lg:justify-center  w-full  md:gap-8">
             <div className="w-full">
               <TextField
                 id="outlined-select-currency"
                 select
                 label="Type"
-                className="w-full md:w-[250px]"
+                className="w-full md:w-[210px]"
                 name="carType"
                 {...register("location")}
                 defaultValue={"Cars"}
@@ -326,7 +326,7 @@ const FindCar = (props) => {
                 id="outlined-select-currency"
                 select
                 label="Pickup Location"
-                className=" w-full relative md:w-[250px]"
+                className=" w-full relative md:w-[280px]"
                 name="location"
                 defaultValue={"Gujarat"}
                 {...register("pickupLocation")}
@@ -401,171 +401,107 @@ const FindCar = (props) => {
         </form>
       </div>
       <div className="bg-[#F2F2F2]">
-        <div className="py-3 flex justify-center ml-2">
-          <HomeNavLine titleText1="Search results" Icon={CiHome} />
-        </div>
-        <div className="flex justify-center pb-5">
-          <div className="mt-1 w-full sm:ml-[80px] sm:mr-[80px]">
-            <div className="flex justify-center gap-6">
-              <div className="w-[400px] h-fit lg:block hidden bg-[#FFFFFF] px-6 py-4 mb-4 rounded-lg ml-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center">
-                    <MdOutlineTune className="w-[12px] h-[10px] text-[#666666]" />
-                    <p className="ml-2 text-[12px] font-medium text-[#666666] ">
-                      Filters
+        <div className=" container mx-auto max-w-[1366px]">
+          <div className="py-3 flex justify-center md:mx-[80px]">
+            <HomeNavLine titleText1="Search results" Icon={CiHome} />
+          </div>
+          <div className="">
+            <div className="mt-1 w-full">
+              <div className="flex justify-center gap-6">
+                <div className="w-[280px] h-fit lg:block hidden bg-[#FFFFFF] px-6 py-4 mb-4 rounded-lg ">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center">
+                      <MdOutlineTune className="w-[12px] h-[10px] text-[#666666]" />
+                      <p className="ml-2 text-[12px] font-medium text-[#666666] ">
+                        Filters
+                      </p>
+                    </div>
+                    <p
+                      className="ml-2 text-[14px] font-medium text-[#4F46E5] cursor-pointer"
+                      onClick={handleSetClearFilter}
+                    >
+                      Clear all
                     </p>
                   </div>
-                  <p
-                    className="ml-2 text-[14px] font-medium text-[#4F46E5] cursor-pointer"
-                    onClick={handleSetClearFilter}
-                  >
-                    Clear all
+                  <p className="flex items-center font-bold text-[12px] mt-5">
+                    Radius
+                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
                   </p>
-                </div>
-                <p className="flex items-center font-bold text-[12px] mt-5">
-                  Radius
-                  <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                </p>
-                <p className="text-[14px] font-medium text-[#666666] mt-2">
-                  {value[0]} km- {value[1]} km
-                </p>
-                <div className="w-full mt-2">
-                  <Slider
-                    getAriaLabel={() => "Temperature range"}
-                    value={value}
-                    onChange={handleChange}
-                    valueLabelDisplay="auto"
-                    getAriaValueText={valuetext}
+                  <p className="text-[14px] font-medium text-[#666666] mt-2">
+                    {value[0]} km- {value[1]} km
+                  </p>
+                  <div className="w-full mt-2">
+                    <Slider
+                      getAriaLabel={() => "Temperature range"}
+                      value={value}
+                      onChange={handleChange}
+                      valueLabelDisplay="auto"
+                      getAriaValueText={valuetext}
+                    />
+                  </div>
+                  <Divider
+                    orientation="horizontal"
+                    flexItem
+                    className="w-full mt-3"
                   />
-                </div>
-                <Divider
-                  orientation="horizontal"
-                  flexItem
-                  className="w-full mt-3"
-                />
-                <p className="flex items-center font-bold text-[12px] mt-5">
-                  Price Range
-                  <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                </p>
-                <p className="text-[14px] font-medium text-[#666666] mt-2">
-                  {value1[0]} kr. - {value1[1]} kr.
-                </p>
-                <div className="w-full mt-2">
-                  <Slider
-                    getAriaLabel={() => "Temperature range"}
-                    value={value1}
-                    onChange={handleChange1}
-                    valueLabelDisplay="auto"
-                    getAriaValueText={valuetext1}
-                    min={MIN}
-                    max={MAX}
-                    marks={marks}
+                  <p className="flex items-center font-bold text-[12px] mt-5">
+                    Price Range
+                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                  </p>
+                  <p className="text-[14px] font-medium text-[#666666] mt-2">
+                    {value1[0]} kr. - {value1[1]} kr.
+                  </p>
+                  <div className="w-full mt-2">
+                    <Slider
+                      getAriaLabel={() => "Temperature range"}
+                      value={value1}
+                      onChange={handleChange1}
+                      valueLabelDisplay="auto"
+                      getAriaValueText={valuetext1}
+                      min={MIN}
+                      max={MAX}
+                      marks={marks}
+                    />
+                  </div>
+                  <Divider
+                    orientation="horizontal"
+                    flexItem
+                    className="w-full mt-3"
                   />
-                </div>
-                <Divider
-                  orientation="horizontal"
-                  flexItem
-                  className="w-full mt-3"
-                />
-                <div className="flex justify-between items-center mt-5">
-                  {!isExpanded && (
-                    <p className="flex items-center font-bold text-[12px] ">
-                      Car Class
-                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                    </p>
-                  )}
-                  <div className="flex justify-between gap-1">
-                    {isExpanded && (
-                      <div>
-                        <input
-                          value={carTypeSearch}
-                          onChange={(e) => setCarTypeSearch(e.target.value)}
-                          placeholder="Search..."
-                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-full px-4 transition duration-800"
-                          autoFocus
-                        />
-                      </div>
+                  <div className="flex justify-between items-center mt-5">
+                    {!isExpanded && (
+                      <p className="flex items-center font-bold text-[12px] ">
+                        Car Class
+                        <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                      </p>
                     )}
-                    <div
-                      className="bg-[#F2F2F2] p-2 rounded-full cursor-pointer"
-                      onClick={() => setIsExpanded(!isExpanded)}
-                    >
-                      <IoSearchOutline className="w-[9px] h-[9px] transition duration-300 " />
+                    <div className="flex justify-between gap-1">
+                      {isExpanded && (
+                        <div>
+                          <input
+                            value={carTypeSearch}
+                            onChange={(e) => setCarTypeSearch(e.target.value)}
+                            placeholder="Search..."
+                            className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-full px-4 transition duration-800"
+                            autoFocus
+                          />
+                        </div>
+                      )}
+                      <div
+                        className="bg-[#F2F2F2] p-2 rounded-full cursor-pointer"
+                        onClick={() => setIsExpanded(!isExpanded)}
+                      >
+                        <IoSearchOutline className="w-[9px] h-[9px] transition duration-300 " />
+                      </div>
                     </div>
                   </div>
-                </div>
-                {carTypeList?.map((item, key) => {
-                  return (
-                    <>
-                      <div className="flex mt-2" key={key}>
-                        <Checkbox
-                          checked={selectedTypes.includes(item)}
-                          onChange={handleCheckboxChangeData}
-                          name={item}
-                          {...label}
-                          sx={{
-                            color: "#4F46E5",
-                            padding: 0,
-                            "&.Mui-checked": {
-                              color: "#4F46E5",
-                              padding: 0,
-                            },
-                          }}
-                        />
-                        <p className="text-[14px] font-medium text-[#666666] ml-2">
-                          {item}
-                          <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                            (88)
-                          </span>
-                        </p>
-                      </div>
-                    </>
-                  );
-                })}
-
-                <Divider
-                  orientation="horizontal"
-                  flexItem
-                  className="w-full mt-3"
-                />
-                <div className="flex justify-between items-center mt-5">
-                  {!isExpandedLocation && (
-                    <p className="flex items-center font-bold text-[12px]">
-                      Pickup Location
-                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                    </p>
-                  )}
-                  <div className="flex justify-between gap-1">
-                    {isExpandedLocation && (
-                      <div>
-                        <input
-                          value={locationTypeSearch}
-                          onChange={(e) =>
-                            setLocationTypeSearch(e.target.value)
-                          }
-                          autoFocus
-                          placeholder="Search..."
-                          className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-full px-4 transition duration-800"
-                        />
-                      </div>
-                    )}
-                    <div
-                      className="bg-[#F2F2F2] p-2 rounded-full cursor-pointer"
-                      onClick={() => setIsExpandedLocation(!isExpandedLocation)}
-                    >
-                      <IoSearchOutline className="w-[9px] h-[9px] transition duration-300 cursor-pointer" />
-                    </div>
-                  </div>
-                </div>
-                {locationTypeList
-                  ?.slice(0, showAll ? locationTypeList.length : 5)
-                  .map((item, key) => {
+                  {carTypeList?.map((item, key) => {
                     return (
                       <>
                         <div className="flex mt-2" key={key}>
                           <Checkbox
-                            checked={locationTypes.includes(item)}
-                            onChange={handleLocationChange}
+                            checked={selectedTypes.includes(item)}
+                            onChange={handleCheckboxChangeData}
                             name={item}
                             {...label}
                             sx={{
@@ -580,388 +516,482 @@ const FindCar = (props) => {
                           <p className="text-[14px] font-medium text-[#666666] ml-2">
                             {item}
                             <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                              (6)
+                              (88)
                             </span>
                           </p>
                         </div>
                       </>
                     );
                   })}
-                <p
-                  className="mt-3 text-[14px] font-medium text-[#4F46E5] cursor-pointer"
-                  onClick={handleShowAll}
-                >
-                  {showAll ? "Show less" : "Show all"}
-                </p>
-                <Divider
-                  orientation="horizontal"
-                  flexItem
-                  className="w-full mt-3"
-                />
-                <div className="flex justify-between items-center mt-5">
-                  <p className="flex items-center font-bold text-[12px]">
-                    Transmission
-                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+
+                  <Divider
+                    orientation="horizontal"
+                    flexItem
+                    className="w-full mt-3"
+                  />
+                  <div className="flex justify-between items-center mt-5">
+                    {!isExpandedLocation && (
+                      <p className="flex items-center font-bold text-[12px]">
+                        Pickup Location
+                        <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                      </p>
+                    )}
+                    <div className="flex justify-between gap-1">
+                      {isExpandedLocation && (
+                        <div>
+                          <input
+                            value={locationTypeSearch}
+                            onChange={(e) =>
+                              setLocationTypeSearch(e.target.value)
+                            }
+                            autoFocus
+                            placeholder="Search..."
+                            className=" border border-[#F2F2F2] focus:border-[#F2F2F2] rounded-xl w-full px-4 transition duration-800"
+                          />
+                        </div>
+                      )}
+                      <div
+                        className="bg-[#F2F2F2] p-2 rounded-full cursor-pointer"
+                        onClick={() =>
+                          setIsExpandedLocation(!isExpandedLocation)
+                        }
+                      >
+                        <IoSearchOutline className="w-[9px] h-[9px] transition duration-300 cursor-pointer" />
+                      </div>
+                    </div>
+                  </div>
+                  {locationTypeList
+                    ?.slice(0, showAll ? locationTypeList.length : 5)
+                    .map((item, key) => {
+                      return (
+                        <>
+                          <div className="flex mt-2" key={key}>
+                            <Checkbox
+                              checked={locationTypes.includes(item)}
+                              onChange={handleLocationChange}
+                              name={item}
+                              {...label}
+                              sx={{
+                                color: "#4F46E5",
+                                padding: 0,
+                                "&.Mui-checked": {
+                                  color: "#4F46E5",
+                                  padding: 0,
+                                },
+                              }}
+                            />
+                            <p className="text-[14px] font-medium text-[#666666] ml-2">
+                              {item}
+                              <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                                (6)
+                              </span>
+                            </p>
+                          </div>
+                        </>
+                      );
+                    })}
+                  <p
+                    className="mt-3 text-[14px] font-medium text-[#4F46E5] cursor-pointer"
+                    onClick={handleShowAll}
+                  >
+                    {showAll ? "Show less" : "Show all"}
                   </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={transmissionTypes.includes("Automatic")}
-                    onChange={handleTransmissionChange}
-                    name="Automatic"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
+                  <Divider
+                    orientation="horizontal"
+                    flexItem
+                    className="w-full mt-3"
+                  />
+                  <div className="flex justify-between items-center mt-5">
+                    <p className="flex items-center font-bold text-[12px]">
+                      Transmission
+                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Checkbox
+                      checked={transmissionTypes.includes("Automatic")}
+                      onChange={handleTransmissionChange}
+                      name="Automatic"
+                      {...label}
+                      sx={{
                         color: "#4F46E5",
                         padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Automatic
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={transmissionTypes.includes("Manual")}
-                    onChange={handleTransmissionChange}
-                    name="Manual"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          padding: 0,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2">
+                      Automatic
+                      <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                        (88)
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Checkbox
+                      checked={transmissionTypes.includes("Manual")}
+                      onChange={handleTransmissionChange}
+                      name="Manual"
+                      sx={{
                         color: "#4F46E5",
                         padding: 0,
-                      },
-                    }}
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          padding: 0,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                      Manual
+                      <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                        (88)
+                      </span>
+                    </p>
+                  </div>
+                  <Divider
+                    orientation="horizontal"
+                    flexItem
+                    className="w-full mt-3"
                   />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Manual
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <Divider
-                  orientation="horizontal"
-                  flexItem
-                  className="w-full mt-3"
-                />
-                <div className="flex justify-between items-center mt-5">
-                  <p className="flex items-center font-bold text-[12px]">
-                    Seats
-                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={seatTypes.includes("5")}
-                    onChange={handleSeatSetChange}
-                    name="5"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
+                  <div className="flex justify-between items-center mt-5">
+                    <p className="flex items-center font-bold text-[12px]">
+                      Seats
+                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Checkbox
+                      checked={seatTypes.includes("5")}
+                      onChange={handleSeatSetChange}
+                      name="5"
+                      sx={{
                         color: "#4F46E5",
                         padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    5
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={seatTypes.includes("4")}
-                    onChange={handleSeatSetChange}
-                    name="4"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          padding: 0,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                      5
+                      <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                        (88)
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Checkbox
+                      checked={seatTypes.includes("4")}
+                      onChange={handleSeatSetChange}
+                      name="4"
+                      sx={{
                         color: "#4F46E5",
                         padding: 0,
-                      },
-                    }}
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          padding: 0,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                      4
+                      <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                        (88)
+                      </span>
+                    </p>
+                  </div>
+                  <Divider
+                    orientation="horizontal"
+                    flexItem
+                    className="w-full mt-3"
                   />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    4
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <Divider
-                  orientation="horizontal"
-                  flexItem
-                  className="w-full mt-3"
-                />
-                <div className="flex justify-between items-center mt-5">
-                  <p className="flex items-center font-bold text-[12px]">
-                    Fuel
-                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={fuelTypes.includes("Diesel")}
-                    onChange={handleFuelChange}
-                    name="Diesel"
-                    {...label}
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
+                  <div className="flex justify-between items-center mt-5">
+                    <p className="flex items-center font-bold text-[12px]">
+                      Fuel
+                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Checkbox
+                      checked={fuelTypes.includes("Diesel")}
+                      onChange={handleFuelChange}
+                      name="Diesel"
+                      {...label}
+                      sx={{
                         color: "#4F46E5",
                         padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Diesel
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (88)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={fuelTypes.includes("Petrol")}
-                    onChange={handleFuelChange}
-                    name="Petrol"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          padding: 0,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2">
+                      Diesel
+                      <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                        (88)
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Checkbox
+                      checked={fuelTypes.includes("Petrol")}
+                      onChange={handleFuelChange}
+                      name="Petrol"
+                      sx={{
                         color: "#4F46E5",
                         padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Petrol
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (67)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Checkbox
-                    checked={fuelTypes.includes("Hybrid")}
-                    onChange={handleFuelChange}
-                    name="Hybrid"
-                    sx={{
-                      color: "#4F46E5",
-                      padding: 0,
-                      "&.Mui-checked": {
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          padding: 0,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                      Petrol
+                      <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                        (67)
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Checkbox
+                      checked={fuelTypes.includes("Hybrid")}
+                      onChange={handleFuelChange}
+                      name="Hybrid"
+                      sx={{
                         color: "#4F46E5",
                         padding: 0,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2 ">
-                    Hybrid
-                    <span className="ml-2 text-[#999999] text-[12px] font-medium">
-                      (155)
-                    </span>
-                  </p>
-                </div>
-                <div className="flex justify-between items-center mt-5">
-                  <p className="flex items-center font-bold text-[12px]">
-                    Towbar
-                    <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
-                  </p>
-                </div>
-                <div className="flex mt-2">
-                  <Switch
-                    checked={towBarTypes}
-                    onChange={handleTowBarChange}
-                    name="Towbar"
-                    sx={{
-                      marginLeft: -1.2,
-                      color: "#4F46E5",
-                      "&.Mui-checked": {
-                        color: "#4F46E5",
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          padding: 0,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2 ">
+                      Hybrid
+                      <span className="ml-2 text-[#999999] text-[12px] font-medium">
+                        (155)
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center mt-5">
+                    <p className="flex items-center font-bold text-[12px]">
+                      Towbar
+                      <MdOutlineErrorOutline className="w-[16px] h-[16px] text-[#999999] ml-2" />
+                    </p>
+                  </div>
+                  <div className="flex mt-2">
+                    <Switch
+                      checked={towBarTypes}
+                      onChange={handleTowBarChange}
+                      name="Towbar"
+                      sx={{
                         marginLeft: -1.2,
-                      },
-                    }}
-                  />
-                  <p className="text-[14px] font-medium text-[#666666] ml-2">
-                    Display only models with Tow hooks
-                  </p>
-                </div>
-              </div>
-              <div className="w-full md:ml-5 ml-2">
-                <div className="flex justify-between items-center">
-                  <p className="text-[14px] font-medium md:pl-3  text-[#666666]">
-                    <span className="text-[#262626] font-semibold">
-                      {totalCards || 0}
-                    </span>{" "}
-                    cars available for
-                    <span className="text-[#262626] font-semibold">
-                      {" "}
-                      rental
-                    </span>{" "}
-                    between{" "}
-                    <span className="text-[#262626] font-semibold">
-                      {" "}
-                      26 Feb - 29 Feb (3 days)
-                    </span>
-                  </p>
-                  <p className="text-[14px] font-medium text-[#666666] mr-2">
-                    Price (low to high)
-                  </p>
-                </div>
-                <div className="md:p-[12px] p-1">
-                  {loading ? (
-                    <>
-                      <div className=" w-full  text-center">
-                        <Stack spacing={5} className="mt-5 w-full">
-                          {/* For variant="text", adjust the height via font-size */}
-                          <Skeleton
-                            variant="text"
-                            className="w-full"
-                            sx={{ fontSize: "1rem" }}
-                            height={60}
-                          />
-                          {/* For other variants, adjust the size with `width` and `height` */}
-                          <Skeleton
-                            variant="rectangular"
-                            width={120}
-                            height={100}
-                          />
-
-                          <Skeleton variant="rounded" width="40%" height={40} />
-
-                          <Skeleton variant="rounded" width="20%" height={25} />
-                        </Stack>
-                        {/* <h1 className=" font-medium text-[50px]">
-                        Loading Cars....
-                      </h1> */}
-                      </div>
-                      <div className=" w-full mt-10">
-                        <Stack spacing={5} className="mt-5 w-full">
-                          {/* For variant="text", adjust the height via font-size */}
-                          <Skeleton
-                            variant="text"
-                            className="w-full"
-                            sx={{ fontSize: "1rem" }}
-                            height={60}
-                          />
-                          {/* For other variants, adjust the size with `width` and `height` */}
-                          <Skeleton
-                            variant="rectangular"
-                            width={120}
-                            height={100}
-                          />
-
-                          <Skeleton variant="rounded" width="40%" height={40} />
-
-                          <Skeleton variant="rounded" width="20%" height={25} />
-                        </Stack>
-                        {/* <h1 className=" font-medium text-[50px]">
-                        Loading Cars....
-                      </h1> */}
-                      </div>
-                      <div className=" w-full mt-10">
-                        <Stack spacing={5} className="mt-5 w-full">
-                          {/* For variant="text", adjust the height via font-size */}
-                          <Skeleton
-                            variant="text"
-                            className="w-full"
-                            sx={{ fontSize: "1rem" }}
-                            height={60}
-                          />
-                          {/* For other variants, adjust the size with `width` and `height` */}
-                          <Skeleton
-                            variant="rectangular"
-                            width={120}
-                            height={100}
-                          />
-
-                          <Skeleton variant="rounded" width="40%" height={40} />
-
-                          <Skeleton variant="rounded" width="20%" height={25} />
-                        </Stack>
-                        {/* <h1 className=" font-medium text-[50px]">
-                        Loading Cars....
-                      </h1> */}
-                      </div>
-                    </>
-                  ) : carListData?.length === 0 ? (
-                    <div className="flex items-center justify-center w-full h-[300px] text-center">
-                      <h1 className="font-medium text-[50px]">No car found!</h1>
-                    </div>
-                  ) : (
-                    carListData
-                      ?.slice(indexOfFirstCard, indexOfLastCard)
-                      .map((item, index) => (
-                        <FindCarRightPart
-                          carData={item}
-                          NextGoButton={props.NextGo}
-                          key={index}
-                        />
-                      ))
-                  )}
-                  {currentPage === Math.ceil(totalCards / cardsPerPage) && (
-                    <div className="py-[12px] mt-10">
-                      <div className="flex flex-wrap lg:justify-between gap-6">
-                        {[1, 2, 3, 4, 5].map((items, key) => {
-                          return (
-                            <>
-                              <div
-                                className="md:mt-0 shadow-md p-5 bg-[#FFFFFF] text-center rounded-lg"
-                                key={key}
-                              >
-                                <h1 className="text-[20px] font-bold text-[#262626]">
-                                  24 Feb - 27 Feb
-                                </h1>
-                                <p className="mt-2 text-[#666666] text-[20px] font-medium">
-                                  8 cars available
-                                </p>
-                                <button
-                                  type="button"
-                                  className="text-[#4F46E5] mt-7 w-full text-[14px] md:w-[167px] font-medium  border border-[#4F46E5]  bg-white rounded-sm px-10 py-2"
-                                >
-                                  Show cars
-                                </button>
-                              </div>
-                            </>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="mt-5">
-                    <Stack spacing={2}>
-                      <Pagination
-                        count={Math.ceil(totalCards / cardsPerPage)}
-                        variant="outlined"
-                        shape="rounded"
-                        page={currentPage}
-                        onChange={handleChangePagination}
-                        sx={{
-                          "& .Mui-selected": {
-                            backgroundColor: "#4F46E5",
-                            color: "#4F46E5",
-                          },
-                        }}
-                      />
-                    </Stack>
+                        color: "#4F46E5",
+                        "&.Mui-checked": {
+                          color: "#4F46E5",
+                          marginLeft: -1.2,
+                        },
+                      }}
+                    />
+                    <p className="text-[14px] font-medium text-[#666666] ml-2">
+                      Display only models with Tow hooks
+                    </p>
                   </div>
                 </div>
+                <div className="md:w-[902px] w-full">
+                  <div className="flex justify-between items-center">
+                    <p className="text-[14px] font-medium md:pl-3  text-[#666666]">
+                      <span className="text-[#262626] font-semibold">
+                        {totalCards || 0}
+                      </span>{" "}
+                      cars available for
+                      <span className="text-[#262626] font-semibold">
+                        {" "}
+                        rental
+                      </span>{" "}
+                      between{" "}
+                      <span className="text-[#262626] font-semibold">
+                        {" "}
+                        26 Feb - 29 Feb (3 days)
+                      </span>
+                    </p>
+                    <p className="text-[14px] font-medium text-[#666666] mr-2">
+                      Price (low to high)
+                    </p>
+                  </div>
+                  <div className="md:p-[12px] p-1">
+                    {loading ? (
+                      <>
+                        <div className=" w-full  text-center">
+                          <Stack spacing={5} className="mt-5 w-full">
+                            {/* For variant="text", adjust the height via font-size */}
+                            <Skeleton
+                              variant="text"
+                              className="w-full"
+                              sx={{ fontSize: "1rem" }}
+                              height={60}
+                            />
+                            {/* For other variants, adjust the size with `width` and `height` */}
+                            <Skeleton
+                              variant="rectangular"
+                              width={120}
+                              height={100}
+                            />
 
-                <div></div>
+                            <Skeleton
+                              variant="rounded"
+                              width="40%"
+                              height={40}
+                            />
+
+                            <Skeleton
+                              variant="rounded"
+                              width="20%"
+                              height={25}
+                            />
+                          </Stack>
+                          {/* <h1 className=" font-medium text-[50px]">
+                        Loading Cars....
+                      </h1> */}
+                        </div>
+                        <div className=" w-full mt-10">
+                          <Stack spacing={5} className="mt-5 w-full">
+                            {/* For variant="text", adjust the height via font-size */}
+                            <Skeleton
+                              variant="text"
+                              className="w-full"
+                              sx={{ fontSize: "1rem" }}
+                              height={60}
+                            />
+                            {/* For other variants, adjust the size with `width` and `height` */}
+                            <Skeleton
+                              variant="rectangular"
+                              width={120}
+                              height={100}
+                            />
+
+                            <Skeleton
+                              variant="rounded"
+                              width="40%"
+                              height={40}
+                            />
+
+                            <Skeleton
+                              variant="rounded"
+                              width="20%"
+                              height={25}
+                            />
+                          </Stack>
+                          {/* <h1 className=" font-medium text-[50px]">
+                        Loading Cars....
+                      </h1> */}
+                        </div>
+                        <div className=" w-full mt-10">
+                          <Stack spacing={5} className="mt-5 w-full">
+                            {/* For variant="text", adjust the height via font-size */}
+                            <Skeleton
+                              variant="text"
+                              className="w-full"
+                              sx={{ fontSize: "1rem" }}
+                              height={60}
+                            />
+                            {/* For other variants, adjust the size with `width` and `height` */}
+                            <Skeleton
+                              variant="rectangular"
+                              width={120}
+                              height={100}
+                            />
+
+                            <Skeleton
+                              variant="rounded"
+                              width="40%"
+                              height={40}
+                            />
+
+                            <Skeleton
+                              variant="rounded"
+                              width="20%"
+                              height={25}
+                            />
+                          </Stack>
+                          {/* <h1 className=" font-medium text-[50px]">
+                        Loading Cars....
+                      </h1> */}
+                        </div>
+                      </>
+                    ) : carListData?.length === 0 ? (
+                      <div className="flex items-center justify-center w-full h-[300px] text-center">
+                        <h1 className="font-medium text-[50px]">
+                          No car found!
+                        </h1>
+                      </div>
+                    ) : (
+                      carListData
+                        ?.slice(indexOfFirstCard, indexOfLastCard)
+                        .map((item, index) => (
+                          <FindCarRightPart
+                            carData={item}
+                            NextGoButton={props.NextGo}
+                            key={index}
+                          />
+                        ))
+                    )}
+                    {currentPage === Math.ceil(totalCards / cardsPerPage) && (
+                      <div className="py-[12px] mt-10">
+                        <div className="flex flex-wrap lg:justify-between">
+                          {[1, 2, 3, 4].map((items, key) => {
+                            return (
+                              <>
+                                <div
+                                  className="md:mt-0 shadow-md p-5 bg-[#FFFFFF] text-center rounded-lg"
+                                  key={key}
+                                >
+                                  <h1 className="text-[20px] font-bold text-[#262626]">
+                                    24 Feb - 27 Feb
+                                  </h1>
+                                  <p className="mt-2 text-[#666666] text-[20px] font-medium">
+                                    8 cars available
+                                  </p>
+                                  <button
+                                    type="button"
+                                    className="text-[#4F46E5] mt-7 w-full text-[14px] md:w-[167px] font-medium  border border-[#4F46E5]  bg-white rounded-sm px-10 py-2"
+                                  >
+                                    Show cars
+                                  </button>
+                                </div>
+                              </>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="mt-5">
+                      <Stack spacing={2}>
+                        <Pagination
+                          count={Math.ceil(totalCards / cardsPerPage)}
+                          variant="outlined"
+                          shape="rounded"
+                          page={currentPage}
+                          onChange={handleChangePagination}
+                          sx={{
+                            "& .Mui-selected": {
+                              backgroundColor: "#4F46E5",
+                              color: "#4F46E5",
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  </div>
+
+                  <div></div>
+                </div>
               </div>
             </div>
           </div>

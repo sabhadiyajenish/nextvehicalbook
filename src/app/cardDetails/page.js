@@ -27,8 +27,8 @@ const Page = () => {
     <>
       <div className="bg-lightWhite">
         <div className="h-fit  flex items-center justify-center ">
-          <div className="shadow-lg w-5/6 mt-16 md:mt-24 md:w-[1400px] p-8 h-fit relative rounded-md bg-white">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+          <div className="shadow-lg w-5/6 mt-16 md:mt-24 md:w-[1366px]  p-8 h-fit relative rounded-md bg-white mx-[80px]">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-2 ">
               <div className="bg-gray-200 sm:col-span-2 p-4">
                 <Image
                   className="rounded-lg w-full md:w-[446px] h-50 md:h-[337px]"
@@ -247,7 +247,7 @@ const Page = () => {
           </div>
         </div>
         <div className="h-fit mt-10 flex items-center justify-center">
-          <div className="shadow-lg w-5/6 md:w-[1400px] p-8 h-fit relative rounded-md bg-blue-300 bg-white">
+          <div className="shadow-lg w-5/6 md:w-[1366px] p-8 h-fit relative rounded-md bg-blue-300 bg-white mx-[80px]">
             <div className="grid md:grid-cols-3 gap-2">
               <div className="bg-gray-200 p-4">
                 <h6 className="font-bold text-md mt-5">About the car:</h6>
@@ -319,7 +319,7 @@ const Page = () => {
           </div>
         </div>
         <div className="h-fit mt-10 pb-10 flex items-center justify-center">
-          <div className="shadow-lg w-5/6 md:w-[1400px] p-8 h-fit relative rounded-md bg-blue-300 bg-white">
+          <div className="shadow-lg w-5/6 md:w-[1366px] p-8 h-fit relative rounded-md bg-blue-300 bg-white mx-[80px]">
             <div className="flex flex-wrap md:flex-nowrap w-full gap-2">
               <div className="bg-gray-200 w-full md:w-[300px] p-4">
                 <h6 className="font-bold text-md mt-5">Department Address</h6>

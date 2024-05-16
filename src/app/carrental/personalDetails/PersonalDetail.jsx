@@ -1,6 +1,6 @@
 "use client";
 import HomeNavLine from "@/app/components/homeNavLine";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiHome } from "react-icons/ci";
 import CardImageAddons from "../addOnes/CardImageAddons";
 import Radio from "@mui/material/Radio";
@@ -17,20 +17,25 @@ const PersonalDetail = (props) => {
   const handleFormTypeChange = (event) => {
     setFormType(event.target.value);
   };
+  useEffect(() => {
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   return (
     <>
       <div className="bg-[#F2F2F2] pb-5">
-        <div className=" container mx-auto ">
-          <div className="py-3 flex justify-center ml-2">
+        <div className=" container mx-auto max-w-[1366px] ">
+          <div className="py-3 flex justify-center md:mx-[80px]">
             <HomeNavLine
               titleText1="Search results"
               titleText2="Add-ons"
+              titleText3="Personal details"
               Icon={CiHome}
             />
           </div>
           <div className="flex lg:flex-nowrap  gap-6 flex-wrap lg:mx-[80px]">
             <div className="w-full">
-              <div className="lg:w-[822px]  py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
+              <div className="max-w-[822px]  py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
                 <div>
                   <FormControl>
                     <RadioGroup
@@ -55,7 +60,7 @@ const PersonalDetail = (props) => {
                   </FormControl>
                 </div>
                 <div>
-                  <div className="grid md:grid-cols-2 gap-y-9 gap-x-4 mt-[32px]">
+                  <div className="grid md:grid-cols-2  gap-y-9 gap-x-4 mt-[32px]">
                     {formType === "Company" && (
                       <>
                         <TextField
@@ -196,7 +201,7 @@ const PersonalDetail = (props) => {
                 </div>
               </div>
             </div>
-            <div className="md:w-[520px] w-full">
+            <div className="md:max-w-[360px] w-full">
               <CardImageAddons />
             </div>
           </div>

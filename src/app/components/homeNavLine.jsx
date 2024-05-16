@@ -10,8 +10,8 @@ const HomeNavLine = ({
   Icon,
 }) => {
   return (
-    <div className="w-full sm:ml-[80px] sm:mr-[80px] flex items-center mt-4 mb-3">
-      <div>
+    <div className="w-full  ml-2 flex items-center mt-4 mb-3">
+      <div className="">
         {CiHome ? (
           <Icon className="text-[#4F46E5]  w-[20px] h-[20px]" />
         ) : (

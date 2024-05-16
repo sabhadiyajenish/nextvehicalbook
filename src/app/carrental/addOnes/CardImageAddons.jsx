@@ -13,7 +13,7 @@ const CardImageAddons = () => {
   };
   return (
     <>
-      <div className="sm:w-[370px] bg-[#FFFFFF]">
+      <div className="sm:w-[360px] bg-[#FFFFFF]">
         <div className="w-full relative">
           <Carousel
             navButtonsAlwaysVisible={true}
@@ -24,10 +24,16 @@ const CardImageAddons = () => {
                 opacity: "0.5",
               },
             }}
-            indicatorIconButtonProps={{
+            indicatorContainerProps={{
               style: {
-                // position: "absolute",
-                marginTop: "-110px",
+                position: "absolute",
+                bottom: "20px", // adjust this value according to your layout
+                // top: "10px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                zIndex: 1000,
+                color: "#ffffff",
               },
             }}
             navButtonsWrapperProps={{ style: { marginRight: "18px" } }}
@@ -47,7 +53,7 @@ const CardImageAddons = () => {
             })}
           </Carousel>
         </div>
-        <div className="w-full px-5 pb-6 ">
+        <div className="w-full px-5 pb-6 mt-5">
           <button class="bg-blue-500 text-[#262626] bg-lightGrey px-2 border border-none rounded-full">
             Mid range car
           </button>
@@ -60,7 +66,12 @@ const CardImageAddons = () => {
               <Divider
                 orientation="vertical"
                 flexItem
-                className="absolute left-2 top-4 h-[130px] bg-lightBlue opacity-35"
+                className="absolute left-2 top-0 bg-lightBlue opacity-35 transition-all duration-1000"
+                style={{
+                  top: "0",
+                  height: "130px",
+                  transitionProperty: "top, height",
+                }}
               />
             </div>
             <div className="ml-4">

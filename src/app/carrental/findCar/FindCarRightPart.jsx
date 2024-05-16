@@ -33,10 +33,10 @@ const FindCarRightPart = (props) => {
   return (
     <>
       <div className="shadow-lg w-full mt-5  h-fit  rounded-md bg-white">
-        <div className="flex justify-between flex-wrap md:flex-nowrap w-full gap-1 pb-6">
+        <div className="flex justify-between flex-wrap md:flex-nowrap w-full gap-1 pb-4  md:pr-6">
           <div className="flex flex-wrap lg:flex-nowrap gap-1">
-            <div className="pt-6 md:pl-7 pl-3 pr-3 md:pr-7 w-full md:w-[400px] lg:w-[530px]">
-              <div className="w-full ">
+            <div className="pt-6 md:pl-7 pl-3 pr-3 md:pr-7">
+              <div className="w-full md:w-[246px] md:h-[228px]">
                 <Carousel
                   navButtonsAlwaysVisible={true}
                   navButtonsProps={{
@@ -57,7 +57,7 @@ const FindCarRightPart = (props) => {
                 >
                   {carVal?.subImagees?.map((item, i) => (
                     <Image
-                      className="rounded-lg w-full lg:w-[530px] h-[240px]"
+                      className="rounded-lg w-full md:w-[246px] md:h-[228px]"
                       src={item}
                       alt=""
                       height={100}
@@ -67,7 +67,7 @@ const FindCarRightPart = (props) => {
                   ))}
                 </Carousel>
               </div>
-              <div className="-mt-4">
+              <div className="mt-3 md:w-[246px]">
                 <p className="text-[#666666] md:text-[12px] text-[18px] font-normal">
                   {isExpanded ? content : truncatedContent + " ..."}
                 </p>
@@ -80,9 +80,9 @@ const FindCarRightPart = (props) => {
               </div>
             </div>
 
-            <div className=" pt-6 lg:pr-0 pr-2 lg:ml-0 ml-3 w-full">
+            <div className=" pt-6 lg:ml-0 ml-3 ">
               <h1 className="text-[20px] font-semibold">{carVal?.title}</h1>
-              <button className="bg-blue-500 bg-lightGrey text-[12px]  mt-2 px-2 border border-none rounded-full">
+              <button className="bg-blue-500 bg-lightGrey text-[12px]  mt-1 px-2 border border-none rounded-full">
                 Mid range car
               </button>
               {carVal?.carInformation?.map((datas, index) => {
@@ -93,49 +93,49 @@ const FindCarRightPart = (props) => {
                   >
                     <div className="flex items-center">
                       <AirlineSeatReclineExtraIcon className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         {datas?.seat} Seats
                       </h6>
                     </div>
                     <div className="flex items-center">
                       <PiSteeringWheelLight className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         {datas?.manual}
                       </h6>
                     </div>
                     <div className="flex mt-2 items-center">
                       <SpeedIcon className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         {datas?.perLiter} km/l
                       </h6>
                     </div>
                     <div className="flex mt-2 items-center">
                       <LocalGasStationIcon className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         {datas?.oilType}
                       </h6>
                     </div>
                     <div className="flex mt-2 items-center">
                       <DoorFrontOutlinedIcon className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         {datas?.doors} Doors
                       </h6>
                     </div>
                     <div className="flex mt-2 items-center">
                       <TbFishHook className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         With tow hook
                       </h6>
                     </div>
                     <div className="flex mt-2 items-center">
                       <MdOutlineColorLens className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         {datas?.carColor}
                       </h6>
                     </div>
                     <div className="flex mt-2 items-center">
                       <MdOutlineDirectionsCar className="text-grey w-[16px] h-[16px]" />
-                      <h6 className="ml-2 font-normal text-[14px]">
+                      <h6 className="ml-1 font-normal text-[#262626] text-[14px]">
                         {datas?.model} Model
                       </h6>
                     </div>
@@ -155,7 +155,7 @@ const FindCarRightPart = (props) => {
                 </div>
               </div>
 
-              <div className="md:mt-4 mt-6 flex flex-wrap ">
+              <div className="md:mt-4 mt-5 flex flex-wrap ">
                 <div>
                   <h6 className="font-bold text-[12px] ">Pick up time</h6>
                   <p className="font-normal text-[16px] text-[#666666]  mb-1">
@@ -163,7 +163,7 @@ const FindCarRightPart = (props) => {
                     m
                   </p>
                 </div>
-                <div className=" md:ml-16 ml-10">
+                <div className="md:ml-10 md:mt-0 mt-5">
                   <h6 className="font-bold text-[12px] ">Return time</h6>
                   <p className="font-normal text-[16px] text-[#666666] mb-1">
                     {pickuphour}h.{pickupminute}m - {returnhour}h.{returnminute}
@@ -173,14 +173,19 @@ const FindCarRightPart = (props) => {
               </div>
             </div>
           </div>
-          <div className="flex gap-1 mr-7">
+          <div className="flex">
             <Divider
               orientation="vertical"
               flexItem
-              className=" md:block hidden"
-              style={{ margin: "18px 4px", height: "auto" }}
+              className="md:block hidden"
+              style={{
+                margin: "18px 4px",
+                height: "auto",
+                borderRight: "2px dashed #CCCCCC", // Adjust color and width as needed
+              }}
             />
-            <div className=" py-4 md:pl-2 flex md:flex-col md:gap-0 gap-5 md:items-start  items-end w-full md:ml-7 ml-3">
+
+            <div className=" py-4 md:pl-2 flex md:flex-col md:gap-0 gap-5 md:items-start  items-end w-full">
               <div className="w-full flex flex-col items-center justify-center">
                 <div
                   className={`p-4 border border-[#E6E6E6] w-[166px] md:h-[82px] text-center rounded-md  relative`}
@@ -193,20 +198,20 @@ const FindCarRightPart = (props) => {
                     total (as per day cost)
                   </p>
                 </div>
-                <p className="mt-3 text-[14px] font-semibold">
+                <p className="mt-4 text-[14px] font-semibold">
                   {carVal?.perDayCost} kr.
                   <span className="text-[12px] font-medium">/day</span>
                 </p>
-                <p className="mt-3 text-[14px] font-semibold">
+                <p className="mt-4 text-[14px] font-semibold">
                   {carVal?.perDayCost * 28} kr.
                   <span className="text-[12px] font-medium">/month</span>
                 </p>
                 {/* <Link href="/carBookingSuccess"> */}
               </div>
-              <div className="text-center w-full md:ml-0 sm:ml-10 ml-5">
+              <div className="text-center w-full">
                 <button
                   type="button"
-                  className="text-[#4F46E5] md:mt-20 mt-7 w-full text-[14px] font-medium  border border-[#4F46E5]  bg-white rounded-sm px-10 py-2"
+                  className="text-[#4F46E5] md:mt-[80px] mt-7 w-full text-[14px] font-medium  border border-[#4F46E5]  bg-white rounded-sm py-1"
                   onClick={props.NextGoButton}
                 >
                   Rent now
