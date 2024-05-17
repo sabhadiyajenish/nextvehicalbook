@@ -90,7 +90,6 @@ const FindCar = (props) => {
   useEffect(() => {
     dispatch(getCarList());
   }, [dispatch]);
-  console.log("set type seat<<<<<<", seatTypes);
 
   useEffect(() => {
     if (carTypeSearch === "") {
@@ -130,7 +129,7 @@ const FindCar = (props) => {
       selectedTypes?.length !== 0
         ? carList.filter((car) => selectedTypes.includes(car?.carSizeType))
         : carList;
-    const filteredByCostRange = filteredByCarType.filter(
+    const filteredByCostRange = filteredByCarType?.filter(
       (car) =>
         car?.perDayCost >= Number(value1[0]) &&
         car?.perDayCost <= Number(value1[1])
@@ -145,28 +144,28 @@ const FindCar = (props) => {
 
     const filteredBySeats =
       seatTypes.length !== 0
-        ? filteredByTransmission.filter((car) =>
+        ? filteredByTransmission?.filter((car) =>
             seatTypes.includes(String(car?.carInformation[0]?.seat))
           )
         : filteredByTransmission;
 
     const filteredByFuels =
       fuelTypes.length !== 0
-        ? filteredBySeats.filter((car) =>
+        ? filteredBySeats?.filter((car) =>
             fuelTypes.includes(car?.carInformation[0]?.oilType)
           )
         : filteredBySeats;
 
     const filteredByTows =
       towBarTypes !== false
-        ? filteredByFuels.filter(
+        ? filteredByFuels?.filter(
             (car) => car?.carInformation[0]?.hook === "Yes"
           )
         : filteredByFuels;
 
     const filteredByLocation =
       locationTypes.length !== 0
-        ? filteredByTows.filter((car) => locationTypes.includes(car?.address))
+        ? filteredByTows?.filter((car) => locationTypes.includes(car?.address))
         : filteredByTows;
 
     setCarListData(filteredByLocation);

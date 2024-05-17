@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/navbar";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "./store/Providers";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 

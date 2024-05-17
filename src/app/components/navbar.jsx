@@ -24,7 +24,7 @@ const navItems = [
   },
   {
     title: "Location",
-    path: "/cardDetails",
+    path: "/",
   },
   {
     title: "About",
@@ -32,7 +32,7 @@ const navItems = [
   },
   {
     title: "Car types",
-    path: "/cardDetails",
+    path: "/",
   },
   {
     title: "Contact",

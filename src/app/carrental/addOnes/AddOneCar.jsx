@@ -8,11 +8,31 @@ import { IoAddCircleOutline, IoRemoveCircleOutline } from "react-icons/io5";
 import { RiErrorWarningLine } from "react-icons/ri";
 import CardImageAddons from "./CardImageAddons";
 const AddOneCar = (props) => {
+  const [counters, setCounters] = useState({
+    kilometers: 0,
+    winterWheels: 0,
+    roofBox: 0,
+  });
   const [toggleCard, setToggleCard] = useState(1);
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const incrementCounter = (counterName, initialValue = 1) => {
+    setCounters((prevCounters) => ({
+      ...prevCounters,
+      [counterName]: Math.max(0, prevCounters[counterName] + initialValue), // Ensure non-negative value
+    }));
+  };
+
+  const decrementCounter = (counterName, initialValue = 1) => {
+    setCounters((prevCounters) => ({
+      ...prevCounters,
+      [counterName]: Math.max(0, prevCounters[counterName] - initialValue), // Ensure non-negative value
+    }));
+  };
+
   return (
     <>
       <div className="bg-[#F2F2F2] pb-5">
@@ -45,11 +65,17 @@ const AddOneCar = (props) => {
                     Add extra kilometers
                   </h1>
                   <div className="w-[174px] h-[48px] flex justify-between p-2 items-center border border-[#E6E6E6] rounded-lg md:ml-3">
-                    <IoRemoveCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] md:ml-3 ml-1 cursor-pointer" />
+                    <IoRemoveCircleOutline
+                      className="text-[#4F46E5] w-[19.5px] h-[19.5px] md:ml-3 ml-1 cursor-pointer"
+                      onClick={() => decrementCounter("kilometers", 5)}
+                    />
                     <p className="text-[14px] text-[#999999] font-semibold">
-                      0 km
+                      {counters?.kilometers} km
                     </p>
-                    <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] md:mr-3 mr-1 cursor-pointer" />
+                    <IoAddCircleOutline
+                      className="text-[#4F46E5] w-[19.5px] h-[19.5px] md:mr-3 mr-1 cursor-pointer"
+                      onClick={() => incrementCounter("kilometers", 5)}
+                    />
                   </div>
                   <p className="text-[14px] text-[#999999] font-medium md:ml-5">
                     DKK 1.60/km
@@ -109,11 +135,17 @@ const AddOneCar = (props) => {
                     <div className="md:mt-0 mt-3">
                       <div className="flex gap-4 items-center">
                         <div className="w-[144px] h-[48px] flex justify-between p-2 items-center border border-[#E6E6E6] rounded-lg md:ml-3">
-                          <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] ml-3 cursor-pointer" />
+                          <IoRemoveCircleOutline
+                            className="text-[#4F46E5] w-[19.5px] h-[19.5px] ml-3 cursor-pointer"
+                            onClick={() => decrementCounter("winterWheels")}
+                          />
                           <p className="text-[14px] text-[#999999] font-semibold">
-                            1
+                            {counters?.winterWheels}
                           </p>
-                          <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer" />
+                          <IoAddCircleOutline
+                            className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer"
+                            onClick={() => incrementCounter("winterWheels")}
+                          />
                         </div>
                         <div className="mr-5">
                           <h1 className="mr-2 text-[#666666] font-semibold text-[16px]">
@@ -141,11 +173,17 @@ const AddOneCar = (props) => {
                     <div className="md:mt-0 mt-3">
                       <div className="flex gap-4 items-center">
                         <div className="w-[144px] h-[48px] flex justify-between p-2 items-center border border-[#E6E6E6] rounded-lg md:ml-3">
-                          <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] ml-3 cursor-pointer" />
+                          <IoRemoveCircleOutline
+                            className="text-[#4F46E5] w-[19.5px] h-[19.5px] ml-3 cursor-pointer"
+                            onClick={() => decrementCounter("roofBox")}
+                          />
                           <p className="text-[14px] text-[#999999] font-semibold">
-                            2
+                            {counters?.roofBox}
                           </p>
-                          <IoAddCircleOutline className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer" />
+                          <IoAddCircleOutline
+                            className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer"
+                            onClick={() => incrementCounter("roofBox")}
+                          />
                         </div>
                         <div className="mr-9">
                           <h1 className="mr-2 text-[#666666] font-semibold text-[16px]">

@@ -12,10 +12,16 @@ import { TbFishHook } from "react-icons/tb";
 import Divider from "@mui/material/Divider";
 import Carousel from "react-material-ui-carousel";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { AddCarDetails } from "@/app/store/CarDetails/carDetails.slice";
 
 const FindCarRightPart = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const carVal = props.carData;
+  const router = useRouter();
+  const dispatch = useDispatch();
+
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
@@ -30,6 +36,12 @@ const FindCarRightPart = (props) => {
 
   const returnhour = date2.getHours();
   const returnminute = date2.getMinutes();
+
+  const handleCarDetails = () => {
+    dispatch(AddCarDetails(carVal));
+    router.push(`/cardDetails/${carVal?._id}`);
+  };
+
   return (
     <>
       <div className="shadow-lg w-full mt-5  h-fit  rounded-md bg-white">
@@ -216,11 +228,12 @@ const FindCarRightPart = (props) => {
                 >
                   Rent now
                 </button>
-                <Link href="/cardDetails">
-                  <p className="md:mt-4 mt-3 text-[#4F46E5] md:text-[14px] text-[18px] font-medium cursor-pointer">
-                    View car details
-                  </p>
-                </Link>
+                <p
+                  className="md:mt-4 mt-3 text-[#4F46E5] md:text-[14px] text-[18px] font-medium cursor-pointer"
+                  onClick={handleCarDetails}
+                >
+                  View car details
+                </p>
               </div>
             </div>
           </div>
