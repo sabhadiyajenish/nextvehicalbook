@@ -7,12 +7,9 @@ const source = CancelToken.source();
 export const getOneCarData = createAsyncThunk("auth/getOneCars", async (id) => {
   console.log("<<<<<<<<<<id", id);
   try {
-    const responce = await axios.post(
-      `http://localhost:3000/api/cars/getonecar/${id}`,
-      {
-        cancelToken: source.token,
-      }
-    );
+    const responce = await axios.post(`/api/cars/getonecar/${id}`, {
+      cancelToken: source.token,
+    });
     //  return () => abortController.abort();
     return responce?.data;
   } catch (error) {
