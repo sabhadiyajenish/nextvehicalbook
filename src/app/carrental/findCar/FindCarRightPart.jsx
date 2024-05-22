@@ -11,10 +11,11 @@ import { PiSteeringWheelLight } from "react-icons/pi";
 import { TbFishHook } from "react-icons/tb";
 import Divider from "@mui/material/Divider";
 import Carousel from "react-material-ui-carousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AddCarDetails } from "@/app/store/CarDetails/carDetails.slice";
+import { AddCarBookInfo } from "@/app/store/CarBookInfo/carbook.slice";
 
 const FindCarRightPart = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -41,7 +42,10 @@ const FindCarRightPart = (props) => {
     dispatch(AddCarDetails(carVal));
     router.push(`/cardDetails/${carVal?._id}`);
   };
-
+  const handleRentNow = () => {
+    dispatch(AddCarBookInfo(carVal));
+    props.NextGoButton();
+  };
   return (
     <>
       <div className="shadow-lg w-full mt-5  h-fit  rounded-md bg-white">
@@ -224,7 +228,7 @@ const FindCarRightPart = (props) => {
                 <button
                   type="button"
                   className="text-[#4F46E5] md:mt-[80px] mt-7 w-full text-[14px] font-medium  border border-[#4F46E5]  bg-white rounded-sm py-1"
-                  onClick={props.NextGoButton}
+                  onClick={handleRentNow}
                 >
                   Rent now
                 </button>

@@ -4,9 +4,27 @@ import Carousel from "react-material-ui-carousel";
 import Divider from "@mui/material/Divider";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const CardImageAddons = () => {
   const [showContentPayment, setShowContentPayment] = useState(true);
+
+  const { carInfo, extraKilometers } = useSelector(
+    (state) => state.carBookInfo
+  );
+  const date1 = new Date(carInfo?.pickup_time);
+  const date2 = new Date(carInfo?.return_time);
+
+  const formattedPicupDate = date1.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+  const formattedReturnDate = date2.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
 
   const handleToggleContentPayment = () => {
     setShowContentPayment(!showContentPayment);
@@ -38,12 +56,12 @@ const CardImageAddons = () => {
             }}
             navButtonsWrapperProps={{ style: { marginRight: "18px" } }}
           >
-            {[1, 2, 3].map((item, key) => {
+            {carInfo?.subImagees?.map((item, key) => {
               return (
                 <div className="flex gap-10 relative w-full" key={key}>
                   <Image
                     className="rounded-lg w-fit h-[252px]"
-                    src="/jeep.jfif"
+                    src={item}
                     alt=""
                     height={300}
                     width={300}
@@ -54,11 +72,11 @@ const CardImageAddons = () => {
           </Carousel>
         </div>
         <div className="w-full px-5 pb-6 mt-5">
-          <button class="bg-blue-500 text-[#262626] bg-lightGrey px-2 border border-none rounded-full">
+          <button className="bg-blue-500 text-[#262626] bg-lightGrey px-2 border border-none rounded-full">
             Mid range car
           </button>
           <h1 className=" font-semibold text-[#262626] mt-3 text-[24px]">
-            Renault Clio Sport Tourer
+            {carInfo?.title}
           </h1>
           <div className="mt-10 flex">
             <div className="relative">
@@ -82,9 +100,9 @@ const CardImageAddons = () => {
                 Date: 26 Feb, 2024
               </h1>
               <h1 className="font-medium  mt-1 text-[16px] text-[#666666]">
-                Between 8.30AM - 6 PM
+                Between {formattedPicupDate} - {formattedReturnDate}
               </h1>
-              <button class="bg-blue-500 bg-[#e2e1fa] text-[#262626] text-[12px] font-medium  mt-3 px-2 border border-none rounded-full">
+              <button className="bg-blue-500 bg-[#e2e1fa] text-[#262626] text-[12px] font-medium  mt-3 px-2 border border-none rounded-full">
                 3 days
               </button>
             </div>
@@ -106,7 +124,7 @@ const CardImageAddons = () => {
                 Date: 29 Feb, 2024
               </h1>
               <h1 className="font-medium  mt-1 text-[16px] text-[#666666]">
-                Between 8.30AM - 7 PM
+                Between {formattedPicupDate} - {formattedReturnDate}
               </h1>
             </div>
           </div>
@@ -157,7 +175,9 @@ const CardImageAddons = () => {
           <Divider orientation="horizontal" flexItem className="w-full mt-3" />
           <div className="flex justify-between mt-5">
             <div>
-              <h4 className="text-[#666666] text-[16px] font-medium">2 km</h4>
+              <h4 className="text-[#666666] text-[16px] font-medium">
+                {extraKilometers} km
+              </h4>
               <h4 className="text-[#666666] text-[12px] font-medium">
                 DKK 1.60/km
               </h4>
@@ -216,10 +236,10 @@ const CardImageAddons = () => {
             <h1 className=" font-semibold text-[20px]">To pay</h1>
             <div className="text-right">
               <h1 className="text-[#4F46E5] font-semibold text-[24px]">
-                1.200 kr.
+                {carInfo?.perDayCost * 3} kr.
               </h1>
               <p className="text-[#666666] text-[14px] font-medium">
-                299 kr. /day
+                {carInfo?.perDayCost} kr. /day
               </p>
             </div>
           </div>

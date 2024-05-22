@@ -11,6 +11,7 @@ import FindCar from "@/app/carrental/findCar/FindCar";
 import AddOneCar from "@/app/carrental/addOnes/AddOneCar";
 import PersonalDetail from "@/app/carrental/personalDetails/PersonalDetail";
 import CarPayment from "@/app/carrental/payment/CarPayment";
+import { useSelector } from "react-redux";
 const steps = [
   "Find your car",
   "Add-ons",
@@ -21,7 +22,8 @@ const steps = [
 const CarRental = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
-
+  const carAllInfo = useSelector((state) => state.carBookInfo);
+  console.log("car info book", carAllInfo);
   const totalSteps = () => {
     return steps.length;
   };
@@ -106,7 +108,11 @@ const CarRental = () => {
         <div className="w-full">
           {activeStep == "0" && <FindCar NextGo={handleNext} />}
           {activeStep == "1" && (
-            <AddOneCar NextGo={handleNext} NextBack={handleBack} />
+            <AddOneCar
+              NextGo={handleNext}
+              NextBack={handleBack}
+              item={carAllInfo}
+            />
           )}
           {activeStep == "2" && (
             <PersonalDetail NextGo={handleNext} NextBack={handleBack} />

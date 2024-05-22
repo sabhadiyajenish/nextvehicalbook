@@ -7,18 +7,38 @@ import { CiHome } from "react-icons/ci";
 import { IoAddCircleOutline, IoRemoveCircleOutline } from "react-icons/io5";
 import { RiErrorWarningLine } from "react-icons/ri";
 import CardImageAddons from "./CardImageAddons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  AddDriver,
+  AddExtraKilometers,
+  AddInsurance,
+  AddRoofBox,
+  AddWinterWheel,
+} from "@/app/store/CarBookInfo/carbook.slice";
 const AddOneCar = (props) => {
+  const { extraKilometers, roofBox, winterWheel, driver } = useSelector(
+    (state) => state.carBookInfo
+  );
   const [counters, setCounters] = useState({
-    kilometers: 0,
-    winterWheels: 0,
-    roofBox: 0,
+    kilometers: extraKilometers,
+    winterWheels: winterWheel,
+    roofBox: roofBox,
+    driver: driver,
   });
   const [toggleCard, setToggleCard] = useState(1);
+  const [carData, setCarData] = useState(props?.item?.carInfo);
+
+  const dispatch = useDispatch();
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
+  useEffect(() => {
+    dispatch(AddExtraKilometers(counters?.kilometers));
+    dispatch(AddWinterWheel(counters?.winterWheels));
+    dispatch(AddRoofBox(counters?.roofBox));
+    dispatch(AddInsurance(toggleCard == 1 ? "Basic" : "Premium"));
+  }, [counters]);
   const incrementCounter = (counterName, initialValue = 1) => {
     setCounters((prevCounters) => ({
       ...prevCounters,
@@ -32,7 +52,13 @@ const AddOneCar = (props) => {
       [counterName]: Math.max(0, prevCounters[counterName] - initialValue), // Ensure non-negative value
     }));
   };
-
+  const AddAditionalDriver = () => {
+    setCounters((prevCounters) => ({
+      ...prevCounters,
+      driver: !counters?.driver, // Ensure non-negative value
+    }));
+    dispatch(AddDriver(counters?.driver));
+  };
   return (
     <>
       <div className="bg-[#F2F2F2] pb-5">
@@ -70,7 +96,7 @@ const AddOneCar = (props) => {
                       onClick={() => decrementCounter("kilometers", 5)}
                     />
                     <p className="text-[14px] text-[#999999] font-semibold">
-                      {counters?.kilometers} km
+                      {extraKilometers} km
                     </p>
                     <IoAddCircleOutline
                       className="text-[#4F46E5] w-[19.5px] h-[19.5px] md:mr-3 mr-1 cursor-pointer"
@@ -140,7 +166,7 @@ const AddOneCar = (props) => {
                             onClick={() => decrementCounter("winterWheels")}
                           />
                           <p className="text-[14px] text-[#999999] font-semibold">
-                            {counters?.winterWheels}
+                            {winterWheel}
                           </p>
                           <IoAddCircleOutline
                             className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer"
@@ -178,7 +204,7 @@ const AddOneCar = (props) => {
                             onClick={() => decrementCounter("roofBox")}
                           />
                           <p className="text-[14px] text-[#999999] font-semibold">
-                            {counters?.roofBox}
+                            {roofBox}
                           </p>
                           <IoAddCircleOutline
                             className="text-[#4F46E5] w-[19.5px] h-[19.5px] mr-3 cursor-pointer"
@@ -226,8 +252,13 @@ const AddOneCar = (props) => {
                   </div>
                   <div className="mr-2 md:mt-0 mt-3">
                     <div className="flex gap-4 items-center">
-                      <button className="bg-[#4F46E5]  text-[#fff] w-[146px] h-[42px] rounded">
-                        Add
+                      <button
+                        className={`${
+                          counters?.driver ? " bg-[#d86a82]" : "bg-[#4F46E5]"
+                        }   text-[#fff] w-[146px] h-[42px] rounded`}
+                        onClick={AddAditionalDriver}
+                      >
+                        {counters?.driver ? "Remove" : "Add"}
                       </button>
                       <h1 className="mr-2 text-[#666666] font-semibold text-[16px]">
                         35 kr.
