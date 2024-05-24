@@ -52,7 +52,6 @@ const CarDialog = ({ onAdd, onClose, onUpdate, open, car }) => {
   const [imagePreviewsUpdates, setImagePreviewsUpdates] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
   const dispatch = useDispatch();
-  console.log("car<<<<<<<<<<<<<<", car);
   const {
     register,
     control,

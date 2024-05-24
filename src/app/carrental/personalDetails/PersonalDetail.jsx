@@ -10,9 +10,34 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
+import { useForm } from "react-hook-form";
+import {
+  AddressValidate,
+  CityValidate,
+  CompanyCVRValidate,
+  CompanyNameValidate,
+  DrivingLicenseValidate,
+  EmailValidate,
+  FirstNameValidate,
+  LastNameValidate,
+  PhoneNumberValidate,
+  PostalCodeValidate,
+} from "@/utils/validation/formCarValidation";
+import toast from "react-hot-toast";
 
 const PersonalDetail = (props) => {
   const [formType, setFormType] = useState("Individual");
+  const [accurate, setAccurate] = useState(true);
+  const [ternCondtion, setTermCondition] = useState(false);
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const handleFormTypeChange = (event) => {
     setFormType(event.target.value);
@@ -21,6 +46,23 @@ const PersonalDetail = (props) => {
     // Scroll to the top of the page when the component mounts
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const AddUserData = (items) => {
+    if (accurate && ternCondtion) {
+      console.log("ites data issss<<<<", items);
+      props.NextGo();
+    } else {
+      toast.error(
+        accurate == true
+          ? "Select terms & conditions"
+          : "Please Select confirm box",
+        { position: "top-center" }
+      );
+    }
+  };
+  const handleCheckboxChange = (event, setEvents) => {
+    setEvents(event.target.checked);
+  };
   return (
     <>
       <div className="bg-[#F2F2F2] pb-5">
@@ -59,125 +101,226 @@ const PersonalDetail = (props) => {
                     </RadioGroup>
                   </FormControl>
                 </div>
-                <div>
-                  <div className="grid md:grid-cols-2  gap-y-9 gap-x-4 mt-[32px]">
-                    {formType === "Company" && (
-                      <>
+                <form
+                  autoComplete="off"
+                  id="myForm"
+                  onSubmit={handleSubmit(AddUserData)}
+                >
+                  <div>
+                    <div className="grid md:grid-cols-2  gap-y-9 gap-x-4 mt-[32px]">
+                      {formType === "Company" && (
+                        <>
+                          <div>
+                            <TextField
+                              id="outlined-basic"
+                              label="Company Name"
+                              variant="outlined"
+                              className="w-full"
+                              {...register(
+                                "companyName",
+                                formType === "Company"
+                                  ? CompanyNameValidate
+                                  : ""
+                              )}
+                            />
+                            {errors.companyName && (
+                              <p className="errorMsg mt-2">
+                                {errors.companyName.message}
+                              </p>
+                            )}
+                          </div>
+                          <div>
+                            <TextField
+                              id="outlined-basic"
+                              label="Company CVR"
+                              variant="outlined"
+                              className="w-full"
+                              {...register(
+                                "companyCVR",
+                                formType === "Company" ? CompanyCVRValidate : ""
+                              )}
+                            />
+                            {errors.companyCVR && (
+                              <p className="errorMsg mt-2">
+                                {errors.companyCVR.message}
+                              </p>
+                            )}
+                          </div>
+                        </>
+                      )}
+                      <div>
                         <TextField
                           id="outlined-basic"
-                          label="Company Name"
+                          label="First name"
                           variant="outlined"
                           className="w-full"
+                          {...register("firstName", FirstNameValidate)}
                         />
+                        {errors.firstName && (
+                          <p className="errorMsg mt-2">
+                            {errors.firstName.message}
+                          </p>
+                        )}
+                      </div>
+                      <div>
                         <TextField
                           id="outlined-basic"
-                          label="Company CVR"
+                          label="Last name"
                           variant="outlined"
                           className="w-full"
+                          {...register("lastName", LastNameValidate)}
                         />
-                      </>
-                    )}
-                    <TextField
-                      id="outlined-basic"
-                      label="First name"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                    <TextField
-                      id="outlined-basic"
-                      label="Last name"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                    <TextField
-                      id="outlined-basic"
-                      label="Email"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                    <TextField
-                      id="outlined-basic"
-                      label="Phone number"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                    <TextField
-                      id="outlined-basic"
-                      label="Address"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                    <TextField
-                      id="outlined-basic"
-                      label="Postal code"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                    <TextField
-                      id="outlined-basic"
-                      label="City"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                    <TextField
-                      id="outlined-basic"
-                      label="Driving licence number"
-                      variant="outlined"
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="mt-8">
-                    <div className="flex items-start">
-                      <Checkbox
-                        // checked={transmissionTypes.includes("Manual")}
-                        // onChange={handleTransmissionChange}
-                        defaultChecked
-                        name="confirm"
-                        sx={{
-                          color: "#4F46E5",
-                          padding: 0,
-                          "&.Mui-checked": {
-                            color: "#4F46E5",
-                            padding: 0,
-                          },
-                        }}
-                      />
-                      <p className="text-[16px] font-normal text-[#666666] ml-2 ">
-                        I confirm that the provided information is accurate, and
-                        I consent to being contacted regarding my
-                        request/booking.
-                      </p>
-                    </div>
-                    <div className="flex items-start mt-8">
-                      <Checkbox
-                        // checked={transmissionTypes.includes("Manual")}
-                        // onChange={handleTransmissionChange}
+                        {errors.lastName && (
+                          <p className="errorMsg mt-2">
+                            {errors.lastName.message}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <TextField
+                          id="outlined-basic"
+                          label="Email"
+                          variant="outlined"
+                          className="w-full"
+                          {...register("email", EmailValidate)}
+                        />
+                        {errors.email && (
+                          <p className="errorMsg mt-2">
+                            {errors.email.message}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <TextField
+                          id="outlined-basic"
+                          label="Phone number"
+                          variant="outlined"
+                          className="w-full"
+                          {...register("phoneNumber", PhoneNumberValidate)}
+                        />
+                        {errors.phoneNumber && (
+                          <p className="errorMsg mt-2">
+                            {errors.phoneNumber.message}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <TextField
+                          id="outlined-basic"
+                          label="Address"
+                          variant="outlined"
+                          className="w-full"
+                          {...register("address", AddressValidate)}
+                        />
+                        {errors.address && (
+                          <p className="errorMsg mt-2">
+                            {errors.address.message}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <TextField
+                          id="outlined-basic"
+                          label="Postal code"
+                          variant="outlined"
+                          className="w-full"
+                          {...register("postalCode", PostalCodeValidate)}
+                        />
+                        {errors.postalCode && (
+                          <p className="errorMsg mt-2">
+                            {errors.postalCode.message}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <TextField
+                          id="outlined-basic"
+                          label="City"
+                          variant="outlined"
+                          className="w-full"
+                          {...register("city", CityValidate)}
+                        />
+                        {errors.city && (
+                          <p className="errorMsg mt-2">{errors.city.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <TextField
+                          id="outlined-basic"
+                          label="Driving licence number"
+                          variant="outlined"
+                          className="w-full"
+                          {...register(
+                            "drivingLicenceNumber",
+                            DrivingLicenseValidate
+                          )}
+                        />
 
-                        name="read"
-                        sx={{
-                          color: "#4F46E5",
-                          padding: 0,
-                          "&.Mui-checked": {
+                        {errors.drivingLicenceNumber && (
+                          <p className="errorMsg mt-2">
+                            {errors.drivingLicenceNumber.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="mt-8">
+                      <div className="flex items-start">
+                        <Checkbox
+                          // checked={transmissionTypes.includes("Manual")}
+                          // onChange={handleTransmissionChange}
+                          defaultChecked={accurate}
+                          onChange={(e) => handleCheckboxChange(e, setAccurate)}
+                          name="confirm"
+                          sx={{
                             color: "#4F46E5",
                             padding: 0,
-                          },
-                        }}
-                      />
-                      <p className="text-[16px] font-normal text-[#666666] ml-2 ">
-                        I have read and accepted the
-                        <span className="text-lightBlue mx-1 underline decoration-lightBlue cursor-pointer">
-                          terms & conditions
-                        </span>
-                        and
-                        <span className="text-lightBlue ml-1 underline decoration-lightBlue cursor-pointer">
-                          privacy policy
-                        </span>
-                        .
-                      </p>
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                        />
+                        <p className="text-[16px] font-normal text-[#666666] ml-2 ">
+                          I confirm that the provided information is accurate,
+                          and I consent to being contacted regarding my
+                          request/booking.
+                        </p>
+                      </div>
+                      <div className="flex items-start mt-8">
+                        <Checkbox
+                          // checked={transmissionTypes.includes("Manual")}
+                          // onChange={handleTransmissionChange}
+                          defaultChecked={ternCondtion}
+                          onChange={(e) =>
+                            handleCheckboxChange(e, setTermCondition)
+                          }
+                          name="read"
+                          sx={{
+                            color: "#4F46E5",
+                            padding: 0,
+                            "&.Mui-checked": {
+                              color: "#4F46E5",
+                              padding: 0,
+                            },
+                          }}
+                        />
+                        <p className="text-[16px] font-normal text-[#666666] ml-2 ">
+                          I have read and accepted the
+                          <span className="text-lightBlue mx-1 underline decoration-lightBlue cursor-pointer">
+                            terms & conditions
+                          </span>
+                          and
+                          <span className="text-lightBlue ml-1 underline decoration-lightBlue cursor-pointer">
+                            privacy policy
+                          </span>
+                          .
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
+
               <div className="lg:w-[822px] mt-6 py-6 px-7 bg-[#FFFFFF] rounded-md shadow-md">
                 <div className="flex md:flex-nowrap flex-wrap justify-between items-center">
                   <button
@@ -189,12 +332,14 @@ const PersonalDetail = (props) => {
                   >
                     Go back
                   </button>
+
                   <button
                     className={`
                               bg-[#4F46E5] text-[#FFFFFF]
                                
                            font-medium text-[14px] border border-[#4F46E5] rounded-md w-fit px-6 py-2`}
-                    onClick={() => props.NextGo()}
+                    type="submit"
+                    form="myForm"
                   >
                     Continue to payment
                   </button>

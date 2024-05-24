@@ -24,6 +24,7 @@ import { MdOutlineErrorOutline, MdOutlineTune } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import FindCarRightPart from "./FindCarRightPart";
 import Skeleton from "@mui/material/Skeleton";
+import { AddPickUpInfo } from "@/app/store/CarBookInfo/carbook.slice";
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -73,11 +74,11 @@ const FindCar = (props) => {
   });
 
   const today = dayjs();
-  const tomorrow = dayjs().add(1, "day");
+  const returnDateAfter = today.add(3, "day");
   const { carList, loading } = useSelector((state) => state.carlistData);
-  useEffect(() => {
-    setCarListData(carList);
-  }, [carList]);
+  const { pickupLocation, pickUpDate, returnDates, ...all } = useSelector(
+    (state) => state.carBookInfo
+  );
   const dispatch = useDispatch();
   const {
     register,
@@ -87,6 +88,11 @@ const FindCar = (props) => {
     reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    setCarListData(carList);
+  }, [carList]);
+
   useEffect(() => {
     dispatch(getCarList());
   }, [dispatch]);
@@ -179,7 +185,6 @@ const FindCar = (props) => {
     locationTypes,
     carList,
   ]);
-  const pickupDate = watch("pickupDate");
 
   const validateReturnDate = (selectedDate) => {
     if (dayjs(selectedDate).isBefore(pickupDate)) {
@@ -196,8 +201,33 @@ const FindCar = (props) => {
     indexOfFirstCard,
     indexOfLastCard
   );
-
+  const pickupDate = watch("pickupDate");
+  const returnDate = watch("returnDate");
+  const pickupLocationData = watch("pickupLocation");
+  console.log("coming form piker", pickupLocationData);
+  useEffect(() => {
+    if (!pickUpDate && !returnDates) {
+      dispatch(
+        AddPickUpInfo({
+          pickUpDate: today,
+          returnDates: returnDateAfter,
+          pickupLocation: pickupLocationData || pickupLocation || "Gujarat",
+        })
+      );
+      console.log("data coming form update search", all, selectedDates);
+    }
+  }, []);
   // Change page
+  useEffect(() => {
+    if (pickUpDate && returnDates) {
+      setSelectedDates({
+        pickupDate: pickUpDate,
+        returnDate: returnDates,
+      });
+      setValue("pickupDate", dayjs(pickUpDate));
+      setValue("returnDate", dayjs(returnDates));
+    }
+  }, [pickUpDate && returnDates]);
   const handleChangePagination = (event, value) => {
     setCurrentPage(value);
   };
@@ -241,14 +271,21 @@ const FindCar = (props) => {
     setTowbarTypes(false);
     setLocationTypes([]);
   };
-  const handleDateChange = (date, dateName) => {
-    setSelectedDates({
-      ...selectedDates,
-      [dateName]: date,
-    });
+  const formatDate = (date) => {
+    return date?.format("DD MMM");
   };
   const SearchCarData = (items) => {
-    console.log("data coming form update search", items);
+    setSelectedDates({
+      pickupDate: items?.pickupDate,
+      returnDate: items?.returnDate,
+    });
+    dispatch(
+      AddPickUpInfo({
+        pickUpDate: items?.pickupDate,
+        returnDates: items?.returnDate,
+        pickupLocation: items?.pickupLocation,
+      })
+    );
   };
   const currencies = [
     {
@@ -350,7 +387,7 @@ const FindCar = (props) => {
                   <Controller
                     name="pickupDate" // Name of your form field
                     control={control}
-                    defaultValue={null} // Initial value
+                    defaultValue={selectedDates?.pickupDate || null} // Initial value
                     render={({ field }) => (
                       <DatePicker
                         {...field}
@@ -370,7 +407,7 @@ const FindCar = (props) => {
                   <Controller
                     name="returnDate" // Name of your form field
                     control={control}
-                    defaultValue={null} // Initial value
+                    defaultValue={selectedDates?.returnDate || null} // Initial value
                     rules={{ validate: validateReturnDate }}
                     render={({ field }) => (
                       <DatePicker
@@ -816,7 +853,16 @@ const FindCar = (props) => {
                       between{" "}
                       <span className="text-[#262626] font-semibold">
                         {" "}
-                        26 Feb - 29 Feb (3 days)
+                        {formatDate(selectedDates?.pickupDate || today)} -{" "}
+                        {formatDate(
+                          selectedDates?.returnDate || returnDateAfter
+                        )}
+                        (
+                        {(selectedDates?.returnDate || returnDateAfter)?.diff(
+                          selectedDates?.pickupDate || today,
+                          "day"
+                        )}
+                        days)
                       </span>
                     </p>
                     <p className="text-[14px] font-medium text-[#666666] mr-2">

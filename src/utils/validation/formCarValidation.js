@@ -110,7 +110,136 @@ const ProfileValidate = {
     //Add other validation if you want. For example, checking for file size
   },
 };
+const FirstNameValidate = {
+  required: {
+    value: true,
+    message: "FirstName is Required.",
+  },
+  minLength: {
+    value: 2,
+    message: "FirstName should be at-least 2 characters.",
+  },
+  maxLength: {
+    value: 100,
+    message: "FirstName maximum 100 characters.",
+  },
+};
 
+const LastNameValidate = {
+  required: {
+    value: true,
+    message: "LastName is Required.",
+  },
+  minLength: {
+    value: 2,
+    message: "LastName should be at-least 2 characters.",
+  },
+  maxLength: {
+    value: 100,
+    message: "LastName maximum 100 characters.",
+  },
+};
+
+const CompanyNameValidate = {
+  required: {
+    value: true,
+    message: "Company Name is Required.",
+  },
+  minLength: {
+    value: 5,
+    message: "Company Name should be at-least 5 characters.",
+  },
+  maxLength: {
+    value: 100,
+    message: "Company Name maximum 100 characters.",
+  },
+};
+
+const CompanyCVRValidate = {
+  required: {
+    value: true,
+    message: "Company CVR is Required.",
+  },
+  minLength: {
+    value: 2,
+    message: "Company CVR should be at-least 2 characters.",
+  },
+  maxLength: {
+    value: 100,
+    message: "Company CVR maximum 100 characters.",
+  },
+};
+
+const PhoneNumberValidate = {
+  required: {
+    value: true,
+    message: "phone number is Required.",
+  },
+  minLength: {
+    value: 10,
+    message: "phone number should be at-least 10 characters.",
+  },
+  maxLength: {
+    value: 12,
+    message: "phone number maximum 12 characters.",
+  },
+};
+const AddressValidate = {
+  required: {
+    value: true,
+    message: "address is Required.",
+  },
+  minLength: {
+    value: 6,
+    message: "address should be at-least 6 characters.",
+  },
+  maxLength: {
+    value: 500,
+    message: "address maximum 500 characters.",
+  },
+};
+const PostalCodeValidate = {
+  required: {
+    value: true,
+    message: "postalcode is Required.",
+  },
+  minLength: {
+    value: 2,
+    message: "postalcode should be at-least 2 characters.",
+  },
+  maxLength: {
+    value: 100,
+    message: "postalcode maximum 100 characters.",
+  },
+};
+const CityValidate = {
+  required: {
+    value: true,
+    message: "City is Required.",
+  },
+  minLength: {
+    value: 2,
+    message: "City should be at-least 2 characters.",
+  },
+  maxLength: {
+    value: 100,
+    message: "City maximum 100 characters.",
+  },
+};
+const DrivingLicenseValidate = {
+  required: {
+    value: true,
+    message: "Driving License Number is Required.",
+  },
+  minLength: {
+    value: 4,
+    message: "Driving License Number should be at-least 4 characters.",
+  },
+  maxLength: {
+    value: 20,
+    message: "Driving License Number maximum 20 characters.",
+  },
+};
 export {
   carTitleValidate,
   DescriptionValidate,
@@ -120,4 +249,13 @@ export {
   PasswordValidate,
   ProfileValidate,
   LocationValidate,
+  FirstNameValidate,
+  LastNameValidate,
+  CompanyNameValidate,
+  CompanyCVRValidate,
+  PhoneNumberValidate,
+  AddressValidate,
+  PostalCodeValidate,
+  CityValidate,
+  DrivingLicenseValidate,
 };

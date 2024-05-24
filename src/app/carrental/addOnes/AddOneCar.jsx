@@ -9,6 +9,7 @@ import { RiErrorWarningLine } from "react-icons/ri";
 import CardImageAddons from "./CardImageAddons";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  AddChildSeat,
   AddDriver,
   AddExtraKilometers,
   AddInsurance,
@@ -16,16 +17,24 @@ import {
   AddWinterWheel,
 } from "@/app/store/CarBookInfo/carbook.slice";
 const AddOneCar = (props) => {
-  const { extraKilometers, roofBox, winterWheel, driver } = useSelector(
-    (state) => state.carBookInfo
-  );
+  const {
+    extraKilometers,
+    roofBox,
+    winterWheel,
+    driver,
+    childSeat,
+    insurance,
+  } = useSelector((state) => state.carBookInfo);
   const [counters, setCounters] = useState({
     kilometers: extraKilometers,
     winterWheels: winterWheel,
     roofBox: roofBox,
     driver: driver,
   });
-  const [toggleCard, setToggleCard] = useState(1);
+  const [addDriver, setAddDriver] = useState(driver);
+  const [childSeats, setChildsSeats] = useState(childSeat);
+
+  const [toggleCard, setToggleCard] = useState(insurance);
   const [carData, setCarData] = useState(props?.item?.carInfo);
 
   const dispatch = useDispatch();
@@ -37,8 +46,8 @@ const AddOneCar = (props) => {
     dispatch(AddExtraKilometers(counters?.kilometers));
     dispatch(AddWinterWheel(counters?.winterWheels));
     dispatch(AddRoofBox(counters?.roofBox));
-    dispatch(AddInsurance(toggleCard == 1 ? "Basic" : "Premium"));
-  }, [counters]);
+    dispatch(AddInsurance(toggleCard == "Basic" ? "Basic" : "Premium"));
+  }, [counters, toggleCard]);
   const incrementCounter = (counterName, initialValue = 1) => {
     setCounters((prevCounters) => ({
       ...prevCounters,
@@ -53,11 +62,22 @@ const AddOneCar = (props) => {
     }));
   };
   const AddAditionalDriver = () => {
-    setCounters((prevCounters) => ({
-      ...prevCounters,
-      driver: !counters?.driver, // Ensure non-negative value
-    }));
-    dispatch(AddDriver(counters?.driver));
+    if (addDriver) {
+      setAddDriver(false);
+      dispatch(AddDriver(false));
+    } else {
+      setAddDriver(true);
+      dispatch(AddDriver(true));
+    }
+  };
+  const AddAditionalChildSeats = () => {
+    if (childSeats) {
+      setChildsSeats(false);
+      dispatch(AddChildSeat(false));
+    } else {
+      setChildsSeats(true);
+      dispatch(AddChildSeat(true));
+    }
   };
   return (
     <>
@@ -134,8 +154,13 @@ const AddOneCar = (props) => {
                     </div>
                     <div className="mr-2 md:mt-0 mt-3">
                       <div className="flex gap-4 items-center">
-                        <button className="bg-[#4F46E5]  text-[#fff] w-[146px] h-[42px] rounded">
-                          Add
+                        <button
+                          className={`${
+                            childSeats ? " bg-[#d86a82]" : "bg-[#4F46E5]"
+                          }   text-[#fff] w-[146px] h-[42px] rounded`}
+                          onClick={AddAditionalChildSeats}
+                        >
+                          {childSeats ? "Remove" : "Add"}
                         </button>
                         <h1 className="mr-2 text-[#666666] font-semibold text-[16px]">
                           35 kr.
@@ -254,11 +279,11 @@ const AddOneCar = (props) => {
                     <div className="flex gap-4 items-center">
                       <button
                         className={`${
-                          counters?.driver ? " bg-[#d86a82]" : "bg-[#4F46E5]"
+                          addDriver ? " bg-[#d86a82]" : "bg-[#4F46E5]"
                         }   text-[#fff] w-[146px] h-[42px] rounded`}
                         onClick={AddAditionalDriver}
                       >
-                        {counters?.driver ? "Remove" : "Add"}
+                        {addDriver ? "Remove" : "Add"}
                       </button>
                       <h1 className="mr-2 text-[#666666] font-semibold text-[16px]">
                         35 kr.
@@ -296,11 +321,11 @@ const AddOneCar = (props) => {
                     <div className="flex justify-between gap-3 md:flex-nowrap flex-wrap">
                       <div
                         className={`border  ${
-                          toggleCard == "1"
+                          toggleCard == "Basic"
                             ? "border-lightBlue"
                             : "border-lightGrey"
                         } w-[371px] px-7 pt-4 rounded-md relative `}
-                        onClick={() => setToggleCard(1)}
+                        onClick={() => setToggleCard("Basic")}
                       >
                         <h3 className="text-[#262626] font-medium text-[20px]">
                           Basic
@@ -349,15 +374,15 @@ const AddOneCar = (props) => {
                           </p>
                           <button
                             className={`${
-                              toggleCard == "1"
+                              toggleCard == "Basic"
                                 ? "bg-[#4F46E5] text-[#FFFFFF]"
                                 : "text-[#4F46E5] bg-[#FFFFFF]"
                             }  font-medium text-[14px] border border-[#4F46E5] rounded-md w-[156px] px-6 py-2`}
                           >
-                            {toggleCard == "1" ? "Selected" : "Select"}
+                            {toggleCard == "Basic" ? "Selected" : "Select"}
                           </button>
                         </div>
-                        {toggleCard == "1" && (
+                        {toggleCard == "Basic" && (
                           <Image
                             className="rounded-lg  absolute -top-2 -right-2 z-50 w-5 h-5 bg-white"
                             src="/CheckCircle.png"
@@ -369,11 +394,11 @@ const AddOneCar = (props) => {
                       </div>
                       <div
                         className={`border  ${
-                          toggleCard == "2"
+                          toggleCard == "Premium"
                             ? "border-lightBlue"
                             : "border-lightGrey"
                         } w-[371px] px-7 pt-4 rounded-md relative `}
-                        onClick={() => setToggleCard(2)}
+                        onClick={() => setToggleCard("Premium")}
                       >
                         <div className="flex gap-2 items-center">
                           <h3 className="text-[#262626] font-medium text-[20px]">
@@ -433,15 +458,15 @@ const AddOneCar = (props) => {
                           </p>
                           <button
                             className={`${
-                              toggleCard == "2"
+                              toggleCard == "Premium"
                                 ? "bg-[#4F46E5] text-[#FFFFFF]"
                                 : "text-[#4F46E5] bg-[#FFFFFF]"
                             }  font-medium text-[14px] border border-[#4F46E5] rounded-md w-[156px] px-6 py-2`}
                           >
-                            {toggleCard == "2" ? "Selected" : "Select"}
+                            {toggleCard == "Premium" ? "Selected" : "Select"}
                           </button>
                         </div>
-                        {toggleCard == "2" && (
+                        {toggleCard == "Premium" && (
                           <Image
                             className="rounded-lg  absolute -top-2 -right-2 z-50 w-5 h-5 bg-white"
                             src="/CheckCircle.png"

@@ -4,6 +4,9 @@ const CarBookInfoStore = createSlice({
   name: "carBookInfo",
   initialState: {
     carInfo: [],
+    pickupLocation: "",
+    pickUpDate: "",
+    returnDates: "",
     childSeat: 0,
     winterWheel: 0,
     roofBox: 0,
@@ -35,6 +38,11 @@ const CarBookInfoStore = createSlice({
     AddInsurance: (state, action) => {
       state.insurance = action?.payload || "Basic";
     },
+    AddPickUpInfo: (state, actions) => {
+      state.pickupLocation = actions?.payload?.pickupLocation;
+      state.pickUpDate = actions?.payload?.pickUpDate;
+      state.returnDates = actions?.payload?.returnDates;
+    },
   },
   extraReducers(builder) {},
 });
@@ -47,5 +55,6 @@ export const {
   AddDriver,
   AddExtraKilometers,
   AddInsurance,
+  AddPickUpInfo,
 } = actions;
 export default reducer;
