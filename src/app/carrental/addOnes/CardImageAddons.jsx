@@ -9,11 +9,14 @@ import { useSelector } from "react-redux";
 const CardImageAddons = () => {
   const [showContentPayment, setShowContentPayment] = useState(true);
 
-  const { carInfo, extraKilometers } = useSelector(
+  const { carInfo, extraKilometers, pickUpDate, returnDates } = useSelector(
     (state) => state.carBookInfo
   );
+
   const date1 = new Date(carInfo?.pickup_time);
   const date2 = new Date(carInfo?.return_time);
+
+  const dateToDays = returnDates?.diff(pickUpDate, "day");
 
   const formattedPicupDate = date1.toLocaleString("en-US", {
     hour: "numeric",
@@ -25,7 +28,17 @@ const CardImageAddons = () => {
     minute: "numeric",
     hour12: true,
   });
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
 
+    const monthAbbreviation = date.toLocaleString("default", {
+      month: "short",
+    });
+
+    const formattedDate = `${date.getDate()} ${monthAbbreviation}, ${date.getFullYear()}`;
+
+    return formattedDate;
+  };
   const handleToggleContentPayment = () => {
     setShowContentPayment(!showContentPayment);
   };
@@ -97,7 +110,7 @@ const CardImageAddons = () => {
                 Pick up : København
               </h1>
               <h1 className="font-medium  mt-1 text-[16px] text-[#666666]">
-                Date: 26 Feb, 2024
+                Date: {formatDate(pickUpDate)}
               </h1>
               <h1 className="font-medium  mt-1 text-[16px] text-[#666666]">
                 Between {formattedPicupDate} - {formattedReturnDate}
@@ -121,7 +134,7 @@ const CardImageAddons = () => {
                 Drop off : Grundtvigs Allé 178, 6400 Sønderborg
               </h1>
               <h1 className="font-medium  mt-1 text-[16px] text-[#666666]">
-                Date: 29 Feb, 2024
+                Date: {formatDate(returnDates)}
               </h1>
               <h1 className="font-medium  mt-1 text-[16px] text-[#666666]">
                 Between {formattedPicupDate} - {formattedReturnDate}
@@ -154,12 +167,12 @@ const CardImageAddons = () => {
                 Rental price
               </h4>
               <h4 className="text-[#666666] text-[12px] font-medium">
-                DKK 299.00
+                DKK {carInfo?.perDayCost}.00
                 <span className="text-[#999999] text-[12px]">/day</span>
               </h4>
             </div>
             <h4 className="text-[#262626] text-[16px] font-semibold">
-              DKK 999
+              DKK {carInfo?.perDayCost * (dateToDays || 0)}
             </h4>
           </div>
           <div className="flex justify-between mt-5">
@@ -182,7 +195,9 @@ const CardImageAddons = () => {
                 DKK 1.60/km
               </h4>
             </div>
-            <h4 className="text-[#262626] text-[16px] font-semibold">DKK 30</h4>
+            <h4 className="text-[#262626] text-[16px] font-semibold">
+              DKK {extraKilometers * 30}
+            </h4>
           </div>
           <h4 className="text-[#262626] text-[16px] font-semibold mt-[36px]">
             Additional price

@@ -24,12 +24,15 @@ import {
   PostalCodeValidate,
 } from "@/utils/validation/formCarValidation";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { AddUserInfo } from "@/app/store/CarBookInfo/carbook.slice";
 
 const PersonalDetail = (props) => {
   const [formType, setFormType] = useState("Individual");
   const [accurate, setAccurate] = useState(true);
   const [ternCondtion, setTermCondition] = useState(false);
 
+  const { userInfo } = useSelector((state) => state.carBookInfo);
   const {
     register,
     control,
@@ -38,7 +41,7 @@ const PersonalDetail = (props) => {
     reset,
     formState: { errors },
   } = useForm();
-
+  const dispatch = useDispatch();
   const handleFormTypeChange = (event) => {
     setFormType(event.target.value);
   };
@@ -50,6 +53,7 @@ const PersonalDetail = (props) => {
   const AddUserData = (items) => {
     if (accurate && ternCondtion) {
       console.log("ites data issss<<<<", items);
+      dispatch(AddUserInfo(items));
       props.NextGo();
     } else {
       toast.error(
@@ -115,6 +119,7 @@ const PersonalDetail = (props) => {
                               id="outlined-basic"
                               label="Company Name"
                               variant="outlined"
+                              defaultValue={userInfo?.companyName}
                               className="w-full"
                               {...register(
                                 "companyName",
@@ -134,6 +139,7 @@ const PersonalDetail = (props) => {
                               id="outlined-basic"
                               label="Company CVR"
                               variant="outlined"
+                              defaultValue={userInfo?.companyCVR}
                               className="w-full"
                               {...register(
                                 "companyCVR",
@@ -154,6 +160,7 @@ const PersonalDetail = (props) => {
                           label="First name"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.firstName}
                           {...register("firstName", FirstNameValidate)}
                         />
                         {errors.firstName && (
@@ -168,6 +175,7 @@ const PersonalDetail = (props) => {
                           label="Last name"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.lastName}
                           {...register("lastName", LastNameValidate)}
                         />
                         {errors.lastName && (
@@ -182,6 +190,7 @@ const PersonalDetail = (props) => {
                           label="Email"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.email}
                           {...register("email", EmailValidate)}
                         />
                         {errors.email && (
@@ -196,6 +205,7 @@ const PersonalDetail = (props) => {
                           label="Phone number"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.phoneNumber}
                           {...register("phoneNumber", PhoneNumberValidate)}
                         />
                         {errors.phoneNumber && (
@@ -210,6 +220,7 @@ const PersonalDetail = (props) => {
                           label="Address"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.address}
                           {...register("address", AddressValidate)}
                         />
                         {errors.address && (
@@ -224,6 +235,7 @@ const PersonalDetail = (props) => {
                           label="Postal code"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.postalCode}
                           {...register("postalCode", PostalCodeValidate)}
                         />
                         {errors.postalCode && (
@@ -238,6 +250,7 @@ const PersonalDetail = (props) => {
                           label="City"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.city}
                           {...register("city", CityValidate)}
                         />
                         {errors.city && (
@@ -250,6 +263,7 @@ const PersonalDetail = (props) => {
                           label="Driving licence number"
                           variant="outlined"
                           className="w-full"
+                          defaultValue={userInfo?.drivingLicenceNumber}
                           {...register(
                             "drivingLicenceNumber",
                             DrivingLicenseValidate

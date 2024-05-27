@@ -10,14 +10,14 @@ export async function POST(req, context) {
   try {
     const id = context.params.id;
 
-    if (!id) {
-      return NextResponse.json(
-        { error: "Not receive carId." },
-        { status: 400 }
-      );
+    const objectId = mongoose.Types.ObjectId.isValid(id);
+    if (!objectId) {
+      return NextResponse.json({
+        error: "provided Car id is incorrect.",
+        status: 400,
+      });
     }
-    const objectId = new mongoose.Types.ObjectId(id);
-    const carData = await Cars.findById(objectId);
+    const carData = await Cars.findById(id);
 
     return NextResponse.json({
       carData,

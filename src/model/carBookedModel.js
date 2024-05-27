@@ -25,8 +25,9 @@ const carBookedSchema = new mongoose.Schema({
     default: "pending",
   },
   insurance: {
-    type: Boolean,
-    default: false,
+    type: String,
+    enum: ["Premium", "Basic"],
+    default: "Basic",
   },
   kilometer: {
     type: Number,

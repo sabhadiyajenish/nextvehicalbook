@@ -10,7 +10,6 @@ export async function POST(req, context) {
   try {
     const id = context.params.id;
     const reqBody = await req.json();
-    console.log(reqBody);
     const {
       title,
       location,
@@ -31,14 +30,14 @@ export async function POST(req, context) {
       ReturnTime,
       equipment,
     } = await reqBody;
-    if (!id) {
-      return NextResponse.json(
-        { error: "Not receive carId." },
-        { status: 400 }
-      );
+    const objectId = mongoose.Types.ObjectId.isValid(id);
+    if (!objectId) {
+      return NextResponse.json({
+        error: "provided Car id is incorrect.",
+        status: 400,
+      });
     }
-    const objectId = new mongoose.Types.ObjectId(id);
-    const carInfo = await Cars.findById(objectId);
+    const carInfo = await Cars.findById(id);
     carInfo.title = title || carInfo.title;
     carInfo.address = location || carInfo.address;
     carInfo.coverImage = coverImage == null ? carInfo.coverImage : coverImage;

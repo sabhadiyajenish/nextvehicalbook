@@ -20,7 +20,6 @@ export async function POST(req) {
     // });
     return NextResponse.json({
       carData,
-
       message: " All Car get Successfully..!!",
       status: 200,
     });

@@ -175,13 +175,17 @@ const PhoneNumberValidate = {
     value: true,
     message: "phone number is Required.",
   },
+  pattern: {
+    value: /^[0-9]+$/,
+    message: "Phone number should contain only digits.",
+  },
   minLength: {
     value: 10,
-    message: "phone number should be at-least 10 characters.",
+    message: "phone number should be at-least 10 digits.",
   },
   maxLength: {
     value: 12,
-    message: "phone number maximum 12 characters.",
+    message: "phone number maximum 12 digits.",
   },
 };
 const AddressValidate = {
@@ -203,13 +207,9 @@ const PostalCodeValidate = {
     value: true,
     message: "postalcode is Required.",
   },
-  minLength: {
-    value: 2,
-    message: "postalcode should be at-least 2 characters.",
-  },
-  maxLength: {
-    value: 100,
-    message: "postalcode maximum 100 characters.",
+  pattern: {
+    value: /^[0-9]{5}(?:-[0-9]{4})?$/,
+    message: "Invalid postal code format.",
   },
 };
 const CityValidate = {
@@ -229,15 +229,28 @@ const CityValidate = {
 const DrivingLicenseValidate = {
   required: {
     value: true,
-    message: "Driving License Number is Required.",
+    message: "Driving License Number is required.",
   },
   minLength: {
-    value: 4,
-    message: "Driving License Number should be at-least 4 characters.",
+    value: 4, // Default minLength
+    message: "Driving License Number should be at least 4 characters.",
   },
   maxLength: {
-    value: 20,
-    message: "Driving License Number maximum 20 characters.",
+    value: 20, // Default maxLength
+    message: "Driving License Number should be maximum 20 characters.",
+  },
+  pattern: {
+    value: /^[a-zA-Z0-9]*$/,
+    message: "Driving License Number should contain only letters and digits.",
+  },
+  validate: {
+    lengthValidation: (value) => {
+      if (value.length >= 10 && value.length <= 15) {
+        return true;
+      } else {
+        return "Driving License Number should be between 10 and 15 characters.";
+      }
+    },
   },
 };
 export {
